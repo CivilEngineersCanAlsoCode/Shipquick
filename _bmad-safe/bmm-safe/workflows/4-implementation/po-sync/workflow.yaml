@@ -1,0 +1,50 @@
+# PO Sync - Weekly Product Owner Alignment Meeting
+name: po-sync
+description: "Weekly Product Owner and Product Management alignment meeting for backlog and priority synchronization"
+author: "BMad Method - SAFe"
+
+# Critical variables from config
+config_source: "{project-root}/_bmad-safe/bmm-safe/config.yaml"
+user_name: "{config_source}:user_name"
+communication_language: "{config_source}:communication_language"
+user_skill_level: "{config_source}:user_skill_level"
+document_output_language: "{config_source}:document_output_language"
+date: system-generated
+implementation_artifacts: "{config_source}:implementation_artifacts"
+planning_artifacts: "{config_source}:planning_artifacts"
+output_folder: "{implementation_artifacts}"
+
+# Workflow components
+installed_path: "{project-root}/_bmad-safe/bmm-safe/workflows/4-implementation/po-sync"
+instructions: "{installed_path}/instructions.md"
+
+# Variables and inputs
+variables:
+  project_context: "**/project-context.md"
+  project_name: "{config_source}:project_name"
+  
+  # PO Sync inputs
+  product_roadmap: "{planning_artifacts}/*roadmap*.md"
+  team_backlog: "{implementation_artifacts}/*backlog*.md"
+  feature_status: "{planning_artifacts}/*feature*.md"
+
+# Smart input file references
+input_file_patterns:
+  backlog:
+    description: "Team backlogs for alignment"
+    whole: "{implementation_artifacts}/*backlog*.md"
+    load_strategy: "SCAN_HEADERS"
+  features:
+    description: "Feature status"
+    whole: "{planning_artifacts}/*feature*.md"
+    load_strategy: "SCAN_HEADERS"
+
+# Output configuration
+default_output_file: "{implementation_artifacts}/po-sync-notes.md"
+
+# Workflow mode
+workflow:
+  type: single-mode
+  mode: Facilitate
+
+standalone: true

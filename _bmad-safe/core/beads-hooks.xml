@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  BEADS HOOKS - Enhanced ID Generation + Lifecycle Management
+  
+  ID Format: Type-ParentRef-Sequence
+  Example: T-001, E-T1-01, C-E1-01, F-C1-01, US-F1-01, TK-S1-01
+-->
+<beads-hooks version="2.0" standalone="true">
+  
+  <objective>Generate SAFe-aligned Bead IDs with parent visibility and manage lifecycle</objective>
+  
+  <!-- ID GENERATION PROTOCOL -->
+  <protocol name="generate_bead_id" desc="Generate next bead ID based on type and parent">
+    
+    <!-- THEME: T-001, T-002, T-003 -->
+    <generator type="theme">
+      <action>Read beads.counters.theme from config.yaml</action>
+      <action>Increment counter: counters.theme += 1</action>
+      <action>Format ID: "T-{counters.theme:03d}"</action>
+      <action>Store beads.current.theme_id and theme_seq</action>
+      <output>T-001, T-002, etc.</output>
+    </generator>
+    
+    <!-- EPIC: E-T1-01 (Epic 1 under Theme 1) -->
+    <generator type="epic">
+      <requires>beads.current.theme_seq</requires>
+      <action>Get parent_key = "T{theme_seq}"</action>
+      <action>Initialize counters.epic[parent_key] = 0 if not exists</action>
+      <action>Increment: counters.epic[parent_key] += 1</action>
+      <action>Format ID: "E-T{theme_seq}-{seq:02d}"</action>
+      <action>Store beads.current.epic_id and epic_seq</action>
+      <output>E-T1-01, E-T1-02, E-T2-01, etc.</output>
+    </generator>
+    
+    <!-- CAPABILITY: C-E1-01 (Capability 1 under Epic 1) -->
+    <generator type="capability">
+      <requires>beads.current.epic_seq</requires>
+      <action>Get parent_key = "E{epic_seq}"</action>
+      <action>Initialize counters.capability[parent_key] = 0 if not exists</action>
+      <action>Increment: counters.capability[parent_key] += 1</action>
+      <action>Format ID: "C-E{epic_seq}-{seq:02d}"</action>
+      <action>Store beads.current.capability_id and capability_seq</action>
+      <output>C-E1-01, C-E1-02, C-E2-01, etc.</output>
+    </generator>
+    
+    <!-- FEATURE: F-C1-01 (Feature 1 under Capability 1) -->
+    <generator type="feature">
+      <requires>beads.current.capability_seq</requires>
+      <action>Get parent_key = "C{capability_seq}"</action>
+      <action>Initialize counters.feature[parent_key] = 0 if not exists</action>
+      <action>Increment: counters.feature[parent_key] += 1</action>
+      <action>Format ID: "F-C{capability_seq}-{seq:02d}"</action>
+      <action>Store beads.current.feature_id and feature_seq</action>
+      <output>F-C1-01, F-C1-02, F-C2-01, etc.</output>
+    </generator>
+    
+    <!-- STORY: US-F1-01 (User Story 1 under Feature 1) -->
+    <generator type="story">
+      <requires>beads.current.feature_seq</requires>
+      <action>Get parent_key = "F{feature_seq}"</action>
+      <action>Initialize counters.story[parent_key] = 0 if not exists</action>
+      <action>Increment: counters.story[parent_key] += 1</action>
+      <action>Format ID: "US-F{feature_seq}-{seq:02d}"</action>
+      <action>Store beads.current.story_id and story_seq</action>
+      <output>US-F1-01, US-F1-02, US-F2-01, etc.</output>
+    </generator>
+    
+    <!-- TASK: TK-S1-01 (Task 1 under Story 1) -->
+    <generator type="task">
+      <requires>beads.current.story_seq</requires>
+      <action>Get parent_key = "S{story_seq}"</action>
+      <action>Initialize counters.task[parent_key] = 0 if not exists</action>
+      <action>Increment: counters.task[parent_key] += 1</action>
+      <action>Format ID: "TK-S{story_seq}-{seq:02d}"</action>
+      <output>TK-S1-01, TK-S1-02, TK-S2-01, etc.</output>
+    </generator>
+    
+    <!-- DEFECT: DF-S1-01 (Defect 1 under Story 1) -->
+    <generator type="defect">
+      <requires>beads.current.story_seq</requires>
+      <action>Get parent_key = "S{story_seq}"</action>
+      <action>Initialize counters.defect[parent_key] = 0 if not exists</action>
+      <action>Increment: counters.defect[parent_key] += 1</action>
+      <action>Format ID: "DF-S{story_seq}-{seq:02d}"</action>
+      <output>DF-S1-01, DF-S1-02, DF-S2-01, etc.</output>
+    </generator>
+  </protocol>
+  
+  <!-- SESSION START PROTOCOL -->
+  <protocol name="session_start" desc="Execute at every session initialization">
+    <step n="1" title="Check Beads Availability">
+      <action>Run: bd --version</action>
+      <check if="error">
+        <action>STOP execution</action>
+        <action>Report: "Beads not installed. Run: npm install -g @beads/bd"</action>
+      </check>
+    </step>
+    
+    <step n="2" title="Load Counter State">
+      <action>Read beads.counters from config.yaml</action>
+      <action>Read beads.current from config.yaml</action>
+      <action>Verify counters match bd list output</action>
+    </step>
+    
+    <step n="3" title="Resume Check">
+      <action>Run: bd ready</action>
+      <check if="ready tasks found">
+        <action>Display pending tasks with their IDs</action>
+        <wait-for-input/>
+      </check>
+    </step>
+  </protocol>
+  
+  <!-- WORKFLOW HOOKS -->
+  <hook name="on_theme_create" agent="analyst">
+    <action>Call generate_bead_id(type="theme")</action>
+    <action>Run: bd create "Theme: {theme_name}" --id {generated_id}</action>
+    <action>Save counters to config.yaml</action>
+  </hook>
+  
+  <hook name="on_epic_create" agent="pm">
+    <action>Call generate_bead_id(type="epic")</action>
+    <action>Run: bd create "Epic: {epic_name}" --id {generated_id} --parent {current.theme_id}</action>
+    <action>Save counters to config.yaml</action>
+  </hook>
+  
+  <hook name="on_capability_create" agent="solution-manager">
+    <action>Call generate_bead_id(type="capability")</action>
+    <action>Run: bd create "Capability: {capability_name}" --id {generated_id} --parent {current.epic_id}</action>
+    <action>Save counters to config.yaml</action>
+  </hook>
+  
+  <hook name="on_feature_create" agent="rte">
+    <action>Call generate_bead_id(type="feature")</action>
+    <action>Run: bd create "Feature: {feature_name}" --id {generated_id} --parent {current.capability_id}</action>
+    <action>Save counters to config.yaml</action>
+  </hook>
+  
+  <hook name="on_story_create" agent="po|sm">
+    <action>Call generate_bead_id(type="story")</action>
+    <action>Run: bd create "Story: {story_name}" --id {generated_id} --parent {current.feature_id}</action>
+    <action>Save counters to config.yaml</action>
+  </hook>
+  
+  <hook name="on_task_create" agent="dev">
+    <action>Call generate_bead_id(type="task")</action>
+    <action>Run: bd create "Task: {task_name}" --id {generated_id} --parent {current.story_id}</action>
+    <action>Save counters to config.yaml</action>
+  </hook>
+  
+  <hook name="on_defect_create" agent="qa">
+    <action>Call generate_bead_id(type="defect")</action>
+    <action>Run: bd create "Defect: {defect_name}" --id {generated_id} --parent {current.story_id}</action>
+    <action>Run: bd dep add {generated_id} {current.story_id}</action>
+    <action>Save counters to config.yaml</action>
+  </hook>
+  
+  <!-- CONTEXT SWITCH HOOKS -->
+  <hook name="on_set_context" desc="When switching to work on existing item">
+    <action>Parse bead_id to extract type and parent reference</action>
+    <action>Update beads.current.{type}_id and {type}_seq</action>
+    <action>Example: "F-C1-02" sets feature_id="F-C1-02", feature_seq=2</action>
+  </hook>
+  
+  <!-- ACCEPTANCE HOOKS (unchanged from beads-acceptance.xml) -->
+  <hook name="on_item_done">
+    <action>Run: bd done {item_id}</action>
+    <action>Trigger parent gate check via beads-acceptance.xml</action>
+  </hook>
+  
+  <!-- FAILURE HANDLING -->
+  <protocol name="counter_sync">
+    <trigger>Mismatch between config counters and bd list</trigger>
+    <action>Re-count items from bd list by type</action>
+    <action>Update counters in config.yaml</action>
+    <action>Report: "Counter sync completed"</action>
+  </protocol>
+  
+</beads-hooks>

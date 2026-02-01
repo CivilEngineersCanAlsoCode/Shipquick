@@ -1,0 +1,51 @@
+# Iteration Goals - Define Goals for Upcoming Iteration
+name: iteration-goals
+description: "Define clear, achievable goals for the upcoming Iteration aligned with PI Objectives"
+author: "BMad Method - SAFe"
+
+# Critical variables from config
+config_source: "{project-root}/_bmad-safe/bmm-safe/config.yaml"
+user_name: "{config_source}:user_name"
+communication_language: "{config_source}:communication_language"
+user_skill_level: "{config_source}:user_skill_level"
+document_output_language: "{config_source}:document_output_language"
+date: system-generated
+implementation_artifacts: "{config_source}:implementation_artifacts"
+output_folder: "{implementation_artifacts}"
+
+# Workflow components
+installed_path: "{project-root}/_bmad-safe/bmm-safe/workflows/4-implementation/iteration-goals"
+instructions: "{installed_path}/instructions.md"
+template_iteration: "{project-root}/_bmad-safe/bmm-safe/templates/safe/iteration-plan.md"
+checklist_prep: "{project-root}/_bmad-safe/bmm-safe/checklists/iteration-planning-prep.md"
+
+# Variables and inputs
+variables:
+  project_context: "**/project-context.md"
+  project_name: "{config_source}:project_name"
+  
+  # Iteration inputs
+  pi_objectives: "{implementation_artifacts}/*pi-objectives*.md"
+  team_backlog: "{implementation_artifacts}/*backlog*.md"
+  sprint_status: "{implementation_artifacts}/sprint-status.yaml"
+
+# Smart input file references
+input_file_patterns:
+  backlog:
+    description: "Team backlog items"
+    whole: "{implementation_artifacts}/*backlog*.md"
+    load_strategy: "FULL_LOAD"
+  stories:
+    description: "Ready stories for iteration"
+    whole: "{implementation_artifacts}/*story*.md"
+    load_strategy: "SCAN_HEADERS"
+
+# Output configuration
+default_output_file: "{implementation_artifacts}/iteration-goals.md"
+
+# Workflow mode
+workflow:
+  type: single-mode
+  mode: Create
+
+standalone: true

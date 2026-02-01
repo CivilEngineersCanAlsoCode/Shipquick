@@ -1,0 +1,6 @@
+# Exclude archive from npm package (but keep in git)
+_archive/
+.beads/
+.DS_Store
+*.log
+node_modules/

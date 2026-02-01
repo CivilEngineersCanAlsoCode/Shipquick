@@ -1,0 +1,12 @@
+# <!-- Powered by BMAD-CORE™ -->
+bundle:
+  name: Solution Train Team
+  icon: 🚂
+  description: Solution Train coordination team for large solution development across multiple ARTs.
+agents:
+  - rte
+  - pm
+  - architect
+  - business-owner
+  - analyst
+party: "./default-party.csv"

@@ -1,0 +1,45 @@
+name: create-capability
+description: "Create SAFe Capabilities - bridge between Epics and Features for Solution Train"
+author: "BMad Method - SAFe 6.0.1"
+
+# Configuration
+config_source: "{project-root}/_bmad-safe/bmm-safe/config.yaml"
+user_name: "{config_source}:user_name"
+communication_language: "{config_source}:communication_language"
+output_folder: "{config_source}:output_folder"
+default_output_file: "{output_folder}/capabilities/capability-{{capability_num}}-{{date}}.md"
+
+# Workflow paths
+installed_path: "{project-root}/_bmad-safe/bmm-safe/workflows/3-solutioning/create-capability"
+instructions: "{installed_path}/instructions.md"
+template: "{project-root}/_bmad-safe/bmm-safe/templates/safe/capability-template.md"
+
+# Input patterns
+input_file_patterns:
+  prd:
+    whole: "{output_folder}/*prd*.md"
+    sharded: "{output_folder}/*prd*/*.md"
+    load_strategy: "FULL_LOAD"
+  architecture:
+    whole: "{output_folder}/*architecture*.md"
+    sharded: "{output_folder}/*architecture*/*.md"
+    load_strategy: "FULL_LOAD"
+  epics:
+    whole: "{output_folder}/*epic*.md"
+    sharded: "{output_folder}/epics/*.md"
+    load_strategy: "FULL_LOAD"
+
+# Beads integration (additive)
+beads:
+  enabled: true
+  safe_level: "capability"
+  parent_level: "epic"
+  on_start: "bd create 'Capability: {{capability_name}}' --parent {{epic_bead_id}}"
+  on_complete: "bd done {{capability_bead_id}}"
+
+# Variables
+capability_num: "user-input"
+capability_name: "derived-from-epic"
+epic_bead_id: "{config_source}:beads.current_epic_bead"
+
+standalone: true

@@ -1,0 +1,59 @@
+# Inspect and Adapt - PI-End Reflection Event
+name: inspect-adapt
+description: "PI-end Inspect and Adapt event - System Demo, quantitative measurement, and problem-solving workshop"
+author: "BMad Method - SAFe"
+
+# Critical variables from config
+config_source: "{project-root}/_bmad-safe/bmm-safe/config.yaml"
+user_name: "{config_source}:user_name"
+communication_language: "{config_source}:communication_language"
+user_skill_level: "{config_source}:user_skill_level"
+document_output_language: "{config_source}:document_output_language"
+date: system-generated
+implementation_artifacts: "{config_source}:implementation_artifacts"
+output_folder: "{implementation_artifacts}"
+
+# Workflow components
+installed_path: "{project-root}/_bmad-safe/bmm-safe/workflows/4-implementation/inspect-adapt"
+instructions: "{installed_path}/instructions.md"
+template_flow_metrics: "{project-root}/_bmad-safe/bmm-safe/templates/safe/flow-metrics.md"
+
+# Variables and inputs
+variables:
+  project_context: "**/project-context.md"
+  project_name: "{config_source}:project_name"
+  
+  # I&A inputs
+  pi_objectives: "{implementation_artifacts}/*pi-objectives*.md"
+  sprint_status: "{implementation_artifacts}/sprint-status.yaml"
+  retrospective_notes: "{implementation_artifacts}/*retrospective*.md"
+
+# Smart input file references
+input_file_patterns:
+  pi_data:
+    description: "PI objectives and status"
+    whole: "{implementation_artifacts}/*pi-objectives*.md"
+    load_strategy: "FULL_LOAD"
+  stories:
+    description: "All completed stories"
+    whole: "{implementation_artifacts}/*story*.md"
+    load_strategy: "FULL_LOAD"
+
+# Output configuration
+default_output_file: "{implementation_artifacts}/inspect-adapt-report.md"
+
+# Workflow mode
+workflow:
+  type: single-mode
+  mode: Facilitate
+
+standalone: true
+
+# Beads integration (additive)
+beads:
+  enabled: true
+  safe_level: "capability"
+  parent_level: "epic"
+  on_pi_complete: "bd done {{pi_bead_id}}"
+  on_capability_review: "bd note {{capability_bead_id}} 'I&A review completed'"
+  on_improvement: "bd create 'Improvement: {{improvement_name}}'"

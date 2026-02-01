@@ -1,0 +1,53 @@
+# Story Refinement - Break Features into Team-Ready Stories
+name: story-refinement
+description: "Refine Features into team-ready Stories with clear acceptance criteria and INVEST principles"
+author: "BMad Method - SAFe"
+
+# Critical variables from config
+config_source: "{project-root}/_bmad-safe/bmm-safe/config.yaml"
+user_name: "{config_source}:user_name"
+communication_language: "{config_source}:communication_language"
+user_skill_level: "{config_source}:user_skill_level"
+document_output_language: "{config_source}:document_output_language"
+date: system-generated
+implementation_artifacts: "{config_source}:implementation_artifacts"
+planning_artifacts: "{config_source}:planning_artifacts"
+output_folder: "{implementation_artifacts}"
+
+# Workflow components
+installed_path: "{project-root}/_bmad-safe/bmm-safe/workflows/4-implementation/story-refinement"
+instructions: "{installed_path}/instructions.md"
+template_story: "{project-root}/_bmad-safe/bmm-safe/templates/safe/story-template.md"
+checklist_dor: "{project-root}/_bmad-safe/bmm-safe/checklists/definition-of-ready.md"
+task_split: "{project-root}/_bmad-safe/bmm-safe/tasks/split-story.md"
+
+# Variables and inputs
+variables:
+  project_context: "**/project-context.md"
+  project_name: "{config_source}:project_name"
+  
+  # Refinement inputs
+  features: "{planning_artifacts}/*feature*.md"
+  team_backlog: "{implementation_artifacts}/*backlog*.md"
+  pi_objectives: "{implementation_artifacts}/*pi-objectives*.md"
+
+# Smart input file references
+input_file_patterns:
+  features:
+    description: "Features to refine into stories"
+    whole: "{planning_artifacts}/*feature*.md"
+    load_strategy: "FULL_LOAD"
+  backlog:
+    description: "Current team backlog"
+    whole: "{implementation_artifacts}/*backlog*.md"
+    load_strategy: "SCAN_HEADERS"
+
+# Output configuration
+default_output_file: "{implementation_artifacts}/refined-stories.md"
+
+# Workflow mode
+workflow:
+  type: single-mode
+  mode: Create
+
+standalone: true

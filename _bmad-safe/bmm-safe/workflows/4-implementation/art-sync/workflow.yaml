@@ -1,0 +1,54 @@
+# ART Sync - Weekly ART Synchronization Meeting
+name: art-sync
+description: "Weekly ART synchronization meeting to assess progress and address cross-team impediments"
+author: "BMad Method - SAFe"
+
+# Critical variables from config
+config_source: "{project-root}/_bmad-safe/bmm-safe/config.yaml"
+user_name: "{config_source}:user_name"
+communication_language: "{config_source}:communication_language"
+user_skill_level: "{config_source}:user_skill_level"
+document_output_language: "{config_source}:document_output_language"
+date: system-generated
+implementation_artifacts: "{config_source}:implementation_artifacts"
+output_folder: "{implementation_artifacts}"
+
+# Workflow components
+installed_path: "{project-root}/_bmad-safe/bmm-safe/workflows/4-implementation/art-sync"
+instructions: "{installed_path}/instructions.md"
+template_roam: "{project-root}/_bmad-safe/bmm-safe/templates/safe/roam-risk-template.md"
+
+# Variables and inputs
+variables:
+  project_context: "**/project-context.md"
+  project_name: "{config_source}:project_name"
+  
+  # ART Sync inputs
+  pi_objectives: "{implementation_artifacts}/*pi-objectives*.md"
+  feature_status: "{implementation_artifacts}/*feature*.md"
+  sprint_status: "{implementation_artifacts}/sprint-status.yaml"
+
+# Smart input file references
+input_file_patterns:
+  status:
+    description: "Current sprint and feature status"
+    whole: "{implementation_artifacts}/sprint-status.yaml"
+    load_strategy: "FULL_LOAD"
+
+# Output configuration
+default_output_file: "{implementation_artifacts}/art-sync-notes.md"
+
+# Workflow mode
+workflow:
+  type: single-mode
+  mode: Facilitate
+
+standalone: true
+
+# Beads integration (additive)
+beads:
+  enabled: true
+  safe_level: "feature"
+  parent_level: "capability"
+  on_impediment: "bd create 'Impediment: {{impediment_name}}'"
+  on_sync_complete: "bd note {{pi_bead_id}} 'ART Sync completed'"

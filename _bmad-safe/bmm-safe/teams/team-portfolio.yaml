@@ -1,0 +1,11 @@
+# <!-- Powered by BMAD-CORE™ -->
+bundle:
+  name: Portfolio Team
+  icon: 💼
+  description: Lean Portfolio Management team for strategic alignment and funding decisions.
+agents:
+  - business-owner
+  - pm
+  - architect
+  - analyst
+party: "./default-party.csv"

@@ -1,0 +1,38 @@
+{
+  "name": "shipquick",
+  "version": "1.0.0",
+  "description": "BMAD Method with SAFe 6.0.1 + Beads State Management - One command setup for agile development",
+  "main": "lib/installer.js",
+  "bin": {
+    "shipquick": "./bin/shipquick.js"
+  },
+  "scripts": {
+    "test": "echo \"No tests yet\" && exit 0"
+  },
+  "keywords": [
+    "bmad",
+    "safe",
+    "agile",
+    "beads",
+    "scrum",
+    "project-management",
+    "ai-agents"
+  ],
+  "author": "Satvik Jain",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CivilEngineersCanAlsoCode/Shipquick.git"
+  },
+  "bugs": {
+    "url": "https://github.com/CivilEngineersCanAlsoCode/Shipquick/issues"
+  },
+  "homepage": "https://github.com/CivilEngineersCanAlsoCode/Shipquick#readme",
+  "dependencies": {
+    "chalk": "^4.1.2",
+    "fs-extra": "^11.2.0"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}

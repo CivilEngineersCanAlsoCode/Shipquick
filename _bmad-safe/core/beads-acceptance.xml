@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  BEADS ACCEPTANCE GATES - SAFe Dependency Enforcement
+  Ensures acceptance follows SAFe hierarchy via Beads dependencies
+  
+  Golden Rule: Parent cannot complete until ALL children complete
+-->
+<beads-acceptance version="1.0" standalone="true">
+  
+  <objective>Enforce SAFe acceptance gates via Beads dependency checking</objective>
+  
+  <!-- ACCEPTANCE GATE RULES -->
+  <rules>
+    <rule n="1">Task bd done requires: all subtasks complete</rule>
+    <rule n="2">Story bd done requires: all Tasks + Defects complete</rule>
+    <rule n="3">Feature bd done requires: all Stories complete</rule>
+    <rule n="4">Capability bd done requires: all Features complete</rule>
+    <rule n="5">Epic bd done requires: all Capabilities complete</rule>
+    <rule n="6">Theme bd done requires: all Epics complete</rule>
+  </rules>
+  
+  <!-- TASK ACCEPTANCE -->
+  <acceptance-gate level="task" agent="dev">
+    <step n="1" title="Verify Task Complete">
+      <action>Confirm all code written</action>
+      <action>Confirm all tests passing</action>
+      <action>Run: bd show {task_bead_id}</action>
+    </step>
+    <step n="2" title="Mark Done">
+      <action>Run: bd done {task_bead_id}</action>
+      <action>Update story file task checkbox: [x]</action>
+    </step>
+  </acceptance-gate>
+  
+  <!-- DEFECT ACCEPTANCE -->
+  <acceptance-gate level="defect" agent="qa">
+    <step n="1" title="Verify Defect Fixed">
+      <action>Confirm fix implemented</action>
+      <action>Confirm regression test added</action>
+      <action>Confirm all tests passing</action>
+    </step>
+    <step n="2" title="Mark Done">
+      <action>Run: bd done {defect_bead_id}</action>
+    </step>
+  </acceptance-gate>
+  
+  <!-- STORY ACCEPTANCE -->
+  <acceptance-gate level="story" agent="po">
+    <step n="1" title="Dependency Check">
+      <action>Run: bd show {story_bead_id} --children</action>
+      <check if="any child not done">
+        <action>BLOCK acceptance</action>
+        <action>Report: "Story blocked by: {pending_children}"</action>
+        <action>Return to lowest pending item</action>
+      </check>
+    </step>
+    <step n="2" title="Acceptance Criteria Verification">
+      <action>PO verifies all AC met</action>
+      <action>Confirm demo ready</action>
+    </step>
+    <step n="3" title="Mark Accepted">
+      <action>Run: bd done {story_bead_id}</action>
+      <action>Update sprint-status.yaml story status: accepted</action>
+    </step>
+  </acceptance-gate>
+  
+  <!-- FEATURE ACCEPTANCE -->
+  <acceptance-gate level="feature" agent="pm">
+    <step n="1" title="Dependency Check">
+      <action>Run: bd show {feature_bead_id} --children</action>
+      <check if="any story not accepted">
+        <action>BLOCK acceptance</action>
+        <action>Report: "Feature blocked by stories: {pending_stories}"</action>
+      </check>
+    </step>
+    <step n="2" title="Business Value Verification">
+      <action>PM confirms benefit hypothesis validated</action>
+      <action>System Demo complete</action>
+    </step>
+    <step n="3" title="Mark Accepted">
+      <action>Run: bd done {feature_bead_id}</action>
+      <action>Trigger Capability gate check</action>
+    </step>
+  </acceptance-gate>
+  
+  <!-- CAPABILITY ACCEPTANCE -->
+  <acceptance-gate level="capability" agent="solution-manager">
+    <step n="1" title="Dependency Check">
+      <action>Run: bd show {capability_bead_id} --children</action>
+      <check if="any feature not accepted">
+        <action>BLOCK acceptance</action>
+        <action>Report: "Capability blocked by features: {pending_features}"</action>
+      </check>
+    </step>
+    <step n="2" title="Solution Verification">
+      <action>Solution Manager confirms capability operational</action>
+      <action>All ARTs delivered their features</action>
+    </step>
+    <step n="3" title="Mark Accepted">
+      <action>Run: bd done {capability_bead_id}</action>
+      <action>Trigger Epic gate check</action>
+    </step>
+  </acceptance-gate>
+  
+  <!-- EPIC ACCEPTANCE -->
+  <acceptance-gate level="epic" agent="business-owner">
+    <step n="1" title="Dependency Check">
+      <action>Run: bd show {epic_bead_id} --children</action>
+      <check if="any capability not accepted">
+        <action>BLOCK acceptance</action>
+        <action>Report: "Epic blocked by capabilities: {pending_capabilities}"</action>
+      </check>
+    </step>
+    <step n="2" title="Business Value Verification">
+      <action>Business Owner confirms ROI achieved</action>
+      <action>Lean Business Case validated</action>
+    </step>
+    <step n="3" title="Mark Accepted">
+      <action>Run: bd done {epic_bead_id}</action>
+      <action>Trigger Theme gate check</action>
+    </step>
+  </acceptance-gate>
+  
+  <!-- THEME ACCEPTANCE -->
+  <acceptance-gate level="theme" agent="business-owner">
+    <step n="1" title="Dependency Check">
+      <action>Run: bd show {theme_bead_id} --children</action>
+      <check if="any epic not accepted">
+        <action>BLOCK acceptance</action>
+        <action>Report: "Theme blocked by epics: {pending_epics}"</action>
+      </check>
+    </step>
+    <step n="2" title="Strategic Outcome Verification">
+      <action>Confirm strategic outcome achieved</action>
+      <action>Portfolio leadership review</action>
+    </step>
+    <step n="3" title="Mark Complete">
+      <action>Run: bd done {theme_bead_id}</action>
+      <action>Report: "🎉 Theme '{theme_name}' successfully completed!"</action>
+    </step>
+  </acceptance-gate>
+  
+  <!-- SPILLOVER HANDLING -->
+  <spillover-protocol level="story" trigger="sprint end with incomplete story">
+    <step n="1" title="Analyze">
+      <action>Run: bd show {story_bead_id} --children</action>
+      <action>Identify pending tasks/defects</action>
+    </step>
+    <step n="2" title="Decision">
+      <ask>Spillover options: [S]plit story, [C]arry forward, [D]e-scope</ask>
+    </step>
+    <step n="3" title="Execute Split" if="response=S">
+      <action>Create new story for remaining work</action>
+      <action>bd create "Story: {story_name}-remainder" --parent {feature_bead_id}</action>
+      <action>Move pending tasks to new story</action>
+      <action>bd done original story (for completed portion)</action>
+    </step>
+    <step n="4" title="Execute Carry" if="response=C">
+      <action>Tag story with next_sprint: {sprint_id}</action>
+      <action>Update sprint-status.yaml</action>
+    </step>
+    <step n="5" title="Execute De-scope" if="response=D">
+      <action>Mark story as de-scoped</action>
+      <action>Return to backlog</action>
+    </step>
+  </spillover-protocol>
+  
+  <spillover-protocol level="feature" trigger="PI end with incomplete feature">
+    <step n="1" title="Analyze">
+      <action>Run: bd show {feature_bead_id} --children</action>
+      <action>Identify pending stories</action>
+    </step>
+    <step n="2" title="Decision">
+      <ask>PI Spillover: [S]plit feature, [M]ove to next PI, [D]e-scope</ask>
+    </step>
+    <step n="3" title="Execute">
+      <action>Apply selected option</action>
+      <action>Update PI planning documentation</action>
+    </step>
+  </spillover-protocol>
+  
+</beads-acceptance>

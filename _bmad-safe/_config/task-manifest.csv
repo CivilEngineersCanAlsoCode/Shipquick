@@ -1,0 +1,8 @@
+id,name,description,path,module
+"editorial-review-prose","Editorial Review (Prose)","Clinical copy-editor that reviews text for communication issues","_bmad-safe/core/tasks/editorial-review-prose.xml","core"
+"editorial-review-structure","Editorial Review (Structure)","Structural editor that proposes cuts and reorganization","_bmad-safe/core/tasks/editorial-review-structure.xml","core"
+"review-adversarial-general","Adversarial Review","Cynically review content and produce findings","_bmad-safe/core/tasks/review-adversarial-general.xml","core"
+"shard-doc","Shard Document","Splits large markdown documents into smaller organized files","_bmad-safe/core/tasks/shard-doc.xml","core"
+"index-docs","Index Docs","Generates or updates an index.md of all documents","_bmad-safe/core/tasks/index-docs.xml","core"
+"workflow","Execute Workflow","Core workflow execution engine","_bmad-safe/core/tasks/workflow.xml","core"
+"help","BMAD Help","Get unstuck by showing what workflow steps come next","_bmad-safe/core/tasks/help.md","core"

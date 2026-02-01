@@ -1,0 +1,15 @@
+# <!-- Powered by BMAD-CORE™ -->
+bundle:
+  name: ART Team
+  icon: 🚄
+  description: Complete Agile Release Train team for PI execution and SAFe ceremonies.
+agents:
+  - rte
+  - pm
+  - po
+  - sm
+  - dev
+  - qa
+  - architect
+  - ux-designer
+party: "./default-party.csv"
