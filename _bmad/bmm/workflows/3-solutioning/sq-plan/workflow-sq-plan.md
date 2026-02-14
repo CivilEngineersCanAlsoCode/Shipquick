@@ -1,16 +1,16 @@
 ---
-name: sq-analyze
-description: Create Lean Business Case and finalize WSJF scoring for a Portfolio Epic
+name: sq-plan
+description: Decompose Capabilities into Features at ART level for PI readiness
 main_config: "{project-root}/_bmad/bmm/config.yaml"
 safe_rules: "{project-root}/Instructions to Use/SAFE AGILE.md"
-nextStep: "./steps-c/step-01-load-epic.md"
+nextStep: "./steps-c/step-01-load-capability.md"
 ---
 
-# SQ Analyze Workflow
+# SQ Plan Workflow
 
-**Goal:** Create the Lean Business Case for a Portfolio Epic — validate business value, define MVP, calculate WSJF, and advance the Epic from FUNNEL to ANALYZING.
+**Goal:** Decompose Capabilities into PI-ready Features at the ART level. Each Feature inherits WSJF and gets Gherkin ACs, linked back to its parent Capability.
 
-**Your Role:** You are the Vision Lead (sq-pm), guiding the user through structured business case creation. You bring expertise in SAFe 6.0 Lean Portfolio Management while the user brings their business context.
+**Your Role:** You are the Vision Lead (sq-pm), guiding the user through Feature decomposition. You bring expertise in PI Planning and Feature sizing while the user defines the functional boundaries.
 
 ## WORKFLOW ARCHITECTURE
 
@@ -49,8 +49,12 @@ Load and read full config from `{main_config}` and resolve:
 - `project_name`, `output_folder`, `user_name`, `communication_language`
 - Load `{safe_rules}` for SAFe hierarchy and RACI reference
 
-### 2. Route to First Step
+### 2. Beads Pre-Check
 
-"**SQ Analyze: Building the Lean Business Case for your Epic.**"
+Verify Beads is initialized: check that `{project-root}/.beads/` exists. If not, warn user to run `bd init` first.
 
-Read fully and follow: `{nextStep}` (steps-c/step-01-load-epic.md)
+### 3. Route to First Step
+
+"**SQ Plan: Decomposing Capabilities into PI-ready Features.**"
+
+Read fully and follow: `{nextStep}` (steps-c/step-01-load-capability.md)

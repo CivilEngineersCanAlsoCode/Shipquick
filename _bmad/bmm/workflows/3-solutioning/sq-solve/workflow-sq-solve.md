@@ -49,7 +49,11 @@ Load and read full config from `{main_config}` and resolve:
 - `project_name`, `output_folder`, `user_name`, `communication_language`
 - Load `{safe_rules}` for SAFe hierarchy and RACI reference
 
-### 2. Route to First Step
+### 2. Beads Pre-Check
+
+Verify Beads is initialized: check that `{project-root}/.beads/` exists. If not, warn user to run `bd init` first.
+
+### 3. Route to First Step
 
 "**SQ Solve: Decomposing your Epic into Capabilities.**"
 

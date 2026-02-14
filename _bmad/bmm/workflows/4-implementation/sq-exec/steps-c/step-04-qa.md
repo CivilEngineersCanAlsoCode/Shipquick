@@ -26,8 +26,9 @@ Feature: {story_title}
 
 ### 2. Beads Registration
 
-- `bd create` each Story, Task, and QA Case
-- `bd link` parent-child relationships
+- Run: `bd create "Story: {story_name}" --type task --parent <FEATURE_ID>`
+- Run: `bd create "Task: {task_name}" --type task --parent <STORY_ID>`
+- Run: `bd create "QA: {qa_name}" --type task --parent <STORY_ID>`
 - Propagate Feature context to all children
 
 ### 3. Final Summary

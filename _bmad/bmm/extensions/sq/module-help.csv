@@ -1,8 +1,0 @@
-module,phase,name,code,sequence,workflow-file,command,required,agent,options,description,output-location,outputs,
-sq,anytime,Initialize Theme,SI,,_bmad/bmm/extensions/sq/workflows/sq-init/workflow-sq-init.md,bmad-sq-init,false,sq-pm,Create Mode,Define root Strategic Theme and Portfolio Epic,sq_output_folder,theme and epic,
-sq,anytime,Analyze Epic,SA,,_bmad/bmm/extensions/sq/workflows/sq-analyze/workflow-sq-analyze.md,bmad-sq-analyze,false,sq-pm,Create Mode,Create Lean Business Case and calculate WSJF,sq_output_folder,business case,
-sq,anytime,Decompose to Capabilities,SS,,_bmad/bmm/extensions/sq/workflows/sq-solve/workflow-sq-solve.md,bmad-sq-solve,false,sq-pm,Create Mode,Break Epic into Capabilities (Solution Train),sq_output_folder,capabilities,
-sq,anytime,Decompose to Features,SP,,_bmad/bmm/extensions/sq/workflows/sq-plan/workflow-sq-plan.md,bmad-sq-plan,false,sq-pm,Create Mode,Break Capabilities into Features (ART level),sq_output_folder,features,
-sq,anytime,Execute Breakdown,SE,,_bmad/bmm/extensions/sq/workflows/sq-exec/workflow-sq-exec.md,bmad-sq-exec,false,sq-team,Create Mode,Break Features into Stories Tasks and QA Cases,sq_output_folder,stories tasks qa,
-sq,anytime,Compliance Audit,AU,,_bmad/bmm/extensions/sq/workflows/sq-audit/workflow-sq-audit.md,bmad-sq-audit,false,sq-rte,Create Mode,Validate link integrity Gherkin ACs and WSJF propagation,sq_output_folder,audit report,
-sq,anytime,Export CSV,EX,,_bmad/bmm/extensions/sq/workflows/sq-export/workflow-sq-export.md,bmad-sq-export,false,sq-rte,Create Mode,Generate Jira or Rally compatible CSV files,sq_output_folder,csv files,

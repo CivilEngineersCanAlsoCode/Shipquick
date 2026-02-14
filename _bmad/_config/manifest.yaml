@@ -45,14 +45,6 @@ modules:
     source: external
     npmPackage: bmad-method-test-architecture-enterprise
     repoUrl: https://github.com/bmad-code-org/bmad-method-test-architecture-enterprise
-  - name: sq
-    version: 1.0.0
-    installDate: 2026-02-14T22:24:24.000Z
-    lastUpdated: 2026-02-14T22:24:24.000Z
-    source: extension
-    extends: bmm
-    npmPackage: null
-    repoUrl: null
 ides:
   - claude-code
   - codex

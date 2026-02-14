@@ -14,10 +14,11 @@ Register all Capabilities in Beads with parent-child links and propagate WSJF/Ri
 
 ### 1. Beads Registration
 
-For each Capability:
+Execute the following Beads operations:
 
-- `bd create` with type=capability
-- `bd link` parent=Epic, child=Capability
+- **Copy the ID** of the parent Portfolio Epic (e.g., `...-grp`).
+- Run: `bd create "Capability: {capability_name}" --type epic --parent <EPIC_ID>`
+
 - Inherit WSJF and Risk labels from parent
 
 ### 2. Update Epic Children

@@ -13,7 +13,9 @@ Register all Features in Beads with parent-child links, propagate WSJF, and show
 
 ### 1. Beads Registration
 
-For each Feature: `bd create` + `bd link` parent=Capability.
+For each Feature:
+
+- Run: `bd create "Feature: {feature_name}" --type feature --parent <CAPABILITY_ID>`
 
 ### 2. Update Capability Children
 

@@ -20,9 +20,9 @@ Register the Strategic Theme and Portfolio Epic in the Beads persistent memory s
 
 Execute the following Beads operations:
 
-- `bd create` for the Strategic Theme with type=strategic-theme
-- `bd create` for the Portfolio Epic with type=portfolio-epic, parentId=THEME-001
-- `bd link` to establish parent-child relationship
+- Run: `bd create "Strategic Theme: {theme_name}" --type epic`
+- **Copy the ID** from the output (e.g., `Safe Agile Agentic Framework-qtc`).
+- Run: `bd create "Portfolio Epic: {epic_name}" --type epic --parent <THEME_ID>`
 
 ### 2. Verify Links
 
