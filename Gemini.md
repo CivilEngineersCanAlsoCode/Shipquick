@@ -155,11 +155,11 @@
 - **Correction**: Initialized a new `Gemini.md` with the required protocol and rules.
 - **Prevention Action**: If a mandatory file is missing after a thorough search (`find`), proactively initialize it with the correct template and notify the user.
 
-### [Documentation]: Non-Technical Example Diversity
+### [Documentation]: Romanised Hindi Pivot
 
-- **Root Cause**: Initially provided generic technical examples, which may not resonate with non-technical users.
-- **Correction**: Expanded examples to include construction, restaurant, and wedding planning analogies.
-- **Prevention Action**: When writing for non-technical audiences, use at least 2-3 diversified analogies from different fields for every complex concept.
+- **Root Cause**: Users often grasp complex agentic patterns better in their native phonetic language (Romanised Hindi) than in formal technical English.
+- **Correction**: Refactored the entire project guide into Romanised Hindi, ensuring technical accuracy while using accessible vocabulary.
+- **Prevention Action**: When specifically requested, prioritize Romanised Hindi for high-level frameworks (BMAD/Agentic) to ensure zero-gap understanding between the user and the agent.
 
 ### [Infrastructure]: Terminal Warning Proactivity
 
