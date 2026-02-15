@@ -1,228 +1,91 @@
-# 🚀 Shipquick
+# 🚀 Shipquick Enterprise (BMad + SAFe 6.0)
 
-**AI-Powered Agile Development Framework**
+**The AI-Powered Scaled Agile Framework for Agentic Development**
 
-One command to set up a complete AI agent team for your software projects.
-
-```bash
-npx shipquick install
-```
+Shipquick is an enterprise-grade framework that combines the **BMad Method** (Agent-driven development) with **SAFe 6.0** (Scaled Agile Framework) and **Beads** (Local State Management).
 
 ---
 
 ## What is Shipquick?
 
-Shipquick is an **AI-powered development framework** that gives you a team of 18 specialized AI agents to help you build software - from initial idea to production code.
-
-Think of it as having a **complete software team** (Product Manager, Architects, Developers, QA, Scrum Master, etc.) available in your IDE, all coordinated through proven agile methodologies.
+Shipquick gives you a team of **18 specialized AI agents** to help you build software - from initial idea to production code. It provides structured, automated workflows (35+) designed to scale agile development in your IDE.
 
 ### Key Features
 
-- 🤖 **18 AI Agents** - Each with specialized expertise (PM, Dev, QA, UX, etc.)
+- 🤖 **18 AI Agents** - Each with specialized expertise (PM, Architect, Dev, QA, etc.)
 - 📋 **35 Workflows** - Structured processes from ideation to deployment
 - 🔄 **SAFe 6.0.1 Aligned** - Enterprise-grade agile methodology
 - 🔗 **Beads State Tracking** - Never lose work context between sessions
-- 📁 **Works in Any Project** - Just run `npx shipquick install`
+- 📁 **IDE Integration** - Optimized for Cursor, VS Code, and Windsurf
 
 ---
 
 ## Quick Start
 
-### 1. Install
+### For New Users (Install Framework)
+
+Run the installer to set up a new project with Shipquick agents and workflows:
 
 ```bash
-# Navigate to your project folder
-cd my-project
-
-# Run the installer
-npx shipquick install
+npx shipquick@latest install
 ```
 
 This will:
 
-- ✅ Copy the `_bmad-safe/` folder to your project
+- ✅ Copy the `_bmad/` folder to your project
 - ✅ Install Beads CLI for task tracking
 - ✅ Initialize Beads state
+- ✅ Configure IDE integration
 
-### 2. Start an Agent
+### For Contributors (Modify Installer)
 
-In **Cursor IDE** chat, type any agent command:
+The installer source code is located in `_npm-package/`. To build and test locally:
 
-```
-/analyst    → Start business analysis
-/pm         → Start product management
-/dev        → Start development
-```
-
-### 3. Follow the Workflow
-
-Each agent will guide you through their specialized workflow with menus and prompts.
-
----
-
-## The AI Team
-
-| Agent          | Name    | What They Do                         |
-| -------------- | ------- | ------------------------------------ |
-| `/analyst`     | Mary    | Business analysis, market research   |
-| `/pm`          | John    | Product requirements, prioritization |
-| `/architect`   | Winston | System architecture, tech decisions  |
-| `/dev`         | Amelia  | Code implementation                  |
-| `/qa`          | Quinn   | Testing, quality assurance           |
-| `/sm`          | Bob     | Sprint management, story tracking    |
-| `/po`          | Oliver  | Backlog management, story refinement |
-| `/rte`         | Derek   | PI Planning, ART coordination        |
-| `/ux-designer` | Sally   | UX design, wireframes                |
-
-[See all 18 agents →](#all-agents)
-
----
-
-## Typical Project Flow
-
-```
-1. /analyst          → Brainstorm & research your idea
-2. /pm               → Create PRD (Product Requirements)
-3. /architect        → Design system architecture
-4. /pm               → Create epics and stories
-5. /sm               → Sprint planning
-6. /dev              → Implement stories
-7. /qa               → Test automation
-8. /sm               → Retrospective
+```bash
+cd _npm-package
+npm install
+npm run bundle
+npm link
+shipquick install
 ```
 
 ---
 
-## Beads: Task State Management
+## 🤖 The AI Team
 
-Shipquick includes **Beads** - a hierarchical task tracker that remembers your work across sessions.
+| Agent        | Role                   | Context                       |
+| ------------ | ---------------------- | ----------------------------- |
+| `/analyst`   | Business Analysis      | Market research & Ideation    |
+| `/pm`        | Product Management     | Requirements & Prioritization |
+| `/architect` | System Architecture    | Tech decisions & Design       |
+| `/dev`       | Development            | Code implementation           |
+| `/qa`        | Quality Assurance      | Testing & Automation          |
+| `/sm`        | Scrum Master           | Sprint management & tracking  |
+| `/rte`       | Release Train Engineer | PI Planning & Coordination    |
+
+---
+
+## 🔄 Repository Structure
+
+- **`_bmad/`**: Core framework definitions (Agents, Tasks).
+- **`.agent/`**: Workflow definitions (Phases 1-6).
+- **`_npm-package/`**: Source code for the CLI installer.
+- **`.beads/`**: Local state database (for Contributors).
+- **`_bmad-output/`**: Generated artifacts and reports.
+- **`agents.md`**: Agent manifesto and rules.
+
+---
+
+## 🔗 State Management (Beads)
+
+Shipquick uses [Beads](https://github.com/steveyegge/beads) for local state management. This ensures that agents remember previous task context, WSJF scores, and design decisions across different sessions.
 
 ```bash
 bd list       # See task hierarchy
-bd ready      # What's next?
-bd done T-001 # Mark task complete
-```
-
-When you start an agent, it automatically checks for pending work:
-
-```
-"Found pending tasks. [R]esume / [N]ew?"
+bd stats      # Database health check
+bd ready      # View next actionable items
 ```
 
 ---
 
-## All Agents
-
-### Core Team
-
-| Command        | Role             |
-| -------------- | ---------------- |
-| `/analyst`     | Business Analyst |
-| `/pm`          | Product Manager  |
-| `/architect`   | System Architect |
-| `/dev`         | Developer        |
-| `/qa`          | QA Engineer      |
-| `/sm`          | Scrum Master     |
-| `/ux-designer` | UX Designer      |
-| `/tech-writer` | Technical Writer |
-
-### SAFe Roles
-
-| Command               | Role                    |
-| --------------------- | ----------------------- |
-| `/po`                 | Product Owner           |
-| `/rte`                | Release Train Engineer  |
-| `/ste`                | Solution Train Engineer |
-| `/solution-manager`   | Solution Manager        |
-| `/solution-architect` | Solution Architect      |
-| `/system-architect`   | System Architect        |
-| `/business-owner`     | Business Owner          |
-| `/ux-researcher`      | UX Researcher           |
-
-### Quick Development
-
-| Command                | Role                  |
-| ---------------------- | --------------------- |
-| `/quick-flow-solo-dev` | Fast solo development |
-| `/bmad-master`         | System orchestrator   |
-
----
-
-## All Workflows
-
-### Analysis Phase
-
-- `/brainstorm-project` - Ideation
-- `/market-research` - Market analysis
-- `/create-brief` - Product brief
-
-### Planning Phase
-
-- `/create-prd` - Product requirements ⭐
-- `/create-ux` - UX design
-- `/validate-prd` - PRD validation
-
-### Solutioning Phase
-
-- `/create-architecture` - Architecture ⭐
-- `/create-epics-and-stories` - Epics & Stories ⭐
-- `/create-capability` - SAFe Capabilities
-- `/check-implementation-readiness` - Readiness check ⭐
-
-### Implementation Phase
-
-- `/pi-planning` - PI Planning ⭐
-- `/sprint-planning` - Sprint setup ⭐
-- `/create-story` - Story creation ⭐
-- `/dev-story` - Implementation ⭐
-- `/code-review` - Code review
-- `/retrospective` - Retrospective
-- `/art-sync` - ART Sync
-- `/inspect-adapt` - I&A event
-
-### Anytime
-
-- `/quick-spec` - Quick tech spec
-- `/quick-dev` - Quick development
-- `/document-project` - Documentation
-- `/correct-course` - Course correction
-
-⭐ = Key milestones in the workflow
-
----
-
-## Configuration
-
-Edit `_bmad-safe/bmm-safe/config.yaml`:
-
-```yaml
-user_name: "Your Name"
-communication_language: "English" # or "Romanised Hindi"
-output_folder: "{project-root}/_bmad-output"
-```
-
----
-
-## Requirements
-
-- **Node.js** 14+ (for Beads CLI)
-- **Cursor IDE** (recommended) or any AI-enabled IDE
-- **npm** access
-
----
-
-## Links
-
-- **NPM Package**: [npmjs.com/package/shipquick](https://www.npmjs.com/package/shipquick)
-- **GitHub**: [github.com/CivilEngineersCanAlsoCode/Shipquick](https://github.com/CivilEngineersCanAlsoCode/Shipquick)
-- **Beads**: [github.com/steveyegge/beads](https://github.com/steveyegge/beads)
-
----
-
-## License
-
-MIT
-
----
-
-**Made with ❤️ by Satvik Jain**
+**Made with ❤️ by CivilEngineersCanAlsoCode**
