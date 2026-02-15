@@ -166,3 +166,96 @@
 - **Root Cause**: Ignored initial setup warnings from `bd init`, leading to a "Setup Incomplete" state that required manual intervention.
 - **Correction**: Used `bd doctor --fix` to resolve automated issues and documented manual fix procedures (e.g., `git pull --rebase`).
 - **Prevention Action**: Always treat terminal warnings/errors in setup commands as high-priority; use built-in diagnostic tools (`doctor`, `lint`, `check`) immediately before proceeding with feature development.
+
+### [Architecture]: Beads Type Hierarchy Conflict
+
+- **Root Cause**: Beads enforces a strict `Epic > Task` hierarchy. We mapped Strategic Theme to `type=task` and Portfolio Epic to `type=epic`, which caused dependency errors because a Task cannot be a parent of an Epic.
+- **Correction**: Remapped all high-level SAFe items (Strategic Theme, Portfolio Epic, Capability) to `type=epic` in Beads commands to allow arbitrary nesting depth.
+- **Prevention Action**: When mapping external hierarchies (SAFe) to tool types (Beads), verify intrinsic constraints of the tool types first. Use consistent "container" types (like Epic) for all parent levels.
+
+### [Architecture]: Wrong Beads Directory Assumption
+
+- **Root Cause**: Assumed Beads uses `_memory/` directory for persistence. Actually, Beads uses `.beads/` with a SQLite database (`beads.db`). Created a fake `_memory/` directory with YAML files that Beads would never read.
+- **Correction**: Removed `_memory/` directory. Used actual `bd create` CLI command which writes to `.beads/beads.db`.
+- **Prevention Action**: ALWAYS read `BEADS_GUIDE.md` before making assumptions about Beads internals. Beads uses `.beads/` directory, SQLite DB, and `bd` CLI commands — NOT flat YAML files.
+
+### [Infrastructure]: zsh Echo Escape Character Handling
+
+- **Root Cause**: Used `echo "...\n..."` in zsh which interpreted `\n` as an unknown file attribute instead of a newline.
+- **Correction**: Used heredoc (`cat << 'EOF'`) or single-quoted `echo` with `$'...\n...'` syntax for multi-line output.
+- **Prevention Action**: In zsh, never use `echo "text\ntext"` for multi-line output. Use heredoc, `printf`, or `$'...'` quoting.
+
+### [Workflow]: Missing bd init Pre-check in SQ Workflows
+
+- **Root Cause**: SQ workflow entry points (`workflow-sq-init.md`) assume Beads is already initialized (`bd init` run) but don't verify this. If `.beads/` doesn't exist, `bd create` in step-04-register.md would fail silently.
+- **Correction**: Need to add a Beads health check to the initialization sequence of `workflow-sq-init.md`.
+- **Prevention Action**: Any workflow that uses `bd` commands must verify `.beads/` exists or run `bd init` as part of its initialization sequence.
+
+### [Workflow]: Phantom `bd link` Command
+
+- **Root Cause**: Workflow instructions referenced `bd link` to establish parent-child relationships, assuming it existed. In reality, Beads uses `bd create --parent <id>` or `bd update --parent <id>`.
+- **Correction**: Updated `step-04-register.md` to instruct users to create the parent first, copy the ID, and then create the child with `--parent <ID>`.
+- **Prevention Action**: Verify CLI commands in the actual tool (`--help`) before writing them into workflow instructions.
+
+---
+
+### Mistake #6: Beads Process Hang
+
+- **Mistake**: Long-running `bd create` command chain hung for >20 mins. Likely due to depth limit error leaving a lock file or process deadlock.
+- **Correction**: User to manually kill process.
+- **Rescue Plan**:
+  1. Kill hung processes: `pkill -f bd`
+  2. Remove locks: `rm .beads/*.lock`
+  3. Verify state: `bd list --type task`
+  4. Manually create Story 2 if missing: `bd create "Story: On This Day Matcher" --type task --priority 2` (then link to Feature)
+
+### Mistake #7: Beads Hierarchy Depth Limit
+
+- **Mistake**: Attempted to use `bd create --parent` for Tasks at depth 4 (Story children). Beads errored with "maximum hierarchy depth (3) exceeded".
+- **Correction**: Used `bd create` (standalone) followed by `bd link` (dep add) for items below depth 3.
+- **Prevention**: In deep hierarchies (Story -> Task), avoid strict ID nesting; use loose linking.
+
+### Dry Run: Letter App (SQ Module Integration)
+
+_Tracking SAFe 6.0 compliance and SQ module performance during "Letter" app development._
+
+### Phase 1: sq-init (COMPLETE)
+
+- ✅ **THEME-001 created**: `theme-THEME-001.md` saved to `sq-artifacts/`
+- ✅ **EPIC-001 created**: `epic-EPIC-001.md` saved to `sq-artifacts/` (WSJF: 6.88)
+- ✅ **Beads registration**: Theme (`...-qtc`) and Epic (`...-grp`) created and linked
+- 🐛 **3 mistakes found and documented** (wrong directory, zsh echo, missing pre-check)
+
+### Phase 2: sq-analyze (COMPLETE)
+
+- ✅ **Lean Business Case**: Problem, Hypothesis, Indicators, NFRs added to `epic-EPIC-001.md`
+- ✅ **MVP**: Defined as "Slow Mode" (~1 PI duration)
+- ✅ **Beads Update**: Status → `ANALYZING` (Label: `kanban:analyzing`)
+
+### Phase 3: sq-solve (COMPLETE)
+
+- ✅ **Capabilities Created**: `CAP-001` (Engine), `CAP-002` (Vault), `CAP-003` (Identity)
+- ✅ **Beads Registration**: All 3 linked to EPIC-001 (Type=Epic, Parent-Child)
+- ✅ **Validation**: No orphans, Gherkin ACs present.
+
+### Phase 4: sq-plan (COMPLETE)
+
+- ✅ **Features Created**: `FEAT-001` (Algorithm), `FEAT-002` (Scheduler) for CAP-001
+- ✅ **Beads Registration**: Linked to CAP-001 (Type=Feature, Parent-Child)
+- ✅ **Readiness**: Verified Gherkin ACs and Benefit Hypothesis.
+
+### Phase 5: sq-exec (BLOCKED / PARTIAL)
+
+- ✅ **Stories**: `STORY-001` created. `STORY-002` likely missing.
+- ❌ **Hang**: Process hung during Story 2 creation.
+- **Action Required**: Execute Rescue Plan (see Mistake #6) to finish Story 2 creation and linking.
+
+### Phase 6: sq-audit (AWAITING START)
+
+- **Action**: Run `/sq-audit` to verify hierarchy integrity and look for orphans.
+
+### [Tooling]: Artifact Path Mismatch
+
+- **Root Cause**: Attempted to use `IsArtifact: true` in `write_to_file` for a path outside the designated artifact directory (`/Users/satvikjain/.gemini/antigravity/brain/012842aa-1852-497a-ba7b-b533bd2cbf23`).
+- **Correction**: Set `IsArtifact: false` for project-internal documents (sq-artifacts) to ensure they are written correctly to the workspace.
+- **Prevention Action**: Only set `IsArtifact: true` for planning/walkthrough files in the brain folder. Project-specific artifacts like SAFe Themes/Epics should be standard files.
