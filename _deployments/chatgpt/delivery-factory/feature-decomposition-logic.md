@@ -1,49 +1,19 @@
-# User Story Master Template (Gherkin Enforced)
+# Feature Decomposition Logic: Mapping ART to Teams
+
+### 🧠 Deep Research Prompt Required
+
+This guide defines the bridge between Features and Stories for the Delivery Factory.
+
+**Prompt**:
+
+> "Provide an expert-level guide on 'Feature Decomposition' in SAFe 6.0. Detail:
+>
+> 1. The structural relationship between ART-level Features and Team-level User Stories.
+> 2. Techniques for decomposing a large Feature into 3-5 high-value Stories.
+> 3. The 'INVEST' criteria for User Stories.
+> 4. How to ensure technical dependencies are mapped across the decomposed stories.
+> 5. Examples of a vertical slice vs. a horizontal slice decomposition."
 
 ---
 
-**ID**: [US-XXXX]
-**Status**: DRAFT
-**Feature Parent**: [Feature-ID]
-**Portfolio Epic**: [Epic-ID]
-
----
-
-## 1. User Voice
-
-**As a** [Persona Name]
-**I want** [Specific Action/Ability]
-**So that** [Business Value/Benefit]
-
-## 2. Description & Context
-
-[Provide a deep-dive into the requirement. Explain WHY this is needed and what the technical background is.]
-
-## 3. Acceptance Criteria (Gherkin)
-
-```gherkin
-Scenario: [Happy Path Scenario Name]
-  Given [Initial Context]
-  And [Additional Context]
-  When [Action Performed]
-  Then [Expected Result]
-
-Scenario: [Edge Case Scenario Name]
-  Given [Context with Boundary Condition]
-  When [Action Performed]
-  Then [Expected Failure or Specific Handling]
-```
-
-## 4. Technical Implementation Notes
-
-- **API Endpoints**: [List affected endpoints]
-- **Data Model**: [List database fields/changes]
-- **UX Tokens**: [Colors, Typography, Layout Constants]
-- **Logic Constraints**: [Algorithms, Validations]
-
-## 5. Metadata for Rally/Jira
-
-- **Estimate (Points)**: [1, 2, 3, 5, 8]
-- **Priority**: [Critical, High, Medium, Low]
-- **Blocked By**: [Link IDs]
-- **Ready for Dev**: [YES/NO]
+[PASTE RESEARCH RESULTS HERE]
