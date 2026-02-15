@@ -1,0 +1,43 @@
+# Shipquick Installer Messages
+# These messages are displayed during installation
+
+# Display at the START of installation
+startMessage: |
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  
+  🚀 SHIPQUICK: Enterprise Agentic Framework
+  
+  Scale your development with AI, SAFe, and Distributed Memory.
+  
+  🔹 PRINCIPLES:
+    - **Agentic AI**: Autonomous coding & testing agents.
+    - **SAFe 6.0**: Scalable hierarchy (Portfolio → Team).
+    - **Beads Memory**: Distributed context management.
+  
+  Let's configure your environment.
+  
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+# Display at the END of installation
+endMessage: |
+  ════════════════════════════════════════════════════════════════════════════════
+  
+  🎓 INSTALLATION COMPLETE!
+  
+  Here is your "Day 1" Training:
+  
+  1️⃣  **OPEN IDE**
+      Open this folder in Cursor, Windsurf, or Claude Code.
+  
+  2️⃣  **ACTIVATE**
+      Run:  /000 Activate Shipquick
+      (This indexes the project and wakes up your agents)
+  
+  3️⃣  **BUILD**
+      Use 'bd create' to track work or speak to the PM agent.
+      "I need a login system." -> Agents will execute.
+  
+  💡  Agents are defined in 'agents.md'.
+  ⭐  Docs: https://github.com/CivilEngineersCanAlsoCode/Shipquick
+  
+  ════════════════════════════════════════════════════════════════════════════════
