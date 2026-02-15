@@ -1,6 +1,6 @@
 ---
-name: 'dev-story'
-description: 'Execute a story by implementing tasks/subtasks, writing tests, validating, and updating the story file per acceptance criteria'
+name: "020 Dev Story"
+description: "Execute a story by implementing tasks/subtasks, writing tests, validating, and updating the story file per acceptance criteria"
 disable-model-invocation: true
 ---
 

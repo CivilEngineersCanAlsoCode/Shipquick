@@ -1,6 +1,6 @@
 ---
-name: 'testarch-framework'
-description: 'Initialize production-ready test framework architecture (Playwright or Cypress) with fixtures, helpers, and configuration'
+name: "064 TestArch: Framework"
+description: "Initialize production-ready test framework architecture (Playwright or Cypress) with fixtures, helpers, and configuration"
 disable-model-invocation: true
 ---
 

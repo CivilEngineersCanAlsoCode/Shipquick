@@ -1,5 +1,5 @@
 ---
-name: "sq-team"
+name: "104 sq-team"
 description: "sq-team agent"
 disable-model-invocation: true
 ---

@@ -1,6 +1,6 @@
 ---
-name: 'correct-course'
-description: 'Navigate significant changes during sprint execution by analyzing impact, proposing solutions, and routing for implementation'
+name: "027 correct-course"
+description: "Navigate significant changes during sprint execution by analyzing impact, proposing solutions, and routing for implementation"
 disable-model-invocation: true
 ---
 

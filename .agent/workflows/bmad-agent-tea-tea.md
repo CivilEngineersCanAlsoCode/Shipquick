@@ -1,6 +1,6 @@
 ---
-name: 'tea'
-description: 'tea agent'
+name: "105 tea"
+description: "tea agent"
 disable-model-invocation: true
 ---
 

@@ -1,6 +1,6 @@
 ---
-name: 'document-project'
-description: 'Analyzes and documents brownfield projects by scanning codebase, architecture, and patterns to create comprehensive reference documentation for AI-assisted development'
+name: "100 Document Project"
+description: "Analyzes and documents brownfield projects by scanning codebase, architecture, and patterns to create comprehensive reference documentation for AI-assisted development"
 disable-model-invocation: true
 ---
 

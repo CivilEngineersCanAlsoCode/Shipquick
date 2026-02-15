@@ -1,6 +1,6 @@
 ---
-name: 'testarch-trace'
-description: 'Generate requirements-to-tests traceability matrix, analyze coverage, and make quality gate decision (PASS/CONCERNS/FAIL/WAIVED)'
+name: "068 TestArch: Trace"
+description: "Generate requirements-to-tests traceability matrix, analyze coverage, and make quality gate decision (PASS/CONCERNS/FAIL/WAIVED)"
 disable-model-invocation: true
 ---
 

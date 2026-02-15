@@ -1,6 +1,6 @@
 ---
-name: 'quick-flow-solo-dev'
-description: 'quick-flow-solo-dev agent'
+name: "088 quick-flow-solo-dev"
+description: "quick-flow-solo-dev agent"
 disable-model-invocation: true
 ---
 

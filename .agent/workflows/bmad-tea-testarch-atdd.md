@@ -1,6 +1,6 @@
 ---
-name: 'testarch-atdd'
-description: 'Generate failing acceptance tests before implementation using TDD red-green-refactor cycle'
+name: "061 TestArch: ATDD"
+description: "Generate failing acceptance tests before implementation using TDD red-green-refactor cycle"
 disable-model-invocation: true
 ---
 

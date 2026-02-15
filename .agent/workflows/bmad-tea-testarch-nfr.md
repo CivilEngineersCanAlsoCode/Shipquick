@@ -1,6 +1,6 @@
 ---
-name: 'testarch-nfr'
-description: 'Assess non-functional requirements (performance, security, reliability, maintainability) before release with evidence-based validation'
+name: "065 TestArch: NFR"
+description: "Assess non-functional requirements (performance, security, reliability, maintainability) before release with evidence-based validation"
 disable-model-invocation: true
 ---
 

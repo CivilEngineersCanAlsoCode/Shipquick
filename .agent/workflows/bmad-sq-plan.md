@@ -1,5 +1,5 @@
 ---
-name: "sq-plan"
+name: "015 SQ: Decompose → Features"
 description: "Decompose Capabilities into Features at ART level for PI readiness"
 disable-model-invocation: true
 ---

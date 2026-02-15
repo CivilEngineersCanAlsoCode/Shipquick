@@ -50,13 +50,9 @@ graph TD
       - 1.1.1.9 [index-docs.md](./.agent/workflows/index-docs.md)
   - **1.2 [.augment/](./.augment/)**
   - **1.3 [.beads/](./.beads/)**
-    - 1.3.1 [beads.db](./.beads/beads.db)
-    - 1.3.2 [.jsonl.lock](./.beads/.jsonl.lock)
-    - 1.3.3 [beads.left.jsonl](./.beads/beads.left.jsonl)
-    - 1.3.4 [issues.jsonl](./.beads/issues.jsonl)
-    - 1.3.5 [metadata.json](./.beads/metadata.json)
-    - 1.3.6 [config.yaml](./.beads/config.yaml)
-    - 1.3.7 [interactions.jsonl](./.beads/interactions.jsonl)
+    - 1.3.1 [config.yaml](./.beads/config.yaml)
+    - 1.3.2 [metadata.json](./.beads/metadata.json)
+    - 1.3.3 [README.md](./.beads/README.md)
   - **1.4 [.kiro/](./.kiro/)**
     - **1.4.1 [steering/](./.kiro/steering/)**
       - 1.4.1.1 [bmad-agent-bmm-pm.md](./.kiro/steering/bmad-agent-bmm-pm.md)
@@ -119,14 +115,11 @@ graph TD
         - 1.5.8.1.4 [shard-doc.xml](./_bmad/core/tasks/shard-doc.xml)
   - **1.6 [Instructions to Use/](./Instructions%20to%20Use/)**
     - 1.6.1 [BEADS_GUIDE.md](./Instructions%20to%20Use/BEADS_GUIDE.md)
-  - **1.7 [docs/](./docs/)**
-  - **1.8 [testsprite_tests/](./testsprite_tests/)**
-    - 1.8.1 **[tmp/](./testsprite_tests/tmp/)**
-  - 1.9 [AGENTS.md](./AGENTS.md)
-  - 1.10 [Gemini.md](./Gemini.md)
-  - 1.11 [.kilocodemodes](./.kilocodemodes)
-  - 1.12 [.gitattributes](./.gitattributes)
-  - 1.13 [index.md](./index.md)
+  - 1.7 [AGENTS.md](./AGENTS.md)
+  - 1.8 [Gemini.md](./Gemini.md)
+  - 1.9 [.kilocodemodes](./.kilocodemodes)
+  - 1.10 [.gitattributes](./.gitattributes)
+  - 1.11 [index.md](./index.md)
 
 ---
 
@@ -147,14 +140,10 @@ graph TD
 | 1.1.1.8   | [dev-story.md](./.agent/workflows/dev-story.md)                                           | Execution workflow for developer agents to implement stories.         |
 | 1.1.1.9   | [index-docs.md](./.agent/workflows/index-docs.md)                                         | Workflow for maintaining and updating the project index.              |
 | 1.2       | **[.augment/](./.augment/)**                                                              | Extension directory for augmenting agent capabilities.                |
-| 1.3       | **[.beads/](./.beads/)**                                                                  | Local database storage for the Beads issue tracking system.           |
-| 1.3.1     | [beads.db](./.beads/beads.db)                                                             | SQLite database file storing the issue graph state.                   |
-| 1.3.2     | [.jsonl.lock](./.beads/.jsonl.lock)                                                       | Lock file for ensuring serialized access to JSONL data.               |
-| 1.3.3     | [beads.left.jsonl](./.beads/beads.left.jsonl)                                             | Metadata and state tracking for the Beads issue graph.                |
-| 1.3.4     | [issues.jsonl](./.beads/issues.jsonl)                                                     | Primary storage for issue data and status history.                    |
-| 1.3.5     | [metadata.json](./.beads/metadata.json)                                                   | High-level configuration and version metadata for Beads.              |
-| 1.3.6     | [config.yaml](./.beads/config.yaml)                                                       | Settings for the Beads issue tracker behavior.                        |
-| 1.3.7     | [interactions.jsonl](./.beads/interactions.jsonl)                                         | Log of agentic and user interactions with issues.                     |
+| 1.3       | **[.beads/](./.beads/)**                                                                  | Local persistence and config for the Beads issue tracking system.     |
+| 1.3.1     | [config.yaml](./.beads/config.yaml)                                                       | Settings for the Beads issue tracker behavior.                        |
+| 1.3.2     | [metadata.json](./.beads/metadata.json)                                                   | High-level configuration and version metadata for Beads.              |
+| 1.3.3     | [README.md](./.beads/README.md)                                                           | Beads setup and usage documentation.                                  |
 | 1.4       | **[.kiro/](./.kiro/)**                                                                    | AI steering and behavioral configuration store.                       |
 | 1.4.1     | **[steering/](./.kiro/steering/)**                                                        | Role-specific guidance files to ensure agent alignment.               |
 | 1.4.1.1   | [bmad-agent-bmm-pm.md](./.kiro/steering/bmad-agent-bmm-pm.md)                             | Behavioral rules for the Product Manager agent.                       |
@@ -187,13 +176,11 @@ graph TD
 | 1.5.8.1   | [tasks/](./_bmad/core/tasks/)                                                             | Atomic operations like document indexing and sharding.                |
 | 1.6       | **[Instructions to Use/](./Instructions%20to%20Use/)**                                    | User-facing manuals for framework onboarding.                         |
 | 1.6.1     | [BEADS_GUIDE.md](./Instructions%20to%20Use/BEADS_GUIDE.md)                                | Romanised Hindi manual for Beads issue tracking.                      |
-| 1.7       | **[docs/](./docs/)**                                                                      | Technical manuals and architectural design documents.                 |
-| 1.8       | **[testsprite_tests/](./testsprite_tests/)**                                              | Automated test suite for quality validation.                          |
-| 1.9       | **[AGENTS.md](./AGENTS.md)**                                                              | Mandatory session protocols for agent compliance.                     |
-| 1.10      | **[Gemini.md](./Gemini.md)**                                                              | Project log for tracking and preventing recurring mistakes.           |
-| 1.11      | **[.kilocodemodes](./.kilocodemodes)**                                                    | Definitions for custom agent personas and activation rules.           |
-| 1.12      | **[.gitattributes](./.gitattributes)**                                                    | Specialized merge settings for version-controlled data.               |
-| 1.13      | **[index.md](./index.md)**                                                                | The exhaustive project directory and absolute source of truth.        |
+| 1.7       | **[AGENTS.md](./AGENTS.md)**                                                              | Mandatory session protocols for agent compliance.                     |
+| 1.8       | **[Gemini.md](./Gemini.md)**                                                              | Project log for tracking and preventing recurring mistakes.           |
+| 1.9       | **[.kilocodemodes](./.kilocodemodes)**                                                    | Definitions for custom agent personas and activation rules.           |
+| 1.10      | **[.gitattributes](./.gitattributes)**                                                    | Specialized merge settings for version-controlled data.               |
+| 1.11      | **[index.md](./index.md)**                                                                | The exhaustive project directory and absolute source of truth.        |
 
 ---
 

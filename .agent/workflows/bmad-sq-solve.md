@@ -1,5 +1,5 @@
 ---
-name: "sq-solve"
+name: "014 SQ: Decompose → Capabilities"
 description: "Decompose approved Epic into Capabilities at Solution Train level"
 disable-model-invocation: true
 ---

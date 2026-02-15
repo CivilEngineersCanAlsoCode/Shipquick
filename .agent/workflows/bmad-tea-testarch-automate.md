@@ -1,6 +1,6 @@
 ---
-name: 'testarch-automate'
-description: 'Expand test automation coverage after implementation or analyze existing codebase to generate comprehensive test suite'
+name: "062 TestArch: Automate"
+description: "Expand test automation coverage after implementation or analyze existing codebase to generate comprehensive test suite"
 disable-model-invocation: true
 ---
 

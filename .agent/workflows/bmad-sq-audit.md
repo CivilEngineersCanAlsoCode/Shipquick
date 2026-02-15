@@ -1,5 +1,5 @@
 ---
-name: "sq-audit"
+name: "025 SQ: Compliance Audit"
 description: "Validate SAFe hierarchy compliance, orphan check, AC validation, and WSJF consistency"
 disable-model-invocation: true
 ---

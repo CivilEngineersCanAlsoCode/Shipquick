@@ -1,6 +1,6 @@
 ---
-name: 'testarch-test-review'
-description: 'Review test quality using comprehensive knowledge base and best practices validation'
+name: "067 TestArch: Test Review"
+description: "Review test quality using comprehensive knowledge base and best practices validation"
 disable-model-invocation: true
 ---
 

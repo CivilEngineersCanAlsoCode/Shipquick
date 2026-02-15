@@ -1,5 +1,5 @@
 ---
-name: "sq-exec"
+name: "024 SQ: Generate Export Items"
 description: "Decompose Features into User Stories, Dev Tasks, and QA Test Cases"
 disable-model-invocation: true
 ---

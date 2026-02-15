@@ -1,6 +1,6 @@
 ---
-name: 'sprint-status'
-description: 'Summarize sprint-status.yaml, surface risks, and route to the right implementation workflow.'
+name: "018 Sprint Status"
+description: "Summarize sprint-status.yaml, surface risks, and route to the right implementation workflow."
 disable-model-invocation: true
 ---
 

@@ -1,6 +1,6 @@
 ---
-name: 'analyst'
-description: 'analyst agent'
+name: "090 analyst"
+description: "analyst agent"
 disable-model-invocation: true
 ---
 

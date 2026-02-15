@@ -1,6 +1,6 @@
 ---
-name: 'ux-designer'
-description: 'ux-designer agent'
+name: "086 ux-designer"
+description: "ux-designer agent"
 disable-model-invocation: true
 ---
 

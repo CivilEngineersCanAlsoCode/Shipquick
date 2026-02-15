@@ -1,6 +1,6 @@
 ---
-name: 'bmad-master'
-description: 'bmad-master agent'
+name: "106 bmad-master"
+description: "bmad-master agent - Master orchestrator"
 disable-model-invocation: true
 ---
 

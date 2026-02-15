@@ -1,5 +1,5 @@
 ---
-name: "sq-rte"
+name: "103 sq-rte"
 description: "sq-rte agent"
 disable-model-invocation: true
 ---

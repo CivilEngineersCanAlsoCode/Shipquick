@@ -1,5 +1,5 @@
 ---
-name: "sq-pm"
+name: "102 sq-pm"
 description: "sq-pm agent"
 disable-model-invocation: true
 ---

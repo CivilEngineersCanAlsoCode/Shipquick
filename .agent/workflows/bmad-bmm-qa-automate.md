@@ -1,6 +1,6 @@
 ---
-name: 'qa-automate'
-description: 'Generate tests quickly for existing features using standard test patterns'
+name: "021 QA Automate"
+description: "Generate tests quickly for existing features using standard test patterns"
 disable-model-invocation: true
 ---
 

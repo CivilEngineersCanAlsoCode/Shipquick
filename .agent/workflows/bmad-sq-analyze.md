@@ -1,5 +1,5 @@
 ---
-name: "sq-analyze"
+name: "011 SQ: Analyze Epic"
 description: "Create Lean Business Case and finalize WSJF scoring for a Portfolio Epic"
 disable-model-invocation: true
 ---

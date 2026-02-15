@@ -1,5 +1,5 @@
 ---
-name: "sq-architect"
+name: "101 sq-architect"
 description: "sq-architect agent"
 disable-model-invocation: true
 ---

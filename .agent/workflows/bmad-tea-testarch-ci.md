@@ -1,6 +1,6 @@
 ---
-name: 'testarch-ci'
-description: 'Scaffold CI/CD quality pipeline with test execution, burn-in loops, and artifact collection'
+name: "063 TestArch: CI"
+description: "Scaffold CI/CD quality pipeline with test execution, burn-in loops, and artifact collection"
 disable-model-invocation: true
 ---
 

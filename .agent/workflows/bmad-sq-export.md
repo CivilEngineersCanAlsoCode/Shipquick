@@ -1,5 +1,5 @@
 ---
-name: "sq-export"
+name: "026 SQ: Export CSV"
 description: "Generate enterprise-compatible CSV files for Jira or Rally bulk import"
 disable-model-invocation: true
 ---

@@ -1,5 +1,5 @@
 ---
-name: "sq-init"
+name: "010 SQ: Initialize Theme"
 description: "Initialize SAFe hierarchy with Strategic Theme and Portfolio Epic including WSJF calculation"
 disable-model-invocation: true
 ---
