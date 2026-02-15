@@ -231,8 +231,8 @@ class Installer {
     const dest = path.join(targetDir, 'web-bundles');
     
     // Also copy the guide
-    const guideSrc = path.join(this.contentDir, 'WEB_BUNDLES.md');
-    const guideDest = path.join(targetDir, 'WEB_BUNDLES.md');
+    const guideSrc = path.join(this.contentDir, 'web-bundles.md');
+    const guideDest = path.join(targetDir, 'web-bundles.md');
 
     if (await fs.pathExists(src)) {
       await fs.copy(src, dest, { overwrite: true });
