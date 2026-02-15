@@ -17,27 +17,6 @@ modules:
     source: built-in
     npmPackage: null
     repoUrl: null
-  - name: bmb
-    version: 0.1.6
-    installDate: 2026-02-13T19:55:44.572Z
-    lastUpdated: 2026-02-13T19:55:52.343Z
-    source: external
-    npmPackage: bmad-builder
-    repoUrl: https://github.com/bmad-code-org/bmad-builder
-  - name: cis
-    version: 0.1.6
-    installDate: 2026-02-13T19:55:47.585Z
-    lastUpdated: 2026-02-13T19:55:52.575Z
-    source: external
-    npmPackage: bmad-creative-intelligence-suite
-    repoUrl: https://github.com/bmad-code-org/bmad-module-creative-intelligence-suite
-  - name: gds
-    version: 0.1.7
-    installDate: 2026-02-13T19:55:50.217Z
-    lastUpdated: 2026-02-13T19:55:52.821Z
-    source: external
-    npmPackage: bmad-game-dev-studio
-    repoUrl: https://github.com/bmad-code-org/bmad-module-game-dev-studio.git
   - name: tea
     version: 1.0.0
     installDate: 2026-02-13T19:55:52.056Z
