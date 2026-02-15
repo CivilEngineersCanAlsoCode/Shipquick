@@ -67,5 +67,39 @@ This ensures your "Real World" (Files) matches your "Agentic World" (Database).
 
 ---
 
+## 5. ⚡ Advanced: Terminal Automation & Agent Mode
+
+**GitHub Copilot (2025+ Updates)** now supports semi-autonomous command execution. You can enable this to allow Copilot to run `bd` commands for you.
+
+### Enable Agent Mode:
+
+1.  Use **VS Code Insiders** or ensure you have the latest Copilot Chat update.
+2.  Look for the **"Agent"** toggle or mode in the Chat sidebar.
+3.  When using Agent mode, Copilot can say: _"I will run `bd create ...`. Do you want to proceed?"_
+
+### Auto-Approve Commands:
+
+If you want Copilot to run `bd` without asking every time, add this to your `settings.json`:
+
+```json
+"chat.tools.terminal.autoApprove": true
+```
+
+> [!WARNING]
+> Only enable this if you trust the repository! This allows the AI to execute commands in your shell.
+
+---
+
+## 6. 🔌 Power User: MCP (Model Context Protocol)
+
+Shipquick is built on MCP principles. GitHub Copilot Chat now supports **MCP Servers**.
+If you want Copilot to have deep, native access to the Beads database:
+
+1.  Install an **MCP Client extension** in VS Code.
+2.  Point it to the `bd` binary or a Beads MCP server (if configured).
+3.  Copilot will then be able to "See" the state database directly without you needing to type `#` files.
+
+---
+
 **Made with love by Satvik Jain** ❤️  
 _Empowering engineers to lead the AI revolution._
