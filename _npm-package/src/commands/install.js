@@ -269,7 +269,18 @@ async function runInstall(options) {
   }
   if (!outputFolder) outputFolder = '_bmad-output';
 
-  // ─── Step 11: Pre-checks ───
+  // ─── Step 11: Web Bundles (Optional) ───
+  const installWebBundles = await getAnswer(prompts.confirm, {
+    message: 'Install Shipquick Web Bundles (ChatGPT Custom Models)?',
+    initialValue: false,
+  });
+
+  if (prompts.isCancel(installWebBundles)) {
+    prompts.cancel('Installation cancelled.');
+    process.exit(0);
+  }
+
+  // ─── Step 12: Pre-checks ───
   const spin = prompts.spinner();
   spin.start('Running pre-checks...');
 
@@ -287,7 +298,10 @@ async function runInstall(options) {
     userName,
     communicationLanguage: commLang,
     documentLanguage: docLang,
+    communicationLanguage: commLang,
+    documentLanguage: docLang,
     outputFolder,
+    installWebBundles,
   });
 
   spin.stop('Installation complete');

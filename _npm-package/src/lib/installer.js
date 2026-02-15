@@ -212,8 +212,34 @@ class Installer {
     // 8. Create AGENTS.md
     await this._copyRootFiles(targetDir);
 
+    // 9. Install Web Bundles (Optional)
+    if (config.installWebBundles) {
+      await this._copyWebBundles(targetDir);
+    }
+
     results.success = true;
     return results;
+  }
+
+  /**
+   * Copy Web Bundles (ChatGPT Custom Models)
+   */
+  async _copyWebBundles(targetDir) {
+    const src = path.join(this.contentDir, 'web-bundles');
+    // Create _bmad/web-bundles or root web-bundles? 
+    // User asked for "web bundles create krenge", let's put it in root for visibility as user requested.
+    const dest = path.join(targetDir, 'web-bundles');
+    
+    // Also copy the guide
+    const guideSrc = path.join(this.contentDir, 'WEB_BUNDLES.md');
+    const guideDest = path.join(targetDir, 'WEB_BUNDLES.md');
+
+    if (await fs.pathExists(src)) {
+      await fs.copy(src, dest, { overwrite: true });
+    }
+    if (await fs.pathExists(guideSrc)) {
+      await fs.copy(guideSrc, guideDest, { overwrite: true });
+    }
   }
 
   /**
