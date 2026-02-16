@@ -1,19 +1,36 @@
-    # Workflow Plan: testarch-nfr
+# Non-Functional Requirements Assessment
 
-    ## Create Mode (steps-c)
-    - step-01-load-context.md
+**Workflow:** `testarch-nfr`
+**Version:** 5.0 (Step-File Architecture)
 
-- step-02-define-thresholds.md
-- step-03-gather-evidence.md
-- step-04-evaluate-and-score.md
-- step-05-generate-report.md
+---
 
-  ## Validate Mode (steps-v)
-  - step-01-validate.md
+## Overview
 
-  ## Edit Mode (steps-e)
-  - step-01-assess.md
-  - step-02-apply-edit.md
+Assess non-functional requirements (performance, security, reliability, maintainability) with evidence-based validation and deterministic PASS/CONCERNS/FAIL outcomes.
 
-  ## Outputs
-  - {test_artifacts}/nfr-assessment.md
+---
+
+## WORKFLOW ARCHITECTURE
+
+This workflow uses **step-file architecture**:
+
+- **Micro-file Design**: Each step is self-contained
+- **JIT Loading**: Only the current step file is in memory
+- **Sequential Enforcement**: Execute steps in order
+
+---
+
+## INITIALIZATION SEQUENCE
+
+### 1. Configuration Loading
+
+From `workflow.yaml`, resolve:
+
+- `config_source`, `test_artifacts`, `user_name`, `communication_language`, `document_output_language`, `date`
+- `custom_nfr_categories`
+
+### 2. First Step
+
+Load, read completely, and execute:
+`{project-root}/_bmad/tea/workflows/testarch/nfr-assess/steps-c/step-01-load-context.md`

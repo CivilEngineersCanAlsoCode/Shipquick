@@ -1,20 +1,38 @@
-    # Workflow Plan: testarch-ci
+<!-- Powered by BMAD-CORE™ -->
 
-    ## Create Mode (steps-c)
-    - step-01-preflight.md
+# CI/CD Pipeline Setup
 
-- step-02-generate-pipeline.md
-- step-03-configure-quality-gates.md
-- step-04-validate-and-summary.md
+**Workflow ID**: `_bmad/tea/testarch/ci`
+**Version**: 5.0 (Step-File Architecture)
 
-  ## Validate Mode (steps-v)
-  - step-01-validate.md
+---
 
-  ## Edit Mode (steps-e)
-  - step-01-assess.md
-  - step-02-apply-edit.md
+## Overview
 
-  ## Outputs
-  - CI config (e.g., {project-root}/.github/workflows/test.yml)
+Scaffold a production-ready CI/CD quality pipeline with test execution, burn-in loops for flaky detection, parallel sharding, artifact collection, and notifications.
 
-- Pipeline guidance and artifacts configuration
+---
+
+## WORKFLOW ARCHITECTURE
+
+This workflow uses **step-file architecture**:
+
+- **Micro-file Design**: Each step is self-contained
+- **JIT Loading**: Only the current step file is in memory
+- **Sequential Enforcement**: Execute steps in order
+
+---
+
+## INITIALIZATION SEQUENCE
+
+### 1. Configuration Loading
+
+From `workflow.yaml`, resolve:
+
+- `config_source`, `test_artifacts`, `user_name`, `communication_language`, `document_output_language`, `date`
+- `ci_platform`, `test_dir`
+
+### 2. First Step
+
+Load, read completely, and execute:
+`{project-root}/_bmad/tea/workflows/testarch/ci/steps-c/step-01-preflight.md`

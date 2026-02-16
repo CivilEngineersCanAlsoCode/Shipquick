@@ -1,18 +1,36 @@
-    # Workflow Plan: testarch-test-review
+# Test Quality Review
 
-    ## Create Mode (steps-c)
-    - step-01-load-context.md
+**Workflow:** `testarch-test-review`
+**Version:** 5.0 (Step-File Architecture)
 
-- step-02-discover-tests.md
-- step-03-quality-evaluation.md
-- step-04-generate-report.md
+---
 
-  ## Validate Mode (steps-v)
-  - step-01-validate.md
+## Overview
 
-  ## Edit Mode (steps-e)
-  - step-01-assess.md
-  - step-02-apply-edit.md
+Review test quality using TEA knowledge base and produce a 0–100 quality score with actionable findings.
 
-  ## Outputs
-  - {test_artifacts}/test-review.md
+---
+
+## WORKFLOW ARCHITECTURE
+
+This workflow uses **step-file architecture**:
+
+- **Micro-file Design**: Each step is self-contained
+- **JIT Loading**: Only the current step file is in memory
+- **Sequential Enforcement**: Execute steps in order
+
+---
+
+## INITIALIZATION SEQUENCE
+
+### 1. Configuration Loading
+
+From `workflow.yaml`, resolve:
+
+- `config_source`, `test_artifacts`, `user_name`, `communication_language`, `document_output_language`, `date`
+- `test_dir`, `review_scope`
+
+### 2. First Step
+
+Load, read completely, and execute:
+`{project-root}/_bmad/tea/workflows/testarch/test-review/steps-c/step-01-load-context.md`

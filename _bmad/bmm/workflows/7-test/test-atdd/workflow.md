@@ -1,21 +1,38 @@
-    # Workflow Plan: testarch-atdd
+<!-- Powered by BMAD-CORE™ -->
 
-    ## Create Mode (steps-c)
-    - step-01-preflight-and-context.md
+# Acceptance Test-Driven Development (ATDD)
 
-- step-02-generation-mode.md
-- step-03-test-strategy.md
-- step-04-generate-tests.md
-- step-05-validate-and-complete.md
+**Workflow ID**: `_bmad/tea/testarch/atdd`
+**Version**: 5.0 (Step-File Architecture)
 
-  ## Validate Mode (steps-v)
-  - step-01-validate.md
+---
 
-  ## Edit Mode (steps-e)
-  - step-01-assess.md
-  - step-02-apply-edit.md
+## Overview
 
-  ## Outputs
-  - {test_artifacts}/atdd-checklist-{story_id}.md
+Generates **failing acceptance tests** before implementation (TDD red phase), plus an implementation checklist. Produces tests at appropriate levels (E2E/API/Component) with supporting fixtures and helpers.
 
-- Failing acceptance tests under {project-root}/tests
+---
+
+## WORKFLOW ARCHITECTURE
+
+This workflow uses **step-file architecture**:
+
+- **Micro-file Design**: Each step is self-contained
+- **JIT Loading**: Only the current step file is in memory
+- **Sequential Enforcement**: Execute steps in order without skipping
+
+---
+
+## INITIALIZATION SEQUENCE
+
+### 1. Configuration Loading
+
+From `workflow.yaml`, resolve:
+
+- `config_source`, `test_artifacts`, `user_name`, `communication_language`, `document_output_language`, `date`
+- `test_dir`
+
+### 2. First Step
+
+Load, read completely, and execute:
+`{project-root}/_bmad/tea/workflows/testarch/atdd/steps-c/step-01-preflight-and-context.md`

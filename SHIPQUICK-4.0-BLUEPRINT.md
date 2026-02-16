@@ -1219,28 +1219,39 @@ agent_sidecars:
 
 ### Wave 6 — Kill Old + End-to-End Validation
 
-**Goal:** Clean house, prove entire pipeline works.
+[COMPLETED] — Recovered and validated 2026-02-17.
 
-**Steps:**
+### Wave 7 — TEA Migration (Phases 7.1, 7.2, 7.3)
 
-1. Delete old duplicate/replaced commands (013, 017, 018)
-2. Delete old `.agent/workflows/` files that no longer have matching commands
-3. Run full command audit: every number maps to correct workflow
-4. Run SAFe pipeline end-to-end:
-   ```
-   /030-create-theme-and-epic
-   /031-create-business-case
-   /040-create-capabilities
-   /041-create-features
-   /042-create-stories
-   /060-audit-hierarchy
-   /061-export-csv
-   ```
-5. Verify Beads has complete hierarchy: `bd list` shows Theme -> Epic -> Cap -> Feat -> Story
-6. Verify `bd stats` shows all items with parent-child links
-7. Verify exported CSV has all fields populated
-8. Run `/097-learn-from-mistakes` to capture pipeline learnings
-9. `bd sync && git push`
+**Goal:** Unify Technical Excellence Agent workflows.
+
+1. [7.1] Inventory all `_bmad/tea/` workflows.
+2. [7.2] Relocate to `7-test/` and `6-govern/` with `workflow.md` headers.
+3. [7.3] Audit 07x series commands for correct pathing.
+
+### Wave 8 — Persona Activations (Phases 8.1, 8.2, 8.3)
+
+**Goal:** Standardize SAFe AI Agent personas.
+
+1. [8.1] Audit `8-agents/` physical taxonomy.
+2. [8.2] Implement Trimodal (Create/Edit/Validate) logic for all agent activations.
+3. [8.3] Sync 08x commands with new physical paths.
+
+### Wave 9 — Meta-Utility Refactoring (Phases 9.1, 9.2, 9.3)
+
+**Goal:** Refine non-SAFe utility workflows.
+
+1. [9.1] Consolidate utilities into `9-meta/`.
+2. [9.2] Integrate review gatekeepers (Editorial/Adversarial) with standard structure.
+3. [9.3] Polish 09x series commands and prompts.
+
+### Wave 10 — Production Finalization (Phases 10.1, 10.2, 10.3)
+
+**Goal:** Shipquick 4.0 official lockdown.
+
+1. [10.1] Mirror all changes to `_npm-package/`.
+2. [10.2] Reconcile and lock master manifests (task/workflow).
+3. [10.3] Final `bd sync` and git push.
 
 ---
 
