@@ -1,43 +1,53 @@
-<!-- Powered by BMAD-CORE™ -->
+# Test Architect workflow: automate
+name: testarch-automate
+description: "Expand test automation coverage after implementation or analyze existing codebase to generate comprehensive test suite"
+author: "BMad"
 
-# Test Automation Expansion
+# Critical variables from config
+config_source: "{project-root}/_bmad/tea/config.yaml"
+output_folder: "{config_source}:output_folder"
+test_artifacts: "{config_source}:test_artifacts"
+user_name: "{config_source}:user_name"
+communication_language: "{config_source}:communication_language"
+document_output_language: "{config_source}:document_output_language"
+date: system-generated
 
-**Workflow ID**: `_bmad/tea/testarch/automate`
-**Version**: 5.0 (Step-File Architecture)
+# Workflow components
+installed_path: "{project-root}/_bmad/tea/workflows/testarch/automate"
+instructions: "{installed_path}/instructions.md"
+validation: "{installed_path}/checklist.md"
+template: false
 
----
+# Variables and inputs
+variables:
+  # Execution mode and targeting
+  standalone_mode: true # Can work without BMad artifacts (true) or integrate with BMad (false)
+  coverage_target: "critical-paths" # critical-paths, comprehensive, selective
 
-## Overview
+  # Directory paths
+  test_dir: "{project-root}/tests" # Root test directory
+  source_dir: "{project-root}" # Source code directory (customize if needed, e.g., {project-root}/src or {project-root}/lib)
 
-Expands test automation coverage by generating prioritized tests at the appropriate level (E2E, API, Component, Unit) with supporting fixtures and helpers.
+# Output configuration
+default_output_file: "{test_artifacts}/automation-summary.md"
 
-Modes:
+# Required tools
+required_tools:
+  - read_file # Read source code, existing tests, BMad artifacts
+  - write_file # Create test files, fixtures, factories, summaries
+  - create_directory # Create test directories
+  - list_files # Discover features and existing tests
+  - search_repo # Find coverage gaps and patterns
+  - glob # Find test files and source files
 
-- **BMad-Integrated**: Uses story/PRD/test-design artifacts when available
-- **Standalone**: Analyzes existing codebase without BMad artifacts
+tags:
+  - qa
+  - automation
+  - test-architect
+  - regression
+  - coverage
 
----
-
-## WORKFLOW ARCHITECTURE
-
-This workflow uses **step-file architecture** for disciplined execution:
-
-- **Micro-file Design**: Each step is self-contained
-- **JIT Loading**: Only the current step file is in memory
-- **Sequential Enforcement**: Execute steps in order without skipping
-
----
-
-## INITIALIZATION SEQUENCE
-
-### 1. Configuration Loading
-
-From `workflow.yaml`, resolve:
-
-- `config_source`, `test_artifacts`, `user_name`, `communication_language`, `document_output_language`, `date`
-- `test_dir`, `source_dir`, `coverage_target`, `standalone_mode`
-
-### 2. First Step
-
-Load, read completely, and execute:
-`{project-root}/_bmad/tea/workflows/testarch/automate/steps-c/step-01-preflight-and-context.md`
+execution_hints:
+  interactive: false # Minimize prompts
+  autonomous: true # Proceed without user input unless blocked
+  iterative: true

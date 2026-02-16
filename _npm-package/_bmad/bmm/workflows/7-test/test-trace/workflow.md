@@ -1,36 +1,56 @@
-# Requirements Traceability & Quality Gate
+# Test Architect workflow: trace (enhanced with gate decision)
+name: testarch-trace
+description: "Generate requirements-to-tests traceability matrix, analyze coverage, and make quality gate decision (PASS/CONCERNS/FAIL/WAIVED)"
+author: "BMad"
 
-**Workflow:** `testarch-trace`
-**Version:** 5.0 (Step-File Architecture)
+# Critical variables from config
+config_source: "{project-root}/_bmad/tea/config.yaml"
+output_folder: "{config_source}:output_folder"
+test_artifacts: "{config_source}:test_artifacts"
+user_name: "{config_source}:user_name"
+communication_language: "{config_source}:communication_language"
+document_output_language: "{config_source}:document_output_language"
+date: system-generated
 
----
+# Workflow components
+installed_path: "{project-root}/_bmad/tea/workflows/testarch/trace"
+instructions: "{installed_path}/instructions.md"
+validation: "{installed_path}/checklist.md"
+template: "{installed_path}/trace-template.md"
 
-## Overview
+# Variables and inputs
+variables:
+  # Directory paths
+  test_dir: "{project-root}/tests" # Root test directory
+  source_dir: "{project-root}" # Source code directory (customize if needed, e.g., {project-root}/src or {project-root}/lib)
 
-Create a requirements-to-tests traceability matrix, analyze coverage gaps, and optionally make a gate decision (PASS/CONCERNS/FAIL/WAIVED) based on evidence.
+  # Workflow behavior
+  coverage_levels: "e2e,api,component,unit" # Which test levels to trace
+  gate_type: "story" # story | epic | release | hotfix - determines gate scope
+  decision_mode: "deterministic" # deterministic (rule-based) | manual (team decision)
 
----
+# Output configuration
+default_output_file: "{test_artifacts}/traceability-matrix.md"
 
-## WORKFLOW ARCHITECTURE
+# Required tools
+required_tools:
+  - read_file # Read story, test files, BMad artifacts
+  - write_file # Create traceability matrix, gate YAML
+  - list_files # Discover test files
+  - search_repo # Find tests by test ID, describe blocks
+  - glob # Find test files matching patterns
 
-This workflow uses **step-file architecture**:
+tags:
+  - qa
+  - traceability
+  - test-architect
+  - coverage
+  - requirements
+  - gate
+  - decision
+  - release
 
-- **Micro-file Design**: Each step is self-contained
-- **JIT Loading**: Only the current step file is in memory
-- **Sequential Enforcement**: Execute steps in order
-
----
-
-## INITIALIZATION SEQUENCE
-
-### 1. Configuration Loading
-
-From `workflow.yaml`, resolve:
-
-- `config_source`, `test_artifacts`, `user_name`, `communication_language`, `document_output_language`, `date`
-- `test_dir`, `source_dir`, `coverage_levels`, `gate_type`, `decision_mode`
-
-### 2. First Step
-
-Load, read completely, and execute:
-`{project-root}/_bmad/tea/workflows/testarch/trace/steps-c/step-01-load-context.md`
+execution_hints:
+  interactive: false # Minimize prompts
+  autonomous: true # Proceed without user input unless blocked
+  iterative: true

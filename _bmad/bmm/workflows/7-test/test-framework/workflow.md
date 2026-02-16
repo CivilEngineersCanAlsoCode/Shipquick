@@ -1,38 +1,48 @@
-<!-- Powered by BMAD-CORE™ -->
+# Test Architect workflow: framework
+name: testarch-framework
+description: "Initialize production-ready test framework architecture (Playwright or Cypress) with fixtures, helpers, and configuration"
+author: "BMad"
 
-# Test Framework Setup
+# Critical variables from config
+config_source: "{project-root}/_bmad/tea/config.yaml"
+output_folder: "{config_source}:output_folder"
+test_artifacts: "{config_source}:test_artifacts"
+user_name: "{config_source}:user_name"
+communication_language: "{config_source}:communication_language"
+document_output_language: "{config_source}:document_output_language"
+date: system-generated
 
-**Workflow ID**: `_bmad/tea/testarch/framework`
-**Version**: 5.0 (Step-File Architecture)
+# Workflow components
+installed_path: "{project-root}/_bmad/tea/workflows/testarch/framework"
+instructions: "{installed_path}/instructions.md"
+validation: "{installed_path}/checklist.md"
 
----
+# Variables and inputs
+variables:
+  test_dir: "{project-root}/tests" # Root test directory
+  use_typescript: true # Prefer TypeScript configuration
+  framework_preference: "auto" # auto, playwright, cypress - user can override auto-detection
+  project_size: "auto" # auto, small, large - influences framework recommendation
 
-## Overview
+# Output configuration
+default_output_file: "{test_dir}/README.md" # Main deliverable is test setup README
 
-Initialize a production-ready test framework (Playwright or Cypress) with fixtures, helpers, configuration, and best practices.
+# Required tools
+required_tools:
+  - read_file # Read package.json, existing configs
+  - write_file # Create config files, helpers, fixtures, tests
+  - create_directory # Create test directory structure
+  - list_files # Check for existing framework
+  - search_repo # Find architecture docs
 
----
+tags:
+  - qa
+  - setup
+  - test-architect
+  - framework
+  - initialization
 
-## WORKFLOW ARCHITECTURE
-
-This workflow uses **step-file architecture**:
-
-- **Micro-file Design**: Each step is self-contained
-- **JIT Loading**: Only the current step file is in memory
-- **Sequential Enforcement**: Execute steps in order without skipping
-
----
-
-## INITIALIZATION SEQUENCE
-
-### 1. Configuration Loading
-
-From `workflow.yaml`, resolve:
-
-- `config_source`, `test_artifacts`, `user_name`, `communication_language`, `document_output_language`, `date`
-- `test_dir`, `use_typescript`, `framework_preference`, `project_size`
-
-### 2. First Step
-
-Load, read completely, and execute:
-`{project-root}/_bmad/tea/workflows/testarch/framework/steps-c/step-01-preflight.md`
+execution_hints:
+  interactive: false # Minimize prompts; auto-detect when possible
+  autonomous: true # Proceed without user input unless blocked
+  iterative: true

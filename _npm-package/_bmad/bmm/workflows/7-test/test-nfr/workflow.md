@@ -1,36 +1,48 @@
-# Non-Functional Requirements Assessment
+# Test Architect workflow: nfr-assess
+name: testarch-nfr
+description: "Assess non-functional requirements (performance, security, reliability, maintainability) before release with evidence-based validation"
+author: "BMad"
 
-**Workflow:** `testarch-nfr`
-**Version:** 5.0 (Step-File Architecture)
+# Critical variables from config
+config_source: "{project-root}/_bmad/tea/config.yaml"
+output_folder: "{config_source}:output_folder"
+test_artifacts: "{config_source}:test_artifacts"
+user_name: "{config_source}:user_name"
+communication_language: "{config_source}:communication_language"
+document_output_language: "{config_source}:document_output_language"
+date: system-generated
 
----
+# Workflow components
+installed_path: "{project-root}/_bmad/tea/workflows/testarch/nfr-assess"
+instructions: "{installed_path}/instructions.md"
+validation: "{installed_path}/checklist.md"
+template: "{installed_path}/nfr-report-template.md"
 
-## Overview
+# Variables and inputs
+variables:
+  # NFR category assessment (defaults to all categories)
+  custom_nfr_categories: "" # Optional additional categories beyond standard (security, performance, reliability, maintainability)
 
-Assess non-functional requirements (performance, security, reliability, maintainability) with evidence-based validation and deterministic PASS/CONCERNS/FAIL outcomes.
+# Output configuration
+default_output_file: "{test_artifacts}/nfr-assessment.md"
 
----
+# Required tools
+required_tools:
+  - read_file # Read story, test results, metrics, logs, BMad artifacts
+  - write_file # Create NFR assessment, gate YAML, evidence checklist
+  - list_files # Discover test results, metrics, logs
+  - search_repo # Find NFR-related tests and evidence
+  - glob # Find result files matching patterns
 
-## WORKFLOW ARCHITECTURE
+tags:
+  - qa
+  - nfr
+  - test-architect
+  - performance
+  - security
+  - reliability
 
-This workflow uses **step-file architecture**:
-
-- **Micro-file Design**: Each step is self-contained
-- **JIT Loading**: Only the current step file is in memory
-- **Sequential Enforcement**: Execute steps in order
-
----
-
-## INITIALIZATION SEQUENCE
-
-### 1. Configuration Loading
-
-From `workflow.yaml`, resolve:
-
-- `config_source`, `test_artifacts`, `user_name`, `communication_language`, `document_output_language`, `date`
-- `custom_nfr_categories`
-
-### 2. First Step
-
-Load, read completely, and execute:
-`{project-root}/_bmad/tea/workflows/testarch/nfr-assess/steps-c/step-01-load-context.md`
+execution_hints:
+  interactive: false # Minimize prompts
+  autonomous: true # Proceed without user input unless blocked
+  iterative: true

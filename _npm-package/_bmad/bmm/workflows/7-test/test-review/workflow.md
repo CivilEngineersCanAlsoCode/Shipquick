@@ -1,36 +1,47 @@
-# Test Quality Review
+# Test Architect workflow: test-review
+name: testarch-test-review
+description: "Review test quality using comprehensive knowledge base and best practices validation"
+author: "BMad"
 
-**Workflow:** `testarch-test-review`
-**Version:** 5.0 (Step-File Architecture)
+# Critical variables from config
+config_source: "{project-root}/_bmad/tea/config.yaml"
+output_folder: "{config_source}:output_folder"
+test_artifacts: "{config_source}:test_artifacts"
+user_name: "{config_source}:user_name"
+communication_language: "{config_source}:communication_language"
+document_output_language: "{config_source}:document_output_language"
+date: system-generated
 
----
+# Workflow components
+installed_path: "{project-root}/_bmad/tea/workflows/testarch/test-review"
+instructions: "{installed_path}/instructions.md"
+validation: "{installed_path}/checklist.md"
+template: "{installed_path}/test-review-template.md"
 
-## Overview
+# Variables and inputs
+variables:
+  test_dir: "{project-root}/tests" # Root test directory
+  review_scope: "single" # single (one file), directory (folder), suite (all tests)
 
-Review test quality using TEA knowledge base and produce a 0–100 quality score with actionable findings.
+# Output configuration
+default_output_file: "{test_artifacts}/test-review.md"
 
----
+# Required tools
+required_tools:
+  - read_file # Read test files, story, test-design
+  - write_file # Create review report
+  - list_files # Discover test files in directory
+  - search_repo # Find tests by patterns
+  - glob # Find test files matching patterns
 
-## WORKFLOW ARCHITECTURE
+tags:
+  - qa
+  - test-architect
+  - code-review
+  - quality
+  - best-practices
 
-This workflow uses **step-file architecture**:
-
-- **Micro-file Design**: Each step is self-contained
-- **JIT Loading**: Only the current step file is in memory
-- **Sequential Enforcement**: Execute steps in order
-
----
-
-## INITIALIZATION SEQUENCE
-
-### 1. Configuration Loading
-
-From `workflow.yaml`, resolve:
-
-- `config_source`, `test_artifacts`, `user_name`, `communication_language`, `document_output_language`, `date`
-- `test_dir`, `review_scope`
-
-### 2. First Step
-
-Load, read completely, and execute:
-`{project-root}/_bmad/tea/workflows/testarch/test-review/steps-c/step-01-load-context.md`
+execution_hints:
+  interactive: false # Minimize prompts
+  autonomous: true # Proceed without user input unless blocked
+  iterative: true # Can review multiple files

@@ -1,0 +1,143 @@
+# SAFe Type Definitions for Beads (bd) Integration
+# Used by: sq-init, sq-solve, sq-plan, sq-exec workflows
+# Commands: bd create, bd link, bd update
+
+types:
+  strategic-theme:
+    id_prefix: "THEME"
+    fields:
+      - name: name
+        required: true
+      - name: description
+        required: true
+      - name: strategic_driver
+        required: false
+      - name: time_horizon
+        required: false
+        default: "18-24 months"
+    children: [portfolio-epic]
+
+  portfolio-epic:
+    id_prefix: "EPIC"
+    fields:
+      - name: name
+        required: true
+      - name: benefit_hypothesis
+        required: true
+      - name: mvp_definition
+        required: true
+      - name: type
+        required: true
+        enum: [enabler, business]
+      - name: acceptance_criteria
+        required: true
+        format: gherkin
+      - name: wsjf_score
+        required: false
+      - name: status
+        required: true
+        default: "funnel"
+        enum: [funnel, reviewing, analyzing, ready, implementing, done]
+    parent: strategic-theme
+    children: [capability]
+
+  capability:
+    id_prefix: "CAP"
+    fields:
+      - name: name
+        required: true
+      - name: description
+        required: true
+      - name: acceptance_criteria
+        required: true
+        format: gherkin
+      - name: wsjf_score
+        required: false
+    parent: portfolio-epic
+    children: [feature]
+
+  feature:
+    id_prefix: "FEAT"
+    fields:
+      - name: name
+        required: true
+      - name: benefit_hypothesis
+        required: true
+      - name: acceptance_criteria
+        required: true
+        format: gherkin
+      - name: wsjf_score
+        required: false
+      - name: pi_target
+        required: false
+    parent: capability
+    children: [user-story]
+
+  user-story:
+    id_prefix: "STORY"
+    fields:
+      - name: name
+        required: true
+      - name: description
+        required: true
+        format: "As a {role}, I want {goal}, so that {benefit}"
+      - name: acceptance_criteria
+        required: true
+        format: gherkin
+      - name: story_points
+        required: false
+    parent: feature
+    children: [dev-task, qa-test-case]
+
+  dev-task:
+    id_prefix: "TASK"
+    fields:
+      - name: name
+        required: true
+      - name: description
+        required: true
+      - name: estimated_hours
+        required: false
+    parent: user-story
+    children: []
+
+  qa-test-case:
+    id_prefix: "QA"
+    fields:
+      - name: name
+        required: true
+      - name: scenario
+        required: true
+        format: gherkin
+      - name: test_type
+        required: false
+        enum: [functional, integration, regression, acceptance]
+    parent: user-story
+    children: []
+
+# Link rules
+links:
+  - parent: strategic-theme
+    child: portfolio-epic
+    cardinality: "1:N"
+  - parent: portfolio-epic
+    child: capability
+    cardinality: "1:N"
+  - parent: capability
+    child: feature
+    cardinality: "1:N"
+  - parent: feature
+    child: user-story
+    cardinality: "1:N"
+  - parent: user-story
+    child: dev-task
+    cardinality: "1:N"
+  - parent: user-story
+    child: qa-test-case
+    cardinality: "1:N"
+
+# WSJF propagation
+wsjf:
+  calculated_at: [portfolio-epic]
+  propagated_to: [capability, feature, user-story]
+  formula: "(Business Value + Time Criticality + Risk Reduction) / Job Size"

@@ -1,38 +1,46 @@
-<!-- Powered by BMAD-CORE™ -->
+# Test Architect workflow: atdd
+name: testarch-atdd
+description: "Generate failing acceptance tests before implementation using TDD red-green-refactor cycle"
+author: "BMad"
 
-# Acceptance Test-Driven Development (ATDD)
+# Critical variables from config
+config_source: "{project-root}/_bmad/tea/config.yaml"
+output_folder: "{config_source}:output_folder"
+test_artifacts: "{config_source}:test_artifacts"
+user_name: "{config_source}:user_name"
+communication_language: "{config_source}:communication_language"
+document_output_language: "{config_source}:document_output_language"
+date: system-generated
 
-**Workflow ID**: `_bmad/tea/testarch/atdd`
-**Version**: 5.0 (Step-File Architecture)
+# Workflow components
+installed_path: "{project-root}/_bmad/tea/workflows/testarch/atdd"
+instructions: "{installed_path}/instructions.md"
+validation: "{installed_path}/checklist.md"
+template: "{installed_path}/atdd-checklist-template.md"
 
----
+# Variables and inputs
+variables:
+  test_dir: "{project-root}/tests" # Root test directory
 
-## Overview
+# Output configuration
+default_output_file: "{test_artifacts}/atdd-checklist-{story_id}.md"
 
-Generates **failing acceptance tests** before implementation (TDD red phase), plus an implementation checklist. Produces tests at appropriate levels (E2E/API/Component) with supporting fixtures and helpers.
+# Required tools
+required_tools:
+  - read_file # Read story markdown, framework config
+  - write_file # Create test files, checklist, factory stubs
+  - create_directory # Create test directories
+  - list_files # Find existing fixtures and helpers
+  - search_repo # Search for similar test patterns
 
----
+tags:
+  - qa
+  - atdd
+  - test-architect
+  - tdd
+  - red-green-refactor
 
-## WORKFLOW ARCHITECTURE
-
-This workflow uses **step-file architecture**:
-
-- **Micro-file Design**: Each step is self-contained
-- **JIT Loading**: Only the current step file is in memory
-- **Sequential Enforcement**: Execute steps in order without skipping
-
----
-
-## INITIALIZATION SEQUENCE
-
-### 1. Configuration Loading
-
-From `workflow.yaml`, resolve:
-
-- `config_source`, `test_artifacts`, `user_name`, `communication_language`, `document_output_language`, `date`
-- `test_dir`
-
-### 2. First Step
-
-Load, read completely, and execute:
-`{project-root}/_bmad/tea/workflows/testarch/atdd/steps-c/step-01-preflight-and-context.md`
+execution_hints:
+  interactive: false # Minimize prompts
+  autonomous: true # Proceed without user input unless blocked
+  iterative: true

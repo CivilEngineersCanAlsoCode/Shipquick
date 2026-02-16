@@ -1,0 +1,8 @@
+rule_id,rule_name,check_description,example_violation,auto_fixable
+GK-01,no-implementation-details,"AC must not reference UI elements, API endpoints, or DB tables","Given the user clicks the blue button",no
+GK-02,measurable-then,"Then clause must have observable/measurable outcome","Then the system works correctly",no
+GK-03,single-when,"Each scenario should have exactly one When clause","When user logs in and submits form and pays",yes
+GK-04,no-conjunction-then,"Then should not combine multiple assertions with AND","Then user sees message and email is sent and DB updated",yes
+GK-05,business-language,"Use business domain language not technical jargon","Given the API returns 200",no
+GK-06,independent-scenarios,"Each scenario must be independently executable","Given scenario-1 passed",no
+GK-07,min-two-scenarios,"Every artifact must have at least 2 Gherkin scenarios","Only 1 scenario provided",no

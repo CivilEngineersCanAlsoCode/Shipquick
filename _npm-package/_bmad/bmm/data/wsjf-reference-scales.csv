@@ -1,0 +1,5 @@
+dimension,score_1,score_2,score_3,score_5,score_8,score_13,score_21
+user_business_value,"Negligible impact","Minimal - few users","Some users benefit","Moderate business value","Significant revenue/retention","Critical to business","Existential - company depends on it"
+time_criticality,"No deadline","Soft deadline >6mo","Soft deadline 3-6mo","Hard deadline 3-6mo","Hard deadline <3mo","Regulatory <1mo","Immediate - blocking other work"
+risk_reduction,"No risk addressed","Minor technical debt","Moderate risk reduced","Significant risk mitigated","High compliance/security risk","Critical vulnerability","Existential threat addressed"
+job_size,"Trivial ~1 day","Small ~1 week","Medium ~2 weeks","Large ~1 month","XL ~2 months","XXL ~1 quarter","Massive >1 quarter"

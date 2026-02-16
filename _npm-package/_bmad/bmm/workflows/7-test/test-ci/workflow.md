@@ -1,38 +1,46 @@
-<!-- Powered by BMAD-CORE™ -->
+# Test Architect workflow: ci
+name: testarch-ci
+description: "Scaffold CI/CD quality pipeline with test execution, burn-in loops, and artifact collection"
+author: "BMad"
 
-# CI/CD Pipeline Setup
+# Critical variables from config
+config_source: "{project-root}/_bmad/tea/config.yaml"
+output_folder: "{config_source}:output_folder"
+test_artifacts: "{config_source}:test_artifacts"
+user_name: "{config_source}:user_name"
+communication_language: "{config_source}:communication_language"
+document_output_language: "{config_source}:document_output_language"
+date: system-generated
 
-**Workflow ID**: `_bmad/tea/testarch/ci`
-**Version**: 5.0 (Step-File Architecture)
+# Workflow components
+installed_path: "{project-root}/_bmad/tea/workflows/testarch/ci"
+instructions: "{installed_path}/instructions.md"
+validation: "{installed_path}/checklist.md"
 
----
+# Variables and inputs
+variables:
+  ci_platform: "auto" # auto, github-actions, gitlab-ci, circle-ci, jenkins - user can override
+  test_dir: "{project-root}/tests" # Root test directory
 
-## Overview
+# Output configuration
+default_output_file: "{project-root}/.github/workflows/test.yml" # GitHub Actions default
 
-Scaffold a production-ready CI/CD quality pipeline with test execution, burn-in loops for flaky detection, parallel sharding, artifact collection, and notifications.
+# Required tools
+required_tools:
+  - read_file # Read .nvmrc, package.json, framework config
+  - write_file # Create CI config, scripts, documentation
+  - create_directory # Create .github/workflows/ or .gitlab-ci/ directories
+  - list_files # Detect existing CI configuration
+  - search_repo # Find test files for selective testing
 
----
+tags:
+  - qa
+  - ci-cd
+  - test-architect
+  - pipeline
+  - automation
 
-## WORKFLOW ARCHITECTURE
-
-This workflow uses **step-file architecture**:
-
-- **Micro-file Design**: Each step is self-contained
-- **JIT Loading**: Only the current step file is in memory
-- **Sequential Enforcement**: Execute steps in order
-
----
-
-## INITIALIZATION SEQUENCE
-
-### 1. Configuration Loading
-
-From `workflow.yaml`, resolve:
-
-- `config_source`, `test_artifacts`, `user_name`, `communication_language`, `document_output_language`, `date`
-- `ci_platform`, `test_dir`
-
-### 2. First Step
-
-Load, read completely, and execute:
-`{project-root}/_bmad/tea/workflows/testarch/ci/steps-c/step-01-preflight.md`
+execution_hints:
+  interactive: false # Minimize prompts, auto-detect when possible
+  autonomous: true # Proceed without user input unless blocked
+  iterative: true

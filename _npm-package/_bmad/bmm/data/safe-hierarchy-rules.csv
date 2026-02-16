@@ -1,0 +1,8 @@
+level,parent_required,wsjf_required,gherkin_required,min_children,max_children,valid_statuses
+strategic-theme,no,no,no,1,10,"ACTIVE|ARCHIVED"
+portfolio-epic,yes(theme),yes,yes,1,12,"FUNNEL|REVIEWING|ANALYZING|BACKLOG|IMPLEMENTING|DONE"
+capability,yes(epic),yes(inherited),yes,1,8,"FUNNEL|ANALYZING|BACKLOG|IMPLEMENTING|DONE"
+feature,yes(capability),yes(inherited),yes,1,10,"FUNNEL|ANALYZING|BACKLOG|IMPLEMENTING|DONE"
+user-story,yes(feature),no,yes,0,20,"NEW|READY|IN-PROGRESS|DONE|BLOCKED"
+dev-task,yes(story),no,no,0,0,"TODO|IN-PROGRESS|DONE"
+qa-test-case,yes(story),no,yes(format),0,0,"PENDING|PASSED|FAILED"
