@@ -1,40 +1,98 @@
-# Shipquick Installer
+# 🚀 Shipquick Enterprise (BMad + SAFe 6.0)
 
-**The Enterprise Agile Agentic Framework**
+**The AI-Powered Scaled Agile Framework for Agentic Development**
 
-Shipquick is the fastest way to spin up a **SAFe 6.0.1 compliant**, **AI-native** software project. It comes pre-packaged with the **BMAD Method**, **Test Architect (TEA)**, and **Beads** for state management.
+Shipquick is an enterprise-grade framework that combines the **BMad Method** (Agent-driven development) with **SAFe 6.0** (Scaled Agile Framework) and **Beads** (Local State Management).
 
-## 🚀 Quick Start
+---
 
-You don't need to clone this repo. Just run:
+## What is Shipquick?
 
-```bash
-npx shipquick install
+Shipquick gives you a team of **18 specialized AI agents** to help you build software - from initial idea to production code. It provides structured, automated workflows (35+) designed to scale agile development in your IDE.
+
+### Key Features
+
+- 🤖 **18 AI Agents** - Each with specialized expertise (PM, Architect, Dev, QA, etc.)
+- 📋 **35 Workflows** - Structured processes from ideation to deployment
+- 🔄 **SAFe 6.0.1 Aligned** - Enterprise-grade agile methodology
+- 🔗 **Beads State Tracking** - Never lose work context between sessions
+- 📁 **IDE Integration** - Optimized for Cursor, VS Code, and Windsurf
+
+---
+
+## 🚀 How It Works (The Flow)
+
+```mermaid
+graph TD
+    A[Start: npx shipquick@latest install] -->|Initialize| B(Detect Environment)
+    B --> C{Select Modules}
+    C -->|Core| D[Install Agents & Tasks]
+    C -->|SAFe| E[Setup Portfolio/ART/Team]
+    C -->|TEA| F[Setup Test Architecture]
+    D & E & F --> G[Generate Configs]
+    G --> H[Final Project Scaffold]
+    H --> I[Ready to Code]
 ```
 
-This interactive installer will:
+---
 
-1.  **Set up the Framework**: Installs core agents, workflows, and configuration.
-2.  **configure Your IDE**: Optimizes Cursor, Windsurf, or Claude Code settings.
-3.  **Initialize Beads**: Sets up a local, git-backed issue tracker (`bd`).
-4.  **Audit Compliance**: Ensures your folder structure meets SAFe standards.
+## 🎓 Step-by-Step Training Guide
 
-## 📦 What's Included?
+Follow these steps to transform an empty folder into a fully functional Agentic Software Factory.
 
-- **Agents**: Pre-prompted personas for PM, Architect, RTE, Dev, and QA.
-- **Workflows**: 100+ executable `.md` workflows for every stage of development.
-- **Beads (`bd`)**: A distributed, graph-based memory system for your agents. (Vendored and ready to use).
-- **TestArch**: A production-ready testing scaffold.
+### Step 1: Initialize the Factory
 
-## 🛠 Usage
+```bash
+npx shipquick@latest install
+```
 
-After installation:
+### Step 2: Configure Your Factory
 
-1.  Open the folder in your IDE.
-2.  Run `/000 Activate Shipquick` in Chat to initialize the brain.
-3.  Start building with `/010 SQ: Init`.
+Select modules (Core, BMad, SAFe, TEA) and choose your preferred AI IDE.
 
-## 🤝 Contributing
+### Step 3: Verify the Setup
 
-This installer is part of the Shipquick project.
-Repository: [CivilEngineersCanAlsoCode/Shipquick](https://github.com/CivilEngineersCanAlsoCode/Shipquick)
+Check relevant folders (`_bmad/`, `.agent/`, `_bmad/sq/`) and the `agents.md` manifest.
+
+### Step 4: Start Building
+
+Use the `/pm` or `/dev` commands to initiate workflows and use `bd` to track progress.
+
+---
+
+## 🤖 The AI Team
+
+| Agent        | Role                   | Context                       |
+| ------------ | ---------------------- | ----------------------------- |
+| `/analyst`   | Business Analysis      | Market research & Ideation    |
+| `/pm`        | Product Management     | Requirements & Prioritization |
+| `/architect` | System Architecture    | Tech decisions & Design       |
+| `/dev`       | Development            | Code implementation           |
+| `/qa`        | Quality Assurance      | Testing & Automation          |
+| `/sm`        | Scrum Master           | Sprint management & tracking  |
+| `/rte`       | Release Train Engineer | PI Planning & Coordination    |
+
+---
+
+## 🔄 Repository Structure
+
+- **`_bmad/`**: Core framework definitions (Agents, Tasks).
+- **`.agent/`**: Workflow definitions (Phases 1-6).
+- **`_npm-package/`**: Source code for the CLI installer.
+- **`.beads/`**: Local state database (for Contributors).
+- **`_bmad-output/`**: Generated artifacts and reports.
+- **`agents.md`**: Agent manifesto and rules.
+
+---
+
+## 📦 For Contributors
+
+If you want to modify the Shipquick installer itself:
+
+- **Source Code**: Located in `_npm-package/`.
+- **Build**: Run `npm run bundle` inside `_npm-package/`.
+- **Test**: Run `npm link` and then `shipquick install` to test local changes.
+
+---
+
+**Made with ❤️ by CivilEngineersCanAlsoCode**

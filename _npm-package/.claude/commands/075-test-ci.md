@@ -1,6 +1,6 @@
 ---
-name: 'testarch-trace'
-description: 'Generate requirements-to-tests traceability matrix, analyze coverage, and make quality gate decision (PASS/CONCERNS/FAIL/WAIVED)'
+name: 'testarch-ci'
+description: 'Scaffold CI/CD quality pipeline with test execution, burn-in loops, and artifact collection'
 disable-model-invocation: true
 ---
 
@@ -9,7 +9,7 @@ IT IS CRITICAL THAT YOU FOLLOW THESE STEPS - while staying in character as the c
 <steps CRITICAL="TRUE">
 1. Always LOAD the FULL @{project-root}/_bmad/core/tasks/workflow.xml
 2. READ its entire contents - this is the CORE OS for EXECUTING the specific workflow.md
-3. Pass the yaml path @{project-root}/_bmad/bmm/workflows/6-govern/test-trace/workflow.md as 'workflow-config' parameter to the workflow.xml instructions
+3. Pass the yaml path @{project-root}/_bmad/bmm/workflows/7-test/test-ci/workflow.md as 'workflow-config' parameter to the workflow.xml instructions
 4. Follow workflow.xml instructions EXACTLY as written to process and follow the specific workflow config and its instructions
 5. Save outputs after EACH section when generating any documents from templates
 </steps>

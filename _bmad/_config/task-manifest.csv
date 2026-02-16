@@ -1,11 +1,8 @@
-task_id,name,description,workflow_id,output_pattern
-"T-001","Brainstorming Session","Run creative session","brainstorming","_bmad-output/meta/brainstorming-{date}.md"
-"T-010","Product Brief","Create brief","create-product-brief","_bmad-output/product-brief.md"
-"T-011","PRD Creation","Create PRD","create-prd","_bmad-output/prd.md"
-"T-030","Theme/Epic Init","Init SAFe hierarchy","create-theme-and-epic","_bmad-output/sq-artifacts/theme-epic.md"
-"T-040","Cap Decomposition","Decompose to Caps","create-capabilities","_bmad-output/sq-artifacts/cap-{id}.md"
-"T-041","Feat Decomposition","Decompose to Feats","create-features","_bmad-output/sq-artifacts/feat-{id}.md"
-"T-042","Story Decomposition","Decompose to Stories","create-stories","_bmad-output/sq-artifacts/story-{id}.md"
-"T-060","Hierarchy Audit","Audit SAFe links","audit-hierarchy","_bmad-output/sq-artifacts/audit-{date}.md"
-"T-061","CSV Export","Export implementation backlog","export-csv","_bmad-output/sq-artifacts/export-{date}.csv"
-"T-070","QA Automation","Fast test gen","qa-automate","_bmad-output/tests/test-summary-{id}.md"
+workflow,task_name,description
+create-theme-and-epic,define-theme,Identify strategic theme and initial epic
+create-business-case,analyze-epic,Perform lean business case analysis
+create-capabilities,decompose-epic,Decompose epic into architectural/business capabilities
+create-features,decompose-capabilities,Decompose capabilities into deliverable features
+create-stories,decompose-features,Decompose features into user stories
+dev-story,implement-logic,Code and local validation of story
+test-trace,audit-coverage,Verify requirements-to-test traceability

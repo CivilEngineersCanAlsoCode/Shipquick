@@ -1,2 +1,0 @@
-Name,Description,State,Priority,Severity,Owner,Project,Environment,FoundInBuild,Ready
-[Defect Name],[Description],[Submitted/Open/Fixed/Closed],[Critical/High/Medium/Low],[Crash/Major/Minor/Cosmetic],[Owner Email],[Project Name],[Test/Stage/Prod],[Build Number],[TRUE/FALSE]

@@ -1,6 +1,6 @@
 ---
-name: 'testarch-trace'
-description: 'Generate requirements-to-tests traceability matrix, analyze coverage, and make quality gate decision (PASS/CONCERNS/FAIL/WAIVED)'
+name: 'create-story'
+description: 'Create the next user story from epics+stories with enhanced context analysis and direct ready-for-dev marking'
 disable-model-invocation: true
 ---
 
@@ -8,8 +8,8 @@ IT IS CRITICAL THAT YOU FOLLOW THESE STEPS - while staying in character as the c
 
 <steps CRITICAL="TRUE">
 1. Always LOAD the FULL @{project-root}/_bmad/core/tasks/workflow.xml
-2. READ its entire contents - this is the CORE OS for EXECUTING the specific workflow.md
-3. Pass the yaml path @{project-root}/_bmad/bmm/workflows/6-govern/test-trace/workflow.md as 'workflow-config' parameter to the workflow.xml instructions
+2. READ its entire contents - this is the CORE OS for EXECUTING the specific workflow-config @{project-root}/_bmad/bmm/workflows/5-execute/create-story/workflow.md
+3. Pass the yaml path @{project-root}/_bmad/bmm/workflows/5-execute/create-story/workflow.md as 'workflow-config' parameter to the workflow.xml instructions
 4. Follow workflow.xml instructions EXACTLY as written to process and follow the specific workflow config and its instructions
 5. Save outputs after EACH section when generating any documents from templates
 </steps>
