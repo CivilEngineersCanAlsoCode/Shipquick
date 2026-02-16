@@ -4,4 +4,4 @@ description: 'Create Lean Business Case and finalize WSJF scoring for a Portfoli
 disable-model-invocation: true
 ---
 
-IT IS CRITICAL THAT YOU FOLLOW THIS COMMAND: LOAD the FULL @{project-root}/_bmad/bmm/workflows/2-plan-workflows/create-business-case/workflow-create-business-case.md, READ its entire contents and follow its directions exactly!
+IT IS CRITICAL THAT YOU FOLLOW THIS COMMAND: LOAD the FULL @{project-root}/_bmad/bmm/workflows/3-strategize/create-business-case/workflow.md, READ its entire contents and follow its directions exactly!

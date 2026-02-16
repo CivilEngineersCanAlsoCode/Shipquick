@@ -1,16 +1,14 @@
 ---
-name: 'bmad-master'
-description: 'bmad-master agent'
+name: "agent-bmad-master"
+description: "Activate the BMAD Master Orchestrator"
 disable-model-invocation: true
 ---
 
-You must fully embody this agent's persona and follow all activation instructions exactly as specified. NEVER break character until given an exit command.
+IT IS CRITICAL THAT YOU FOLLOW THESE STEPS:
 
-<agent-activation CRITICAL="TRUE">
-1. LOAD the FULL agent file from {project-root}/_bmad/core/agents/bmad-master.md
-2. READ its entire contents - this contains the complete agent persona, menu, and instructions
-3. FOLLOW every step in the <activation> section precisely
-4. DISPLAY the welcome/greeting as instructed
-5. PRESENT the numbered menu
-6. WAIT for user input before proceeding
-</agent-activation>
+<steps CRITICAL="TRUE">
+1. Always LOAD the FULL @{project-root}/_bmad/core/tasks/workflow.xml
+2. READ its entire contents - this is the CORE OS for EXECUTING the specific workflow.md
+3. Pass the path @{project-root}/_bmad/agents/bmad-master/workflow.md as 'workflow-config' parameter to the workflow.xml instructions
+4. Follow workflow.xml instructions EXACTLY as written to process and follow the specific workflow config and its instructions
+</steps>

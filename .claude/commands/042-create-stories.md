@@ -4,4 +4,4 @@ description: 'Pre-export: Generate Stories Tasks and QA Cases from Features for 
 disable-model-invocation: true
 ---
 
-IT IS CRITICAL THAT YOU FOLLOW THIS COMMAND: LOAD the FULL @{project-root}/_bmad/bmm/workflows/4-implementation/create-stories/workflow-create-stories.md, READ its entire contents and follow its directions exactly!
+IT IS CRITICAL THAT YOU FOLLOW THIS COMMAND: LOAD the FULL @{project-root}/_bmad/bmm/workflows/4-decompose/create-stories/workflow.md, READ its entire contents and follow its directions exactly!
