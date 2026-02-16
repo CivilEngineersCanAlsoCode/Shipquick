@@ -16,6 +16,21 @@ wsjf:
 
 # Portfolio Epic: Hybrid Cloud Connectivity
 
+## Lean Business Case
+
+### Business Outcomes
+
+Establish 99.99% availability for cross-cloud workloads.
+
+### Leading Indicators
+
+Mesh latency reduction > 20% in first 30 days.
+
+### Non-Functional Requirements
+
+- SOC2 compliance for all egress points.
+- < 5ms jitter for real-time data streams.
+
 ## Benefit Hypothesis
 
 If we implement a unified mesh connectivity layer across our hybrid environment, then multi-cloud latency will drop by 30% and security posturing will be unified, as measured by RTT and compliance audit pass rates.
