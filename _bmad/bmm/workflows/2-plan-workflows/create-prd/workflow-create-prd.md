@@ -1,8 +1,8 @@
 ---
 name: create-prd
 description: Create a comprehensive PRD (Product Requirements Document) through structured workflow facilitation
-main_config: '{project-root}/_bmad/bmm/config.yaml'
-nextStep: './steps-c/step-01-init.md'
+main_config: "{project-root}/_bmad/bmm/config.yaml"
+nextStep: "./steps-c/step-01-init.md"
 ---
 
 # PRD Create Workflow
@@ -54,9 +54,16 @@ Load and read full config from {main_config} and resolve:
 - `communication_language`, `document_output_language`, `user_skill_level`
 - `date` as system-generated current datetime
 
-✅ YOU MUST ALWAYS SPEAK OUTPUT In your Agent communication style with the configured `{communication_language}`.
+### 2. Memory Loading
 
-### 2. Route to Create Workflow
+Load relevant memory sidecar(s):
+
+- Read: `{project-root}/_bmad/_memory/product-manager-sidecar/common-mistakes.md`
+- Read: `{project-root}/_bmad/_memory/product-manager-sidecar/prd-patterns.md`
+- Read: `{project-root}/_bmad/_memory/global-learnings.md`
+- Apply learnings as AVOID rules and best practices for this session.
+
+### 3. Route to Create Workflow
 
 "**Create Mode: Creating a new PRD from scratch.**"
 

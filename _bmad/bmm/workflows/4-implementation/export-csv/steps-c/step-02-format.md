@@ -2,6 +2,8 @@
 name: "step-02-format"
 description: "Apply Jira or Rally CSV format"
 nextStepFile: "./step-03-generate.md"
+beadsCommand: "bd show {item_id}"
+qualityGate: soft
 ---
 
 # Step 2: Apply Format
@@ -9,6 +11,15 @@ nextStepFile: "./step-03-generate.md"
 ## STEP GOAL:
 
 Apply the correct CSV column mapping for the target enterprise tool.
+
+## PREREQUISITES CHECK
+
+### Hard Gates (MUST pass — abort if any fail)
+
+1. [ ] HG-01: Beads initialized -> `.beads/` exists
+2. [ ] Scope selected from step-01
+
+**If ANY hard gate fails -> STOP. Display specific error. Do NOT proceed.**
 
 ## MANDATORY SEQUENCE
 
@@ -42,6 +53,17 @@ For each item in export scope:
 - Map ACs → Acceptance Criteria field
 - Map WSJF → Priority
 
-"[C] Continue — Generate CSV file(s)"
+## MEMORY CAPTURE
+
+After this step completes, check if any of these occurred:
+
+- New export format mapping identified
+- Field mapping friction found
+
+If yes, append entry to: `governance-sidecar/export-field-mappings.md`
+
+## BEADS INTEGRATION
+
+- For each item in scope: `bd show {item_id}` to retrieve full details for field mapping
 
 - IF C: Read fully and follow `{nextStepFile}`

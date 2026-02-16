@@ -1,12 +1,15 @@
 ---
-name: sq-analyze
+name: create-business-case
 description: Create Lean Business Case and finalize WSJF scoring for a Portfolio Epic
 main_config: "{project-root}/_bmad/bmm/config.yaml"
 safe_rules: "{project-root}/Instructions to Use/SAFE AGILE.md"
 nextStep: "./steps-c/step-01-load-epic.md"
+continueStep: "./steps-c/step-01b-continue.md"
+editStep: "./steps-e/step-e-01-load.md"
+validateStep: "./steps-v/step-v-01-discovery.md"
 ---
 
-# SQ Analyze Workflow
+# Create Business Case Workflow
 
 **Goal:** Create the Lean Business Case for a Portfolio Epic — validate business value, define MVP, calculate WSJF, and advance the Epic from FUNNEL to ANALYZING.
 
@@ -34,11 +37,13 @@ This uses **step-file architecture** for disciplined execution:
 
 ### Critical Rules (NO EXCEPTIONS)
 
-- 🛑 **NEVER** load multiple step files simultaneously
-- 📖 **ALWAYS** read entire step file before execution
-- 🚫 **NEVER** skip steps or optimize the sequence
-- 💾 **ALWAYS** update frontmatter of output files
-- ✅ YOU MUST ALWAYS SPEAK OUTPUT in `{communication_language}`
+- NEVER load multiple step files simultaneously
+- ALWAYS read entire step file before execution
+- NEVER skip steps or optimize the sequence
+- ALWAYS update frontmatter of output files
+- YOU MUST ALWAYS SPEAK OUTPUT in `{communication_language}`
+- NEVER generate content without user input
+- YOU ARE A FACILITATOR, not a content generator
 
 ## INITIALIZATION SEQUENCE
 
@@ -49,12 +54,43 @@ Load and read full config from `{main_config}` and resolve:
 - `project_name`, `output_folder`, `user_name`, `communication_language`
 - Load `{safe_rules}` for SAFe hierarchy and RACI reference
 
-### 2. Beads Pre-Check
+### 2. Beads Pre-Check (HARD GATE — MANDATORY)
 
-Verify Beads is initialized: check that `{project-root}/.beads/` exists. If not, warn user to run `bd init` first.
+1. Check: Does `{project-root}/.beads/` exist?
+2. If **NO** -> **HARD FAIL**: "GATE FAILED [HG-01]: Beads not initialized. Run `bd init` before proceeding. SAFe tracking requires Beads."
+3. If **YES** -> Run `bd sync --status` to verify clean state
+4. If dirty -> WARN: "Uncommitted beads changes. Run `bd sync` first."
 
-### 3. Route to First Step
+**Do NOT proceed past this point if .beads/ does not exist.**
 
-"**SQ Analyze: Building the Lean Business Case for your Epic.**"
+### 3. Memory Loading
 
-Read fully and follow: `{nextStep}` (steps-c/step-01-load-epic.md)
+Load relevant memory sidecar(s):
+
+- Read: `{project-root}/_bmad/_memory/product-manager-sidecar/common-mistakes.md`
+- Read: `{project-root}/_bmad/_memory/product-manager-sidecar/prd-patterns.md`
+- Read: `{project-root}/_bmad/_memory/global-learnings.md`
+- Apply learnings as AVOID rules and best practices for this session.
+
+### 4. Mode Detection & Continuation
+
+Detect mode based on user intent or existing documents:
+
+1. **Check for Continuation**:
+   - If an existing draft document is found AND it contains `stepsCompleted` array in frontmatter:
+   - Ask: "I've found an interrupted session for {project_name}. Would you like to **[C] Resume progress** or start fresh?"
+   - If user chooses [C] -> Route to `{continueStep}`
+
+2. **Fresh Creation**:
+   - If no existing document OR user chooses to start fresh -> Route to `{nextStep}`
+
+3. **Existing Artifact found**:
+   - If a completed artifact is found:
+   - Ask: "Existing Business Case found. Would you like to **[E] Edit existing**, **[V] Validate existing**, or **[N] Create new**?"
+   - If [E] -> Route to `{editStep}`
+   - If [V] -> Route to `{validateStep}`
+   - If [N] -> Route to `{nextStep}`
+
+### 5. Execution
+
+Read fully and follow the step file determined during Mode Detection.

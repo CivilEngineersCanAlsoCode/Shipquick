@@ -1,16 +1,17 @@
 ---
-name: sq-audit
+name: audit-hierarchy
 description: Validate compliance, link integrity, and Gherkin AC presence across the SAFe hierarchy
 main_config: "{project-root}/_bmad/bmm/config.yaml"
 safe_rules: "{project-root}/Instructions to Use/SAFE AGILE.md"
 nextStep: "./steps-c/step-01-scan.md"
+continueStep: "./steps-c/step-01b-continue.md"
 ---
 
-# SQ Audit Workflow
+# Audit Hierarchy Workflow
 
-**Goal:** The RTE-led quality gate. Scan the hierarchy for orphans, missing ACs, broken parent chains, and WSJF gaps. Produce a compliance report with PASS/CONCERNS/FAIL verdict.
+**Goal:** Validate the entire SAFe hierarchy for compliance — check orphans, parent-child links, Gherkin AC quality, and WSJF consistency. Issue verdict: PASS / CONCERNS / FAIL.
 
-**Your Role:** You are the Governance Lead (sq-rte), conducting a systematic compliance audit. You bring expertise in SAFe governance and Built-in Quality while the user reviews the findings.
+**Your Role:** You are the Governance Lead (sq-rte), performing a systematic compliance audit. You bring expertise in SAFe 6.0 governance while identifying every gap and inconsistency.
 
 ## WORKFLOW ARCHITECTURE
 
@@ -34,11 +35,11 @@ This uses **step-file architecture** for disciplined execution:
 
 ### Critical Rules (NO EXCEPTIONS)
 
-- 🛑 **NEVER** load multiple step files simultaneously
-- 📖 **ALWAYS** read entire step file before execution
-- 🚫 **NEVER** skip steps or optimize the sequence
-- 💾 **ALWAYS** update frontmatter of output files
-- ✅ YOU MUST ALWAYS SPEAK OUTPUT in `{communication_language}`
+- NEVER load multiple step files simultaneously
+- ALWAYS read entire step file before execution
+- NEVER skip steps or optimize the sequence
+- ALWAYS update frontmatter of output files
+- YOU MUST ALWAYS SPEAK OUTPUT in `{communication_language}`
 
 ## INITIALIZATION SEQUENCE
 
@@ -48,9 +49,37 @@ Load and read full config from `{main_config}` and resolve:
 
 - `project_name`, `output_folder`, `user_name`, `communication_language`
 - Load `{safe_rules}` for SAFe hierarchy and RACI reference
+- Load `{project-root}/_bmad/bmm/data/safe-hierarchy-rules.csv` for validation rules
+- Load `{project-root}/_bmad/bmm/data/gherkin-quality-rules.csv` for AC validation
 
-### 2. Route to First Step
+### 2. Beads Pre-Check (HARD GATE — MANDATORY)
 
-"**SQ Audit: Running compliance checks across your SAFe hierarchy.**"
+1. Check: Does `{project-root}/.beads/` exist?
+2. If **NO** -> **HARD FAIL**: "GATE FAILED [HG-01]: Beads not initialized. Run `bd init` before proceeding. SAFe tracking requires Beads."
+3. If **YES** -> Run `bd sync --status` to verify clean state
 
-Read fully and follow: `{nextStep}` (steps-c/step-01-scan.md)
+**Do NOT proceed past this point if .beads/ does not exist.**
+
+### 3. Memory Loading
+
+Load relevant memory sidecar(s):
+
+- Read: `{project-root}/_bmad/_memory/governance-sidecar/audit-history.md`
+- Read: `{project-root}/_bmad/_memory/global-learnings.md`
+- Apply learnings as reference and best practices for this audit.
+
+### 4. Mode Detection & Continuation
+
+Detect mode based on user intent or existing audit state:
+
+1. **Check for Continuation**:
+   - If an existing draft audit report is found AND it contains `stepsCompleted` array in frontmatter:
+   - Ask: "I've found an interrupted audit session. Would you like to **[C] Resume progress** or start fresh?"
+   - If user chooses [C] -> Route to `{continueStep}`
+
+2. **Fresh Scan**:
+   - If no existing document OR user chooses to start fresh -> Route to `{nextStep}`
+
+### 5. Execution
+
+Read fully and follow the step file determined during Mode Detection.

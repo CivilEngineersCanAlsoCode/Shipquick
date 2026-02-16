@@ -44,13 +44,18 @@ This uses **step-file architecture** for disciplined execution:
 
 ---
 
-## INITIALIZATION SEQUENCE
-
-### 1. Configuration Loading
-
-Load and read full config from {project-root}/_bmad/bmm/config.yaml and resolve:
-
 - `project_name`, `output_folder`, `planning_artifacts`, `user_name`, `communication_language`, `document_output_language`, `user_skill_level`
+
+## MEMORY LOADING
+
+### 1. Load Sidecars
+
+Load relevant memory sidecar(s):
+
+- Read: `{project-root}/_bmad/_memory/product-manager-sidecar/common-mistakes.md`
+- Read: `{project-root}/_bmad/_memory/product-manager-sidecar/prd-patterns.md`
+- Read: `{project-root}/_bmad/_memory/global-learnings.md`
+- Apply learnings as AVOID rules and best practices for this brief creation session.
 
 ### 2. First Step EXECUTION
 

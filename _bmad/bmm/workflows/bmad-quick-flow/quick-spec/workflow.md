@@ -1,12 +1,12 @@
 ---
 name: quick-spec
 description: Conversational spec engineering - ask questions, investigate code, produce implementation-ready tech-spec.
-main_config: '{project-root}/_bmad/bmm/config.yaml'
+main_config: "{project-root}/_bmad/bmm/config.yaml"
 
 # Checkpoint handler paths
-advanced_elicitation: '{project-root}/_bmad/core/workflows/advanced-elicitation/workflow.xml'
-party_mode_exec: '{project-root}/_bmad/core/workflows/party-mode/workflow.md'
-quick_dev_workflow: '{project-root}/_bmad/bmm/workflows/bmad-quick-flow/quick-dev/workflow.md'
+advanced_elicitation: "{project-root}/_bmad/core/workflows/advanced-elicitation/workflow.xml"
+party_mode_exec: "{project-root}/_bmad/core/workflows/party-mode/workflow.md"
+quick_dev_workflow: "{project-root}/_bmad/bmm/workflows/bmad-quick-flow/quick-dev/workflow.md"
 ---
 
 # Quick-Spec Workflow
@@ -62,15 +62,19 @@ This uses **step-file architecture** for disciplined execution:
 
 ---
 
-## INITIALIZATION SEQUENCE
-
-### 1. Configuration Loading
-
-Load and read full config from `{main_config}` and resolve:
-
-- `project_name`, `output_folder`, `planning_artifacts`, `implementation_artifacts`, `user_name`
-- `communication_language`, `document_output_language`, `user_skill_level`
 - `date` as system-generated current datetime
+
+## MEMORY LOADING
+
+### 1. Load Sidecars
+
+Load relevant memory sidecar(s):
+
+- Read: `{project-root}/_bmad/_memory/architect-sidecar/common-mistakes.md`
+- Read: `{project-root}/_bmad/_memory/architect-sidecar/adr-patterns.md`
+- Read: `{project-root}/_bmad/_memory/global-learnings.md`
+- Apply learnings as AVOID rules and best practices for this spec-engineering session.
+
 - ✅ YOU MUST ALWAYS SPEAK OUTPUT In your Agent communication style with the config `{communication_language}`
 
 ### 2. First Step Execution

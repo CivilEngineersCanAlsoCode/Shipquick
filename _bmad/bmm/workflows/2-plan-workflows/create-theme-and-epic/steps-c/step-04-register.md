@@ -4,11 +4,23 @@ description: "Register Theme and Epic in Beads for tracking"
 
 epicFile: "{sq_output_folder}/epic-{epic_id}.md"
 themeFile: "{sq_output_folder}/theme-{theme_id}.md"
+beadsCommand: "bd sync"
+qualityGate: hard
 ---
 
 # Step 4: Register in Beads
 
 **Progress: Step 4 of 4** — Final Step
+
+## PREREQUISITES CHECK
+
+### Hard Gates (MUST pass — abort if any fail)
+
+1. [ ] HG-01: Beads initialized -> `.beads/` exists
+2. [ ] Theme and Epic documents exist with WSJF calculated
+3. [ ] HG-07: WSJF calculated -> Epic frontmatter contains `wsjf` value > 0
+
+**If ANY hard gate fails -> STOP. Display specific error. Do NOT proceed.**
 
 ## STEP GOAL:
 
@@ -55,6 +67,24 @@ Check that:
 - Run `/sq solve` to decompose into Capabilities
 
 Your theme and epic are now tracked in Beads and will persist across sessions."
+
+## QUALITY GATE
+
+- **PASS:** Both Theme and Epic exist in Beads DB, parent-child link verified, WSJF persisted.
+- **FAIL:** Beads sync failed or hierarchy link broken (Hard Gate HG-01, HG-04).
+
+## MEMORY CAPTURE
+
+- Capture any session-level learnings in `global-learnings.md`.
+- Update `portfolio-sidecar/common-mistakes.md` if any friction occurred.
+
+## SESSION CLOSE
+
+1. `bd sync` # Commit beads changes
+2. `git add {sq_output_folder}/` # Stage artifact files
+3. `git commit -m "feat: initialized SAFe hierarchy for {theme_name}"`
+4. `bd sync`
+5. `git push`
 
 ### 4. Update Frontmatter
 

@@ -4,11 +4,22 @@ description: "Calculate WSJF priority score"
 
 nextStepFile: "./step-04-register.md"
 epicFile: "{sq_output_folder}/epic-{epic_id}.md"
+beadsCommand: 'bd update {epic_bead_id} --notes="WSJF={wsjf_score}"'
+qualityGate: hard
 ---
 
 # Step 3: WSJF Calculation
 
 **Progress: Step 3 of 4** — Next: Register in Beads
+
+## PREREQUISITES CHECK
+
+### Hard Gates (MUST pass — abort if any fail)
+
+1. [ ] HG-01: Beads initialized -> `.beads/` exists
+2. [ ] Epic document exists -> `{epicFile}` exists with valid frontmatter
+
+**If ANY hard gate fails -> STOP. Display specific error. Do NOT proceed.**
 
 ## STEP GOAL:
 
@@ -28,7 +39,8 @@ Cost of Delay is the sum of:
 
 **Job Size** (1-21): How big is this relative to other items?
 
-Let's score your Epic."
+**[DATA LOADED]** Loading `wsjf-reference-scales.csv` to provide scoring guidance...
+"
 
 ### 2. Gather Scores
 
@@ -63,6 +75,21 @@ wsjf_tc: { tc }
 wsjf_rroe: { rroe }
 wsjf_job_size: { job_size }
 ```
+
+## BEADS INTEGRATION
+
+After calculating WSJF:
+
+- Run: `bd update {epic_bead_id} --notes="WSJF={wsjf_score} (UBV:{ubv} TC:{tc} RROE:{rroe} Size:{job_size})"`
+
+## MEMORY CAPTURE
+
+After this step completes, check if any of these occurred:
+
+- WSJF scoring required calibration discussion
+- User provided feedback on scoring criteria
+
+If yes, append entry to: `portfolio-sidecar/wsjf-calibration.md`
 
 ### 5. Present MENU OPTIONS
 

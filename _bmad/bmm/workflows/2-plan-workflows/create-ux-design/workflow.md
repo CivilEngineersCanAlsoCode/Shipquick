@@ -20,15 +20,18 @@ This uses **micro-file architecture** for disciplined execution:
 
 ---
 
-## INITIALIZATION
-
-### Configuration Loading
-
-Load config from `{project-root}/_bmad/bmm/config.yaml` and resolve:
-
-- `project_name`, `output_folder`, `planning_artifacts`, `user_name`
-- `communication_language`, `document_output_language`, `user_skill_level`
 - `date` as system-generated current datetime
+
+## MEMORY LOADING
+
+### 1. Load Sidecars
+
+Load relevant memory sidecar(s):
+
+- Read: `{project-root}/_bmad/_memory/ux-designer-sidecar/common-mistakes.md`
+- Read: `{project-root}/_bmad/_memory/ux-designer-sidecar/design-decisions.md`
+- Read: `{project-root}/_bmad/_memory/global-learnings.md`
+- Apply learnings as AVOID rules and best practices for this UX session.
 
 ### Paths
 

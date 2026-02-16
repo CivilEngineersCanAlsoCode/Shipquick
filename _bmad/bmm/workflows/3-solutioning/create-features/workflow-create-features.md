@@ -1,16 +1,19 @@
 ---
-name: sq-plan
+name: create-features
 description: Decompose Capabilities into Features at ART level for PI readiness
 main_config: "{project-root}/_bmad/bmm/config.yaml"
 safe_rules: "{project-root}/Instructions to Use/SAFE AGILE.md"
 nextStep: "./steps-c/step-01-load-capability.md"
+continueStep: "./steps-c/step-01b-continue.md"
+editStep: "./steps-e/step-e-01-load.md"
+validateStep: "./steps-v/step-v-01-discovery.md"
 ---
 
-# SQ Plan Workflow
+# Create Features Workflow
 
-**Goal:** Decompose Capabilities into PI-ready Features at the ART level. Each Feature inherits WSJF and gets Gherkin ACs, linked back to its parent Capability.
+**Goal:** Decompose Capabilities into PI-ready Features at the ART level. Each Feature inherits WSJF and gets Gherkin ACs.
 
-**Your Role:** You are the Vision Lead (sq-pm), guiding the user through Feature decomposition. You bring expertise in PI Planning and Feature sizing while the user defines the functional boundaries.
+**Your Role:** You are the Vision Lead (sq-pm), guiding the user through feature decomposition. You bring expertise in SAFe 6.0 ART-level planning while the user identifies the feature boundaries.
 
 ## WORKFLOW ARCHITECTURE
 
@@ -34,11 +37,13 @@ This uses **step-file architecture** for disciplined execution:
 
 ### Critical Rules (NO EXCEPTIONS)
 
-- 🛑 **NEVER** load multiple step files simultaneously
-- 📖 **ALWAYS** read entire step file before execution
-- 🚫 **NEVER** skip steps or optimize the sequence
-- 💾 **ALWAYS** update frontmatter of output files
-- ✅ YOU MUST ALWAYS SPEAK OUTPUT in `{communication_language}`
+- NEVER load multiple step files simultaneously
+- ALWAYS read entire step file before execution
+- NEVER skip steps or optimize the sequence
+- ALWAYS update frontmatter of output files
+- YOU MUST ALWAYS SPEAK OUTPUT in `{communication_language}`
+- NEVER generate content without user input
+- YOU ARE A FACILITATOR, not a content generator
 
 ## INITIALIZATION SEQUENCE
 
@@ -49,12 +54,49 @@ Load and read full config from `{main_config}` and resolve:
 - `project_name`, `output_folder`, `user_name`, `communication_language`
 - Load `{safe_rules}` for SAFe hierarchy and RACI reference
 
-### 2. Beads Pre-Check
+### 2. Beads Pre-Check (HARD GATE — MANDATORY)
 
-Verify Beads is initialized: check that `{project-root}/.beads/` exists. If not, warn user to run `bd init` first.
+1. Check: Does `{project-root}/.beads/` exist?
+2. If **NO** -> **HARD FAIL**: "GATE FAILED [HG-01]: Beads not initialized. Run `bd init` before proceeding. SAFe tracking requires Beads."
+3. If **YES** -> Run `bd sync --status` to verify clean state
+4. If dirty -> WARN: "Uncommitted beads changes. Run `bd sync` first."
 
-### 3. Route to First Step
+**Do NOT proceed past this point if .beads/ does not exist.**
 
-"**SQ Plan: Decomposing Capabilities into PI-ready Features.**"
+### Hard Gates (Additional)
 
-Read fully and follow: `{nextStep}` (steps-c/step-01-load-capability.md)
+- HG-05: At least 1 Capability bead must exist under the target Epic
+
+**If ANY hard gate fails -> STOP. Display: "GATE FAILED [HG-05]: No Capabilities found. Run /040-create-capabilities first."**
+
+### 3. Memory Loading
+
+Load relevant memory sidecar(s):
+
+- Read: `{project-root}/_bmad/_memory/product-manager-sidecar/common-mistakes.md`
+- Read: `{project-root}/_bmad/_memory/product-manager-sidecar/feature-sizing.md`
+- Read: `{project-root}/_bmad/_memory/global-learnings.md`
+- Apply learnings as AVOID rules and best practices for this session.
+
+### 4. Mode Detection & Continuation
+
+Detect mode based on user intent or existing documents:
+
+1. **Check for Continuation**:
+   - If an existing draft document is found AND it contains `stepsCompleted` array in frontmatter:
+   - Ask: "I've found an interrupted session for {project_name}. Would you like to **[C] Resume progress** or start fresh?"
+   - If user chooses [C] -> Route to `{continueStep}`
+
+2. **Fresh Creation**:
+   - If no existing document OR user chooses to start fresh -> Route to `{nextStep}`
+
+3. **Existing Artifact found**:
+   - If a completed artifact is found:
+   - Ask: "Existing Features found. Would you like to **[E] Edit existing**, **[V] Validate existing**, or **[N] Create new**?"
+   - If [E] -> Route to `{editStep}`
+   - If [V] -> Route to `{validateStep}`
+   - If [N] -> Route to `{nextStep}`
+
+### 5. Execution
+
+Read fully and follow the step file determined during Mode Detection.

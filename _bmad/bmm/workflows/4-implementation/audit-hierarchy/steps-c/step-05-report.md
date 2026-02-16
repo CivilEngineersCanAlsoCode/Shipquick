@@ -1,6 +1,8 @@
 ---
 name: "step-05-report"
 description: "Generate final compliance report with PASS/FAIL"
+beadsCommand: "bd sync"
+qualityGate: hard
 ---
 
 # Step 5: Compliance Report
@@ -8,6 +10,15 @@ description: "Generate final compliance report with PASS/FAIL"
 ## STEP GOAL:
 
 Generate the final compliance report with an overall PASS/FAIL verdict.
+
+## PREREQUISITES CHECK
+
+### Hard Gates (MUST pass — abort if any fail)
+
+1. [ ] HG-01: Beads initialized -> `.beads/` exists
+2. [ ] All audit checks (steps 01-04) completed
+
+**If ANY hard gate fails -> STOP. Display specific error. Do NOT proceed.**
 
 ## MANDATORY SEQUENCE
 
@@ -72,12 +83,22 @@ verdict: { PASS|CONCERNS|FAIL }
 | ACs     | {result} |
 | WSJF    | {result} |
 
-Report saved to: `{report_path}`
+## QUALITY GATE
 
-### Next Steps
+- **PASS:** Compliance report generated with PASS/CONCERNS verdict.
+- **FAIL:** Audit check failures not addressed or verdict is FAIL.
 
-For requirements-to-tests traceability, run the TEA workflow:
+## MEMORY CAPTURE
 
-- `/testarch-trace` — Generates a traceability matrix mapping SAFe items to test coverage
-- Maps Stories → QA Test Cases → actual test files
-- Produces a PASS/CONCERNS/FAIL quality gate decision"
+- Capture any session-level learnings in `global-learnings.md`.
+- Update `governance-sidecar/audit-history.md` with final report summary.
+
+## SESSION CLOSE
+
+1. `bd sync` # Commit beads changes
+2. `git add {sq_output_folder}/` # Stage artifact files
+3. `git commit -m "audit: completed hierarchy audit {verdict}"`
+4. `bd sync`
+5. `git push`
+
+**Next Steps:**

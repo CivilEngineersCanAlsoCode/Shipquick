@@ -5,11 +5,22 @@ description: "Create Portfolio Epic with MVP hypothesis"
 nextStepFile: "./step-03-wsjf.md"
 outputFile: "{sq_output_folder}/epic-{epic_id}.md"
 parentTheme: "{sq_output_folder}/theme-{theme_id}.md"
+beadsCommand: 'bd create --type=epic --title="Epic: {name}" --parent={theme_bead_id}'
+qualityGate: hard
 ---
 
 # Step 2: Create Portfolio Epic
 
 **Progress: Step 2 of 4** — Next: WSJF Calculation
+
+## PREREQUISITES CHECK
+
+### Hard Gates (MUST pass — abort if any fail)
+
+1. [ ] HG-01: Beads initialized -> `.beads/` exists
+2. [ ] Parent Theme exists -> Theme document at `{parentTheme}` exists with valid content
+
+**If ANY hard gate fails -> STOP. Display specific error. Do NOT proceed.**
 
 ## STEP GOAL:
 
@@ -91,6 +102,24 @@ wsjf: null
 Append to the parent theme's Children section:
 
 - `[{epic_name}]({outputFile})`
+
+## BEADS INTEGRATION
+
+After creating the epic document:
+
+- Run: `bd create --type=epic --title="Portfolio Epic: {epic_name}" --parent={theme_bead_id}`
+- Store the returned bead ID in the epic document frontmatter as `beadId`
+- This ID will be used as parent when creating Capabilities
+
+## MEMORY CAPTURE
+
+After this step completes, check if any of these occurred:
+
+- A decision was made that could inform future sessions
+- A mistake was caught and corrected
+- User provided feedback that changes how we work
+
+If yes, append entry to: `portfolio-sidecar/common-mistakes.md`
 
 ### 5. Present MENU OPTIONS
 

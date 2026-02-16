@@ -1,8 +1,8 @@
 ---
 name: validate-prd
 description: Validate an existing PRD against BMAD standards - comprehensive review for completeness, clarity, and quality
-main_config: '{project-root}/_bmad/bmm/config.yaml'
-validateWorkflow: './steps-v/step-v-01-discovery.md'
+main_config: "{project-root}/_bmad/bmm/config.yaml"
+validateWorkflow: "./steps-v/step-v-01-discovery.md"
 ---
 
 # PRD Validate Workflow
@@ -54,9 +54,15 @@ Load and read full config from {main_config} and resolve:
 - `communication_language`, `document_output_language`, `user_skill_level`
 - `date` as system-generated current datetime
 
-✅ YOU MUST ALWAYS SPEAK OUTPUT In your Agent communication style with the configured `{communication_language}`.
+### 2. Memory Loading
 
-### 2. Route to Validate Workflow
+Load relevant memory sidecar(s):
+
+- Read: `{project-root}/_bmad/_memory/product-manager-sidecar/common-mistakes.md`
+- Read: `{project-root}/_bmad/_memory/global-learnings.md`
+- Apply learnings as AVOID rules and best practices for this session.
+
+### 3. Route to Validate Workflow
 
 "**Validate Mode: Validating an existing PRD against BMAD standards.**"
 

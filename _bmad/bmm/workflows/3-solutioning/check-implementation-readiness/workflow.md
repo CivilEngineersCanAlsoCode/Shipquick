@@ -1,6 +1,6 @@
 ---
 name: check-implementation-readiness
-description: 'Critical validation workflow that assesses PRD, Architecture, and Epics & Stories for completeness and alignment before implementation. Uses adversarial review approach to find gaps and issues.'
+description: "Critical validation workflow that assesses PRD, Architecture, and Epics & Stories for completeness and alignment before implementation. Uses adversarial review approach to find gaps and issues."
 ---
 
 # Implementation Readiness
@@ -40,13 +40,19 @@ description: 'Critical validation workflow that assesses PRD, Architecture, and 
 
 ---
 
-## INITIALIZATION SEQUENCE
-
-### 1. Module Configuration Loading
-
-Load and read full config from {project-root}/_bmad/bmm/config.yaml and resolve:
-
 - `project_name`, `output_folder`, `planning_artifacts`, `user_name`, `communication_language`, `document_output_language`
+
+## MEMORY LOADING
+
+### 1. Load Sidecars
+
+Load relevant memory sidecar(s):
+
+- Read: `{project-root}/_bmad/_memory/governance-sidecar/common-mistakes.md`
+- Read: `{project-root}/_bmad/_memory/governance-sidecar/audit-history.md`
+- Read: `{project-root}/_bmad/_memory/global-learnings.md`
+- Apply learnings as AVOID rules and best practices for this readiness check.
+
 - ✅ YOU MUST ALWAYS SPEAK OUTPUT In your Agent communication style with the config `{communication_language}`
 
 ### 2. First Step EXECUTION

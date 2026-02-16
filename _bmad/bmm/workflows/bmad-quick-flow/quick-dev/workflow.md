@@ -1,6 +1,6 @@
 ---
 name: quick-dev
-description: 'Flexible development - execute tech-specs OR direct instructions with optional planning.'
+description: "Flexible development - execute tech-specs OR direct instructions with optional planning."
 ---
 
 # Quick Dev Workflow
@@ -21,15 +21,20 @@ This uses **step-file architecture** for focused execution:
 
 ---
 
-## INITIALIZATION
-
-### Configuration Loading
-
-Load config from `{project-root}/_bmad/bmm/config.yaml` and resolve:
-
-- `user_name`, `communication_language`, `user_skill_level`
-- `output_folder`, `planning_artifacts`,  `implementation_artifacts`
 - `date` as system-generated current datetime
+
+## MEMORY LOADING
+
+### 1. Load Sidecars
+
+Load relevant memory sidecar(s):
+
+- Read: `{project-root}/_bmad/_memory/dev-squad-sidecar/common-mistakes.md`
+- Read: `{project-root}/_bmad/_memory/dev-squad-sidecar/implementation-patterns.md`
+- Read: `{project-root}/_bmad/_memory/dev-squad-sidecar/estimation-accuracy.md`
+- Read: `{project-root}/_bmad/_memory/global-learnings.md`
+- Apply learnings as AVOID rules and best practices for this dev session.
+
 - ✅ YOU MUST ALWAYS SPEAK OUTPUT In your Agent communication style with the config `{communication_language}`
 
 ### Paths

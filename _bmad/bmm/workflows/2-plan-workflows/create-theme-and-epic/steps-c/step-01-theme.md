@@ -5,6 +5,8 @@ description: "Define the root Strategic Theme"
 nextStepFile: "./step-02-epic.md"
 outputFile: "{sq_output_folder}/theme-{theme_id}.md"
 safeRules: "{project-root}/Instructions to Use/SAFE AGILE.md"
+beadsCommand: 'bd create --type=epic --title="Theme: {name}"'
+qualityGate: hard
 ---
 
 # Step 1: Define Strategic Theme
@@ -15,12 +17,32 @@ safeRules: "{project-root}/Instructions to Use/SAFE AGILE.md"
 
 Define the root Strategic Theme that connects enterprise strategy to the portfolio. This is the top of the SAFe hierarchy.
 
+## PREREQUISITES CHECK
+
+### Hard Gates (MUST pass — abort if any fail)
+
+1. [ ] HG-01: Beads initialized -> `ls {project-root}/.beads/` exists
+   - If FAIL: "GATE FAILED [HG-01]: Beads not initialized. Run `bd init` before proceeding."
+
+**If ANY hard gate fails -> STOP. Display specific error. Do NOT proceed.**
+
+### Soft Gates (SHOULD pass — warn if fail)
+
+1. [ ] SG-01: PRD recommended -> Check if `{planning_artifacts}/prd.md` exists
+   - If missing: "PRD exists? Theme/Epic will be stronger with a PRD. Continue anyway? [Y/N]"
+
 ## MANDATORY EXECUTION RULES:
 
 - 🛑 NEVER generate content without user input
 - 📖 CRITICAL: Read the complete step file before taking any action
 - 📋 YOU ARE A FACILITATOR, not a content generator
 - ✅ Speak in `{communication_language}`
+
+## TRIMODAL_ROUTING
+
+- **IF mode=CREATE** -> Proceed to Section 1 (Welcome)
+- **IF mode=EDIT** -> Route to `../steps-e/step-e-01-load.md`
+- **IF mode=VALIDATE** -> Route to `../steps-v/step-v-01-discovery.md`
 
 ## MANDATORY SEQUENCE
 
@@ -74,6 +96,24 @@ status: ACTIVE
 
 - _(Portfolio Epics will be linked here)_
 ```
+
+## BEADS INTEGRATION
+
+After creating the theme document, register in Beads:
+
+- Run: `bd create --type=epic --title="Strategic Theme: {theme_name}"`
+- Store the returned bead ID in the theme document frontmatter as `beadId`
+- This ID will be used as parent when creating the Epic in step-02
+
+## MEMORY CAPTURE
+
+After this step completes, check if any of these occurred:
+
+- A decision was made that could inform future sessions
+- A mistake was caught and corrected
+- User provided feedback that changes how we work
+
+If yes, append entry to: `portfolio-sidecar/common-mistakes.md`
 
 ### 4. Present MENU OPTIONS
 

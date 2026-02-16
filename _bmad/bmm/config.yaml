@@ -21,3 +21,41 @@ safe:
   rules: "{project-root}/Instructions to Use/SAFE AGILE.md"
   types: "data/safe-types.yaml"
   output_folder: "{project-root}/_bmad-output/sq-artifacts"
+
+# Memory System
+memory:
+  enabled: true
+  global_learnings: "{project-root}/_bmad/_memory/global-learnings.md"
+  sidecar_root: "{project-root}/_bmad/_memory"
+  auto_capture: true
+
+# Beads Integration (MANDATORY)
+beads:
+  required: true
+  auto_register: true
+  sync_on_complete: true
+  pre_check_phases: [3, 4, 5, 6]
+
+# Quality Gates
+quality_gates:
+  enforcement: "hard"
+  prerequisites:
+    create-capabilities:
+      requires: ["031-create-business-case"]
+      gate_id: "HG-09"
+    create-features:
+      requires: ["040-create-capabilities"]
+      gate_id: "HG-05"
+    create-stories:
+      requires: ["041-create-features"]
+      gate_id: "HG-06"
+    audit-hierarchy:
+      requires: ["000-activate-shipquick"]
+      gate_id: "HG-01"
+  data_rules:
+    gherkin:
+      min_scenarios: 2
+      keywords: ["Given", "When", "Then"]
+    wsjf:
+      min_score: 1
+      reference_scale: Fibonacci

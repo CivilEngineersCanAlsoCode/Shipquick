@@ -2,6 +2,8 @@
 name: "step-03-generate"
 description: "Generate and validate CSV files"
 nextStepFile: "./step-04-confirm.md"
+beadsCommand: 'bd update {export_bead_id} --notes="CSV generated"'
+qualityGate: hard
 ---
 
 # Step 3: Generate CSV
@@ -9,6 +11,15 @@ nextStepFile: "./step-04-confirm.md"
 ## STEP GOAL:
 
 Write the CSV file(s) to the output folder.
+
+## PREREQUISITES CHECK
+
+### Hard Gates (MUST pass — abort if any fail)
+
+1. [ ] HG-01: Beads initialized -> `.beads/` exists
+2. [ ] Format mapping completed from step-02
+
+**If ANY hard gate fails -> STOP. Display specific error. Do NOT proceed.**
 
 ## MANDATORY SEQUENCE
 
@@ -40,6 +51,17 @@ If `both` format selected, generate two files:
 {csv_preview}
 ```
 
-[C] Continue — Final confirmation"
+## MEMORY CAPTURE
+
+After this step completes, check if any of these occurred:
+
+- CSV generation error patterns
+- File validation learning
+
+If yes, append entry to: `governance-sidecar/audit-history.md`
+
+## BEADS INTEGRATION
+
+- Run: `bd update {export_bead_id} --notes="CSV generated: {row_count} rows, {file_path}"`
 
 - IF C: Read fully and follow `{nextStepFile}`

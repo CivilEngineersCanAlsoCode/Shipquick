@@ -1,0 +1,6 @@
+epic_type,typical_capability_count,decomposition_strategy,common_pitfalls,example_capabilities
+platform,3-5,horizontal-slice,"Too many enabling capabilities","Infrastructure|API|Frontend|Security"
+customer-facing,4-7,user-journey,"Mixing technical and business capabilities","Onboarding|Core-Experience|Notification|Analytics"
+integration,2-4,system-boundary,"Over-decomposing simple integrations","Inbound|Outbound|Transformation|Monitoring"
+data-migration,3-5,data-lifecycle,"Ignoring rollback capability","Extract|Transform|Load|Validate|Rollback"
+compliance,2-4,regulation-domain,"Gold-plating beyond regulatory minimum","Assessment|Implementation|Audit|Reporting"

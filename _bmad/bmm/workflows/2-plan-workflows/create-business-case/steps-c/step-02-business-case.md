@@ -2,6 +2,8 @@
 name: "step-02-business-case"
 description: "Create Lean Business Case for the Epic"
 nextStepFile: "./step-03-mvp.md"
+beadsCommand: "bd update {epic_bead_id} --status=in_progress"
+qualityGate: hard
 ---
 
 # Step 2: Lean Business Case
@@ -9,6 +11,15 @@ nextStepFile: "./step-03-mvp.md"
 ## STEP GOAL:
 
 Facilitate the creation of a structured Lean Business Case following SAFe 6.0 format.
+
+## PREREQUISITES CHECK
+
+### Hard Gates (MUST pass — abort if any fail)
+
+1. [ ] HG-01: Beads initialized -> `.beads/` exists
+2. [ ] Epic loaded from step-01
+
+**If ANY hard gate fails -> STOP. Display specific error. Do NOT proceed.**
 
 ## MANDATORY SEQUENCE
 
@@ -52,10 +63,24 @@ Add to Epic document:
 {nfrs}
 ```
 
+## QUALITY GATE
+
+- **PASS:** Problem statement, solution hypothesis, and business value clearly defined.
+- **FAIL:** Missing problem statement or ambiguous hypothesis.
+
+## MEMORY CAPTURE
+
+After this step completes, check if any of these occurred:
+
+- New PRD pattern identified
+- Difficulty in defining solution hypothesis
+
+If yes, append entry to: `product-manager-sidecar/prd-patterns.md`
+
 ### 3. Present MENU OPTIONS
 
-"**✓ Lean Business Case drafted.**
+## BEADS INTEGRATION
 
-[C] Continue — Define the MVP"
+- Run: `bd update {epic_bead_id} --status=in_progress --notes="LBC in progress"`
 
 - IF C: Read fully and follow `{nextStepFile}`

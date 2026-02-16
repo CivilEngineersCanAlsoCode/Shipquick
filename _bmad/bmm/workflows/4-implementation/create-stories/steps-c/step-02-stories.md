@@ -2,6 +2,8 @@
 name: "step-02-stories"
 description: "Generate User Stories with Gherkin ACs"
 nextStepFile: "./step-03-tasks.md"
+beadsCommand: 'bd create --type=task --title="Story: {name}" --parent={feat_bead_id}'
+qualityGate: hard
 ---
 
 # Step 2: User Stories
@@ -9,6 +11,15 @@ nextStepFile: "./step-03-tasks.md"
 ## STEP GOAL:
 
 Break the Feature into iteration-sized User Stories with Gherkin ACs.
+
+## PREREQUISITES CHECK
+
+### Hard Gates (MUST pass — abort if any fail)
+
+1. [ ] HG-01: Beads initialized -> `.beads/` exists
+2. [ ] Feature loaded successfully from step-01
+
+**If ANY hard gate fails -> STOP. Display specific error. Do NOT proceed.**
 
 ## MANDATORY SEQUENCE
 
@@ -64,6 +75,28 @@ status: DEFINED
 
 "**Created {N} Stories** totaling {total_points} story points.
 
-[C] Continue — Generate Dev Tasks"
+## QUALITY GATE
+
+- **PASS:** Stories follow "As a... I want... So that..." format, Gherkin ACs (min 2 scenarios) present, points estimated.
+- **FAIL:** Missing scenarios, points, or non-Gherkin ACs.
+
+## MEMORY CAPTURE
+
+After this step completes, check if any of these occurred:
+
+- New story decomposition pattern identified
+- Difficulty in estimating story points
+
+If yes, append entry to: `product-manager-sidecar/feature-sizing.md`
+
+[C] Continue — Generate Dev Tasks
+"
+
+## BEADS INTEGRATION
+
+For each user story created:
+
+- Run: `bd create --type=task --title="Story: {story_name}" --parent={feat_bead_id}`
+- Store returned bead ID in story document frontmatter as `beadId`
 
 - IF C: Read fully and follow `{nextStepFile}`

@@ -13,12 +13,18 @@ description: Conduct technical research covering technology evaluation, architec
 
 **⛔ Web search required.** If unavailable, abort and tell the user.
 
-## CONFIGURATION
-
-Load config from `{project-root}/_bmad/bmm/config.yaml` and resolve:
-- `project_name`, `output_folder`, `planning_artifacts`, `user_name`
-- `communication_language`, `document_output_language`, `user_skill_level`
 - `date` as a system-generated value
+
+## MEMORY LOADING
+
+### 1. Load Sidecars
+
+Load relevant memory sidecar(s):
+
+- Read: `{project-root}/_bmad/_memory/architect-sidecar/common-mistakes.md`
+- Read: `{project-root}/_bmad/_memory/architect-sidecar/tech-stack-notes.md`
+- Read: `{project-root}/_bmad/_memory/global-learnings.md`
+- Apply learnings as AVOID rules and best practices for this technical session.
 
 ## QUICK TOPIC DISCOVERY
 
@@ -27,6 +33,7 @@ Load config from `{project-root}/_bmad/bmm/config.yaml` and resolve:
 **What technology, tool, or technical area do you want to research?**
 
 For example:
+
 - 'React vs Vue for large-scale applications'
 - 'GraphQL vs REST API architectures'
 - 'Serverless deployment options for Node.js'
@@ -35,6 +42,7 @@ For example:
 ### Topic Clarification
 
 Based on the user's topic, briefly clarify:
+
 1. **Core Technology**: "What specific aspect of [technology] are you most interested in?"
 2. **Research Goals**: "What do you hope to achieve with this research?"
 3. **Scope**: "Should we focus broadly or dive deep into specific aspects?"
