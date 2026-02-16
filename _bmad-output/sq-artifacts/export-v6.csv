@@ -1,0 +1,5 @@
+ID,Name,Type,Parent,WSJF,Status,Hypothesis
+Safe Agile Agentic Framework-cxb,"[Theme: Enterprise Cloud Modernization] Portfolio Epic: Hybrid Cloud Connectivity",portfolio-epic,,4.2,ANALYZING,"If we implement a unified mesh connectivity layer... then multi-cloud latency will drop by 30%..."
+Safe Agile Agentic Framework-cxb.1,"Cap: Multi-Cloud Mesh Gateway",capability,Safe Agile Agentic Framework-cxb,4.2,ANALYZING,"Standardized gateway implementation for bridging on-premise and public cloud networks..."
+Safe Agile Agentic Framework-cxb.1.1,"Feat: Dynamic Routing Engine",feature,Safe Agile Agentic Framework-cxb.1,4.2,ANALYZING,"If we implement dynamic routing via BGP... then routing updates will propagate in under 5 seconds..."
+Safe Agile Agentic Framework-cxb.1.1.1,"Story: Configure BGP Peering",user-story,Safe Agile Agentic Framework-cxb.1.1,,READY,"As a network engineer, I want to configure BGP peering... so that routes can be shared across the mesh."
