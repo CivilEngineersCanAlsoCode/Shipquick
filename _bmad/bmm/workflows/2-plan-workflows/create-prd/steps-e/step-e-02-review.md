@@ -217,7 +217,13 @@ Read fully and follow: {nextStepFile} (step-e-03-edit.md)
 - ALWAYS halt and wait for user input
 - Only proceed to edit when user selects 'C'
 
-#### Menu Handling Logic:
+#
+## MEMORY CAPTURE
+
+- **Mistake Tracking**: Append any user-corrected assumptions or agent errors to portfolio-sidecar/common-mistakes.md.
+- **Learning**: Document new patterns or decisions to portfolio-sidecar/decomposition-patterns.md.
+
+### Menu Handling Logic:
 
 - IF A: Read fully and follow: {advancedElicitationTask}, then return to discussion
 - IF P: Read fully and follow: {partyModeWorkflow}, then return to discussion

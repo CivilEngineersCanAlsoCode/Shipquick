@@ -15,6 +15,12 @@ Verify parent-child IDs match and sync status with Beads.
 1. **Link Check**: Verify `parentId` refers to a valid existing artifact.
 2. **Beads Audit**: Run `bd show {beadId}`. Verify status in document matches status in Beads.
 
+
+## MEMORY CAPTURE
+
+- **Mistake Tracking**: Append any user-corrected assumptions or agent errors to portfolio-sidecar/common-mistakes.md.
+- **Learning**: Document new patterns or decisions to portfolio-sidecar/decomposition-patterns.md.
+
 ## MENU OPTIONS:
 
 [C] Continue — Generate final validation report

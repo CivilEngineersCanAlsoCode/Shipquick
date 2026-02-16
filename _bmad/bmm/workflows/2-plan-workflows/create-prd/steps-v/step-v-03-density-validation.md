@@ -172,3 +172,8 @@ Without delay, read fully and follow: {nextStepFile} (step-v-04-brief-coverage-v
 - Not attempting subprocess architecture
 
 **Master Rule:** Information density validation runs autonomously. Scan, classify, report, auto-proceed. No user interaction needed.
+
+## MEMORY CAPTURE
+
+- **Mistake Tracking**: Append any user-corrected assumptions or agent errors to portfolio-sidecar/common-mistakes.md.
+- **Learning**: Document new patterns or decisions to portfolio-sidecar/decomposition-patterns.md.

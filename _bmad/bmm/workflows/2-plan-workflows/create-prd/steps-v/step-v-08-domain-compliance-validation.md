@@ -241,3 +241,8 @@ Without delay, read fully and follow: {nextStepFile} (step-v-09-project-type-val
 - Not auto-proceeding
 
 **Master Rule:** Domain compliance is conditional. High-complexity domains require special sections - low complexity domains skip these checks.
+
+## MEMORY CAPTURE
+
+- **Mistake Tracking**: Append any user-corrected assumptions or agent errors to portfolio-sidecar/common-mistakes.md.
+- **Learning**: Document new patterns or decisions to portfolio-sidecar/decomposition-patterns.md.

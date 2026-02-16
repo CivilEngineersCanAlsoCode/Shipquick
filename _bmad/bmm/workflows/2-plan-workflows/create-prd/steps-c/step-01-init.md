@@ -149,7 +149,13 @@ Display menu after setup report:
 
 "[C] Continue - Save this and move to Project Discovery (Step 2 of 11)"
 
-#### Menu Handling Logic:
+#
+## MEMORY CAPTURE
+
+- **Mistake Tracking**: Append any user-corrected assumptions or agent errors to portfolio-sidecar/common-mistakes.md.
+- **Learning**: Document new patterns or decisions to portfolio-sidecar/decomposition-patterns.md.
+
+### Menu Handling Logic:
 
 - IF C: Update output file frontmatter, adding this step name to the end of the list of stepsCompleted, then read fully and follow: {nextStepFile}
 - IF user provides additional files: Load them, update inputDocuments and documentCounts, redisplay report

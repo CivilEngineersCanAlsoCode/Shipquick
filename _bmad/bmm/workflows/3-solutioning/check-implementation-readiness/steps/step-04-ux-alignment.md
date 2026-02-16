@@ -131,3 +131,8 @@ UX alignment assessment complete. Loading next step for epic quality review.
 - Not checking for UX document
 - Ignoring alignment issues
 - Not documenting warnings
+
+## MEMORY CAPTURE
+
+- **Mistake Tracking**: Append any user-corrected assumptions or agent errors to governance-sidecar/common-mistakes.md.
+- **Learning**: Document new patterns or decisions to governance-sidecar/decomposition-patterns.md.

@@ -28,6 +28,12 @@ Resume the CSV Export workflow from where it was left off, ensuring smooth conti
    - Extract the `nextStepFile` from its frontmatter.
 3. **Restore Context**: Load any other relevant context mentioned in frontmatter.
 
+
+## MEMORY CAPTURE
+
+- **Mistake Tracking**: Append any user-corrected assumptions or agent errors to governance-sidecar/common-mistakes.md.
+- **Learning**: Document new patterns or decisions to governance-sidecar/decomposition-patterns.md.
+
 ## MENU OPTIONS:
 
 "Welcome back {user_name}! I've analyzed your progress on the CSV Export.

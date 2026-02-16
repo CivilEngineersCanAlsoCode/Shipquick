@@ -256,3 +256,8 @@ After the assessment summary, proceed directly to the session menu:
 - Hardcoding responses instead of asking user
 
 **Master Rule:** Assessment must be complete and validated before proceeding to session menu.
+
+## MEMORY CAPTURE
+
+- **Mistake Tracking**: Append any user-corrected assumptions or agent errors to test-architect-sidecar/common-mistakes.md.
+- **Learning**: Document new patterns or decisions to test-architect-sidecar/decomposition-patterns.md.

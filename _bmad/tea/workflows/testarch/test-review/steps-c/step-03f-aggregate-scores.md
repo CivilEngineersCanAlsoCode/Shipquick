@@ -244,3 +244,8 @@ Load next step: `{nextStepFile}`
 - Summary missing or incomplete
 
 **Master Rule:** All 5 quality dimensions MUST be aggregated for accurate overall score.
+
+## MEMORY CAPTURE
+
+- **Mistake Tracking**: Append any user-corrected assumptions or agent errors to test-architect-sidecar/common-mistakes.md.
+- **Learning**: Document new patterns or decisions to test-architect-sidecar/decomposition-patterns.md.

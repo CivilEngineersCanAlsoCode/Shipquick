@@ -298,3 +298,8 @@ Load next step: `{nextStepFile}`
 - Summary missing or inaccurate
 
 **Master Rule:** Do NOT proceed to Step 4 if aggregation incomplete.
+
+## MEMORY CAPTURE
+
+- **Mistake Tracking**: Append any user-corrected assumptions or agent errors to test-architect-sidecar/common-mistakes.md.
+- **Learning**: Document new patterns or decisions to test-architect-sidecar/decomposition-patterns.md.

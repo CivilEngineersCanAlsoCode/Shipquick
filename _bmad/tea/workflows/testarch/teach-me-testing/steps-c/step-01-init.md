@@ -233,3 +233,8 @@ This helps me customize examples and recommendations for you.
 - Asking user questions before checking progress
 
 **Master Rule:** This is an auto-proceed initialization step. Check progress, route appropriately, no user menu needed.
+
+## MEMORY CAPTURE
+
+- **Mistake Tracking**: Append any user-corrected assumptions or agent errors to test-architect-sidecar/common-mistakes.md.
+- **Learning**: Document new patterns or decisions to test-architect-sidecar/decomposition-patterns.md.

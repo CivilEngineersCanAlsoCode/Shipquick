@@ -16,6 +16,12 @@ Load the existing Business Case (Epic) document and prepare it for modification.
 2. **Load & Read**: Load the full content of the file.
 3. **Analyze Content**: Parse the frontmatter and sections to understand current hypothesis.
 
+
+## MEMORY CAPTURE
+
+- **Mistake Tracking**: Append any user-corrected assumptions or agent errors to portfolio-sidecar/common-mistakes.md.
+- **Learning**: Document new patterns or decisions to portfolio-sidecar/decomposition-patterns.md.
+
 ## MENU OPTIONS:
 
 [C] Continue — Proceed to modifications

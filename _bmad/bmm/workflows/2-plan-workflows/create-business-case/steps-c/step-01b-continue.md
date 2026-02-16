@@ -28,6 +28,12 @@ Resume the Business Case workflow from where it was left off, ensuring smooth co
    - Extract the `nextStepFile` from its frontmatter.
 3. **Restore Context**: Load any other relevant context mentioned in frontmatter.
 
+
+## MEMORY CAPTURE
+
+- **Mistake Tracking**: Append any user-corrected assumptions or agent errors to portfolio-sidecar/common-mistakes.md.
+- **Learning**: Document new patterns or decisions to portfolio-sidecar/decomposition-patterns.md.
+
 ## MENU OPTIONS:
 
 "Welcome back {user_name}! I've analyzed your progress on the Lean Business Case.

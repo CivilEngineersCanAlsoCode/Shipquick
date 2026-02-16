@@ -261,3 +261,8 @@ Without delay, read fully and follow: {nextStepFile} (step-v-10-smart-validation
 - Not auto-proceeding
 
 **Master Rule:** Different project types have different requirements. API PRDs don't need UX sections - validate accordingly.
+
+## MEMORY CAPTURE
+
+- **Mistake Tracking**: Append any user-corrected assumptions or agent errors to portfolio-sidecar/common-mistakes.md.
+- **Learning**: Document new patterns or decisions to portfolio-sidecar/decomposition-patterns.md.

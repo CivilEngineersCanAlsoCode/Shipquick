@@ -97,3 +97,8 @@ Summarize:
 
 - Skipped sequence steps or missing outputs
   **Master Rule:** Skipping steps is FORBIDDEN.
+
+## MEMORY CAPTURE
+
+- **Mistake Tracking**: Append any user-corrected assumptions or agent errors to test-architect-sidecar/common-mistakes.md.
+- **Learning**: Document new patterns or decisions to test-architect-sidecar/decomposition-patterns.md.

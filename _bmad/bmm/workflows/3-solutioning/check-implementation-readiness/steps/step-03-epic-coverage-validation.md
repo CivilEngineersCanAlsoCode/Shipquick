@@ -171,3 +171,8 @@ Epic coverage validation complete. Loading next step for UX alignment.
 - Incomplete coverage analysis
 
 **Master Rule:** Every FR must have a traceable implementation path.
+
+## MEMORY CAPTURE
+
+- **Mistake Tracking**: Append any user-corrected assumptions or agent errors to governance-sidecar/common-mistakes.md.
+- **Learning**: Document new patterns or decisions to governance-sidecar/decomposition-patterns.md.

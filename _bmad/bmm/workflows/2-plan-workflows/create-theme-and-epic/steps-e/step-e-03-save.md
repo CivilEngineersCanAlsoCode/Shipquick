@@ -17,6 +17,12 @@ Finalize coordinates and persist changes back to the file system and Beads.
 3. **Sync Beads**: Run `bd update` to reflect changes in the tracking system.
 4. **Session Close**: Execute git commit and bd sync as per standard protocol.
 
+
+## MEMORY CAPTURE
+
+- **Mistake Tracking**: Append any user-corrected assumptions or agent errors to portfolio-sidecar/common-mistakes.md.
+- **Learning**: Document new patterns or decisions to portfolio-sidecar/decomposition-patterns.md.
+
 ## MENU OPTIONS:
 
 "✓ Changes saved and synchronized."

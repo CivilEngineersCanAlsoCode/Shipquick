@@ -125,7 +125,13 @@ Ready to proceed with edits?"
 
 Display: **Select an Option:** [A] Advanced Elicitation [P] Party Mode [C] Continue to Apply Edits
 
-#### Menu Handling Logic:
+#
+## MEMORY CAPTURE
+
+- **Mistake Tracking**: Append any user-corrected assumptions or agent errors to test-architect-sidecar/common-mistakes.md.
+- **Learning**: Document new patterns or decisions to test-architect-sidecar/decomposition-patterns.md.
+
+### Menu Handling Logic:
 
 - IF A: Execute {advancedElicitationTask}, redisplay menu
 - IF P: Execute {partyModeWorkflow}, redisplay menu

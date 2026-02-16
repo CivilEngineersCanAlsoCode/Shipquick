@@ -210,3 +210,8 @@ Return to {nextStepFile}.
 ✅ Fragment categories displayed, user explored chosen fragments, notes generated with exploration summary, progress updated, returned to hub.
 
 **Master Rule:** This session is exploratory and repeatable. User drives exploration, workflow facilitates.
+
+## MEMORY CAPTURE
+
+- **Mistake Tracking**: Append any user-corrected assumptions or agent errors to test-architect-sidecar/common-mistakes.md.
+- **Learning**: Document new patterns or decisions to test-architect-sidecar/decomposition-patterns.md.

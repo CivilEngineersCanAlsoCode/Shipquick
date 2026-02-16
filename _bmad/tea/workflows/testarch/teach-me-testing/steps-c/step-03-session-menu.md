@@ -167,7 +167,13 @@ What would you like to do?"
 - Route based on user selection
 - User can ask questions - always respond and redisplay menu
 
-#### Menu Handling Logic:
+#
+## MEMORY CAPTURE
+
+- **Mistake Tracking**: Append any user-corrected assumptions or agent errors to test-architect-sidecar/common-mistakes.md.
+- **Learning**: Document new patterns or decisions to test-architect-sidecar/decomposition-patterns.md.
+
+### Menu Handling Logic:
 
 - IF 1: Load, read entire file, then execute {session01File}
 - IF 2: Load, read entire file, then execute {session02File}

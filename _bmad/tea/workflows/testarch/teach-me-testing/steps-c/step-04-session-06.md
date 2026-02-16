@@ -207,3 +207,8 @@ Return to {nextStepFile}.
 ## 🚨 SUCCESS METRICS
 
 ✅ Test Review and Trace taught, quality dimensions explained, quiz passed, notes generated, returned to hub.
+
+## MEMORY CAPTURE
+
+- **Mistake Tracking**: Append any user-corrected assumptions or agent errors to test-architect-sidecar/common-mistakes.md.
+- **Learning**: Document new patterns or decisions to test-architect-sidecar/decomposition-patterns.md.

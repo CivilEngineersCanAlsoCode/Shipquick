@@ -261,3 +261,8 @@ Workflow is usable but could be improved.
 ✅ All validation checks run, comprehensive report generated, issues identified with remediation guidance, overall status determined.
 
 **Master Rule:** Check everything systematically, report findings clearly, provide actionable remediation.
+
+## MEMORY CAPTURE
+
+- **Mistake Tracking**: Append any user-corrected assumptions or agent errors to test-architect-sidecar/common-mistakes.md.
+- **Learning**: Document new patterns or decisions to test-architect-sidecar/decomposition-patterns.md.

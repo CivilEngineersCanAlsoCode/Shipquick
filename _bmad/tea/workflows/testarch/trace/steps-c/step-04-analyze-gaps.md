@@ -242,3 +242,8 @@ Load next step: `{nextStepFile}`
 - Invalid JSON output
 
 **Master Rule:** Phase 1 MUST output complete coverage matrix to temp file before Phase 2 can proceed.
+
+## MEMORY CAPTURE
+
+- **Mistake Tracking**: Append any user-corrected assumptions or agent errors to test-architect-sidecar/common-mistakes.md.
+- **Learning**: Document new patterns or decisions to test-architect-sidecar/decomposition-patterns.md.

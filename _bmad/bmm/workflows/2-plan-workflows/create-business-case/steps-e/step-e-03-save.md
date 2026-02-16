@@ -16,6 +16,12 @@ Finalize coordinates and persist changes.
 2. **Write Output**: Update the file.
 3. **Sync Beads**: Run `bd update`.
 
+
+## MEMORY CAPTURE
+
+- **Mistake Tracking**: Append any user-corrected assumptions or agent errors to portfolio-sidecar/common-mistakes.md.
+- **Learning**: Document new patterns or decisions to portfolio-sidecar/decomposition-patterns.md.
+
 ## MENU OPTIONS:
 
 [H] Home — End session

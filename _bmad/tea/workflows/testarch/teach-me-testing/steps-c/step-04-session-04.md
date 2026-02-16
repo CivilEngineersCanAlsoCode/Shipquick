@@ -232,3 +232,8 @@ Return to {nextStepFile}.
 ✅ Test Design workflow taught, quiz passed, notes generated, progress updated, returned to hub.
 
 **Master Rule:** Teach planning, quiz, update, return.
+
+## MEMORY CAPTURE
+
+- **Mistake Tracking**: Append any user-corrected assumptions or agent errors to test-architect-sidecar/common-mistakes.md.
+- **Learning**: Document new patterns or decisions to test-architect-sidecar/decomposition-patterns.md.

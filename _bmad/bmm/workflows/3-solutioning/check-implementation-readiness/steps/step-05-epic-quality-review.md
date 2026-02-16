@@ -243,3 +243,8 @@ This step executes autonomously. Load {nextStepFile} only after complete epic qu
 - Overlooking obvious violations
 
 **Master Rule:** Enforce best practices rigorously. Find all violations.
+
+## MEMORY CAPTURE
+
+- **Mistake Tracking**: Append any user-corrected assumptions or agent errors to governance-sidecar/common-mistakes.md.
+- **Learning**: Document new patterns or decisions to governance-sidecar/decomposition-patterns.md.

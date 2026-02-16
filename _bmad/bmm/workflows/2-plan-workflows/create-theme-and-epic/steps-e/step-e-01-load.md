@@ -21,6 +21,12 @@ Load the existing Theme & Epic document and prepare it for modification.
    - Current Status: {status}
    - Last Completed: {stepsCompleted}
 
+
+## MEMORY CAPTURE
+
+- **Mistake Tracking**: Append any user-corrected assumptions or agent errors to portfolio-sidecar/common-mistakes.md.
+- **Learning**: Document new patterns or decisions to portfolio-sidecar/decomposition-patterns.md.
+
 ## MENU OPTIONS:
 
 [C] Continue — Proceed to modifications

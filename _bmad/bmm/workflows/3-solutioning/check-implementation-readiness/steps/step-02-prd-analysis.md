@@ -170,3 +170,8 @@ PRD analysis complete. Loading next step to validate epic coverage.
 - Not documenting findings in report
 
 **Master Rule:** Complete requirement extraction is essential for traceability validation.
+
+## MEMORY CAPTURE
+
+- **Mistake Tracking**: Append any user-corrected assumptions or agent errors to governance-sidecar/common-mistakes.md.
+- **Learning**: Document new patterns or decisions to governance-sidecar/decomposition-patterns.md.

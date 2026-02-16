@@ -227,3 +227,8 @@ Proceed to Step 4C (Aggregation) when:
 - Attempted sequential generation instead of parallel
 
 **Master Rule:** TDD RED PHASE requires FAILING tests (with test.skip()). Parallel subprocess execution is MANDATORY for performance.
+
+## MEMORY CAPTURE
+
+- **Mistake Tracking**: Append any user-corrected assumptions or agent errors to test-architect-sidecar/common-mistakes.md.
+- **Learning**: Document new patterns or decisions to test-architect-sidecar/decomposition-patterns.md.

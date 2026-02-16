@@ -159,7 +159,13 @@ Present MENU OPTIONS below for user selection
 - ALWAYS halt and wait for user input
 - Only proceed based on user selection
 
-#### Menu Handling Logic:
+#
+## MEMORY CAPTURE
+
+- **Mistake Tracking**: Append any user-corrected assumptions or agent errors to portfolio-sidecar/common-mistakes.md.
+- **Learning**: Document new patterns or decisions to portfolio-sidecar/decomposition-patterns.md.
+
+### Menu Handling Logic:
 
 - IF A (Parity Check): Read fully and follow: {altStepFile} (step-v-02b-parity-check.md)
 - IF B (Validate As-Is): Display "Proceeding with validation..." then read fully and follow: {nextStepFile}

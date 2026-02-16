@@ -16,6 +16,12 @@ Allow the user to modify specific details of the Theme or Epic while maintaining
 2. **Draft Changes**: Show the proposed updated sections.
 3. **Maintain Compliance**: Ensure changes don't break parent-child links or core SAFe attributes.
 
+
+## MEMORY CAPTURE
+
+- **Mistake Tracking**: Append any user-corrected assumptions or agent errors to portfolio-sidecar/common-mistakes.md.
+- **Learning**: Document new patterns or decisions to portfolio-sidecar/decomposition-patterns.md.
+
 ## MENU OPTIONS:
 
 [C] Continue — Preview and Save changes

@@ -123,3 +123,8 @@ Subprocess completes when:
 
 - Checked quality dimensions other than isolation
 - Invalid or missing JSON output
+
+## MEMORY CAPTURE
+
+- **Mistake Tracking**: Append any user-corrected assumptions or agent errors to test-architect-sidecar/common-mistakes.md.
+- **Learning**: Document new patterns or decisions to test-architect-sidecar/decomposition-patterns.md.

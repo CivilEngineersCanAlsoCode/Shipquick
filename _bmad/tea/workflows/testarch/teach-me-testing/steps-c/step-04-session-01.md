@@ -422,7 +422,13 @@ Display: **Select an Option:** [A] Advanced Elicitation [P] Party Mode [C] Conti
 - ONLY proceed to session menu when user selects 'C'
 - After other menu items execution, return to this menu
 
-#### Menu Handling Logic:
+#
+## MEMORY CAPTURE
+
+- **Mistake Tracking**: Append any user-corrected assumptions or agent errors to test-architect-sidecar/common-mistakes.md.
+- **Learning**: Document new patterns or decisions to test-architect-sidecar/decomposition-patterns.md.
+
+### Menu Handling Logic:
 
 - IF A: Execute {advancedElicitationTask}, and when finished redisplay the menu
 - IF P: Execute {partyModeWorkflow}, and when finished redisplay the menu

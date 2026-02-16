@@ -232,3 +232,8 @@ Return to {nextStepFile}.
 ## 🚨 SUCCESS METRICS
 
 ✅ ATDD and Automate taught, TDD explained, quiz passed, notes generated, progress updated, returned to hub.
+
+## MEMORY CAPTURE
+
+- **Mistake Tracking**: Append any user-corrected assumptions or agent errors to test-architect-sidecar/common-mistakes.md.
+- **Learning**: Document new patterns or decisions to test-architect-sidecar/decomposition-patterns.md.

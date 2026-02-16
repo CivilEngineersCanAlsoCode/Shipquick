@@ -127,3 +127,8 @@ Implementation Readiness complete. Read fully and follow: `_bmad/core/tasks/help
 - Not reviewing previous findings
 - Incomplete summary
 - No clear recommendations
+
+## MEMORY CAPTURE
+
+- **Mistake Tracking**: Append any user-corrected assumptions or agent errors to governance-sidecar/common-mistakes.md.
+- **Learning**: Document new patterns or decisions to governance-sidecar/decomposition-patterns.md.

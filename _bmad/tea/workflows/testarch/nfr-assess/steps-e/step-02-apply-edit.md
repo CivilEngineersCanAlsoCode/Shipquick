@@ -58,3 +58,8 @@ Summarize the edits applied.
 ### ❌ SYSTEM FAILURE:
 
 - Unconfirmed edits or missing update
+
+## MEMORY CAPTURE
+
+- **Mistake Tracking**: Append any user-corrected assumptions or agent errors to test-architect-sidecar/common-mistakes.md.
+- **Learning**: Document new patterns or decisions to test-architect-sidecar/decomposition-patterns.md.

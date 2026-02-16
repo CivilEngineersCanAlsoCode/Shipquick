@@ -327,3 +327,8 @@ Load next step: `{nextStepFile}`
 - ATDD checklist missing
 
 **Master Rule:** TDD RED PHASE requires ALL tests to use test.skip() and assert expected behavior.
+
+## MEMORY CAPTURE
+
+- **Mistake Tracking**: Append any user-corrected assumptions or agent errors to test-architect-sidecar/common-mistakes.md.
+- **Learning**: Document new patterns or decisions to test-architect-sidecar/decomposition-patterns.md.

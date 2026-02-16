@@ -226,3 +226,8 @@ Without delay, read fully and follow: {nextStepFile} (step-v-06-traceability-val
 - Not auto-proceeding
 
 **Master Rule:** Requirements must be testable to be useful. Validate every requirement for measurability, document violations, auto-proceed.
+
+## MEMORY CAPTURE
+
+- **Mistake Tracking**: Append any user-corrected assumptions or agent errors to portfolio-sidecar/common-mistakes.md.
+- **Learning**: Document new patterns or decisions to portfolio-sidecar/decomposition-patterns.md.

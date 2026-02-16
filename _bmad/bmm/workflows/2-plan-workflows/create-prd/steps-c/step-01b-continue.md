@@ -118,7 +118,13 @@ Does this look right, or do you want to make any adjustments before we proceed?"
 
 Display: "**Select an Option:** [C] Continue to {next step name}"
 
-#### Menu Handling Logic:
+#
+## MEMORY CAPTURE
+
+- **Mistake Tracking**: Append any user-corrected assumptions or agent errors to portfolio-sidecar/common-mistakes.md.
+- **Learning**: Document new patterns or decisions to portfolio-sidecar/decomposition-patterns.md.
+
+### Menu Handling Logic:
 
 - IF C: Read fully and follow the {nextStepFile} determined in step 3
 - IF Any other comments or queries: respond and redisplay menu

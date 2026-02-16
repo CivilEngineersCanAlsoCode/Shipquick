@@ -207,3 +207,8 @@ Without delay, read fully and follow: {nextStepFile} (step-v-11-holistic-quality
 - Not auto-proceeding
 
 **Master Rule:** FRs should be high-quality, not just present. SMART framework provides objective quality measure.
+
+## MEMORY CAPTURE
+
+- **Mistake Tracking**: Append any user-corrected assumptions or agent errors to portfolio-sidecar/common-mistakes.md.
+- **Learning**: Document new patterns or decisions to portfolio-sidecar/decomposition-patterns.md.

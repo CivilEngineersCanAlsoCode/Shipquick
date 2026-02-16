@@ -18,6 +18,12 @@ Generate a summary of findings and assign a quality verdict.
    - **FAIL**: Missing core sections or broken links.
 3. **Next Steps**: Offer options to edit or proceed to next workflow.
 
+
+## MEMORY CAPTURE
+
+- **Mistake Tracking**: Append any user-corrected assumptions or agent errors to portfolio-sidecar/common-mistakes.md.
+- **Learning**: Document new patterns or decisions to portfolio-sidecar/decomposition-patterns.md.
+
 ## MENU OPTIONS:
 
 [H] Home — End session

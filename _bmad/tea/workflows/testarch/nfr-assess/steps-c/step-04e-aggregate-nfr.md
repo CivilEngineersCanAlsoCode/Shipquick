@@ -217,3 +217,8 @@ Load next step: `{nextStepFile}`
 
 - Failed to read subprocess outputs
 - Risk calculation incorrect
+
+## MEMORY CAPTURE
+
+- **Mistake Tracking**: Append any user-corrected assumptions or agent errors to test-architect-sidecar/common-mistakes.md.
+- **Learning**: Document new patterns or decisions to test-architect-sidecar/decomposition-patterns.md.

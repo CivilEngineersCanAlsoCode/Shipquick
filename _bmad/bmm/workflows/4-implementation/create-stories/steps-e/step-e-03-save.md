@@ -10,6 +10,12 @@ beadsCommand: "bd update {story_bead_id}"
 
 Finalize modifications and synchronize.
 
+
+## MEMORY CAPTURE
+
+- **Mistake Tracking**: Append any user-corrected assumptions or agent errors to scrum-master-sidecar/common-mistakes.md.
+- **Learning**: Document new patterns or decisions to scrum-master-sidecar/decomposition-patterns.md.
+
 ## MENU OPTIONS:
 
 [H] Home — End session

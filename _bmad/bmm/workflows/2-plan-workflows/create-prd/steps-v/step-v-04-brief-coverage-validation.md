@@ -212,3 +212,8 @@ Without delay, read fully and follow: {nextStepFile} (step-v-05-measurability-va
 - Not auto-proceeding
 
 **Master Rule:** Product Brief coverage is conditional - skip if no brief, validate thoroughly if brief exists. Always auto-proceed.
+
+## MEMORY CAPTURE
+
+- **Mistake Tracking**: Append any user-corrected assumptions or agent errors to portfolio-sidecar/common-mistakes.md.
+- **Learning**: Document new patterns or decisions to portfolio-sidecar/decomposition-patterns.md.

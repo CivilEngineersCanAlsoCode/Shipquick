@@ -242,3 +242,8 @@ Subprocess completes when:
 - Brittle selectors used (CSS classes, XPath)
 - Did not follow knowledge fragment patterns
 - Invalid or missing JSON output
+
+## MEMORY CAPTURE
+
+- **Mistake Tracking**: Append any user-corrected assumptions or agent errors to test-architect-sidecar/common-mistakes.md.
+- **Learning**: Document new patterns or decisions to test-architect-sidecar/decomposition-patterns.md.

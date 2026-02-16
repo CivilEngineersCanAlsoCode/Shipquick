@@ -122,3 +122,8 @@ PRD complete. Read fully and follow: `_bmad/core/tasks/help.md` with argument `C
 The polished PRD serves as the foundation for all subsequent product development activities. All design, architecture, and development work should trace back to the requirements and vision documented in this PRD - update it also as needed as you continue planning.
 
 **Congratulations on completing the Product Requirements Document for {{project_name}}!** 🎉
+
+## MEMORY CAPTURE
+
+- **Mistake Tracking**: Append any user-corrected assumptions or agent errors to portfolio-sidecar/common-mistakes.md.
+- **Learning**: Document new patterns or decisions to portfolio-sidecar/decomposition-patterns.md.

@@ -138,3 +138,8 @@ Proceed when all 4 subprocesses completed and outputs exist.
 
 - One or more subprocesses failed
 - Sequential assessment instead of parallel
+
+## MEMORY CAPTURE
+
+- **Mistake Tracking**: Append any user-corrected assumptions or agent errors to test-architect-sidecar/common-mistakes.md.
+- **Learning**: Document new patterns or decisions to test-architect-sidecar/decomposition-patterns.md.

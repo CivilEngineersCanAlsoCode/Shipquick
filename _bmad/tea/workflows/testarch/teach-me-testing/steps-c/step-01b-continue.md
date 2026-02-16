@@ -145,3 +145,8 @@ Display:
 - Not routing to session menu
 
 **Master Rule:** This is an auto-proceed continuation step. Load progress, show dashboard, route to session menu - no user menu needed.
+
+## MEMORY CAPTURE
+
+- **Mistake Tracking**: Append any user-corrected assumptions or agent errors to test-architect-sidecar/common-mistakes.md.
+- **Learning**: Document new patterns or decisions to test-architect-sidecar/decomposition-patterns.md.

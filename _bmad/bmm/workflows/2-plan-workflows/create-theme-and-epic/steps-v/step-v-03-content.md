@@ -16,6 +16,12 @@ Check quality of benefit hypothesis and ensure ACs are in proper Gherkin format.
 2. **Gherkin Audit**: Are Acceptance Criteria in Given/When/Then format?
 3. **Business Driver**: Is the context meaningful?
 
+
+## MEMORY CAPTURE
+
+- **Mistake Tracking**: Append any user-corrected assumptions or agent errors to portfolio-sidecar/common-mistakes.md.
+- **Learning**: Document new patterns or decisions to portfolio-sidecar/decomposition-patterns.md.
+
 ## MENU OPTIONS:
 
 [C] Continue — Proceed to hierarchy link validation

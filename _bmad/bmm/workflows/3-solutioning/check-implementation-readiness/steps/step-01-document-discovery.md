@@ -154,7 +154,13 @@ Display: **Select an Option:** [C] Continue to File Validation
 - If duplicates identified, insist on resolution first
 - User can clarify file locations or request additional searches
 
-#### Menu Handling Logic:
+#
+## MEMORY CAPTURE
+
+- **Mistake Tracking**: Append any user-corrected assumptions or agent errors to governance-sidecar/common-mistakes.md.
+- **Learning**: Document new patterns or decisions to governance-sidecar/decomposition-patterns.md.
+
+### Menu Handling Logic:
 
 - IF C: Save document inventory to {outputFile}, update frontmatter with completed step and files being included, and then read fully and follow: {nextStepFile}
 - IF Any other comments or queries: help user respond then redisplay menu

@@ -120,3 +120,8 @@ The teach-me-testing workflow has been updated.
 ✅ Edits applied to approved files only, changes validated, workflow integrity maintained, user informed of modifications.
 
 **Master Rule:** Show changes, get approval, apply edits, validate integrity.
+
+## MEMORY CAPTURE
+
+- **Mistake Tracking**: Append any user-corrected assumptions or agent errors to test-architect-sidecar/common-mistakes.md.
+- **Learning**: Document new patterns or decisions to test-architect-sidecar/decomposition-patterns.md.

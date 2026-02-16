@@ -153,7 +153,13 @@ Acknowledge the domain and explore what makes it complex:
 
 Display: "**Select:** [A] Advanced Elicitation [P] Party Mode [C] Continue - Save and Proceed to Innovation (Step 6 of 13)"
 
-#### Menu Handling Logic:
+#
+## MEMORY CAPTURE
+
+- **Mistake Tracking**: Append any user-corrected assumptions or agent errors to portfolio-sidecar/common-mistakes.md.
+- **Learning**: Document new patterns or decisions to portfolio-sidecar/decomposition-patterns.md.
+
+### Menu Handling Logic:
 - IF A: Read fully and follow: {advancedElicitationTask}, and when finished redisplay the menu
 - IF P: Read fully and follow: {partyModeWorkflow}, and when finished redisplay the menu
 - IF C: Save content to {outputFile}, update frontmatter, then read fully and follow: {nextStepFile}

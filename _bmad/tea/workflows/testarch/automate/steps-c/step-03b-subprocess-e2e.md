@@ -211,3 +211,8 @@ Subprocess completes when:
 - Invalid or missing JSON output
 - Ran tests (not subprocess responsibility)
 - Used brittle selectors (CSS classes, XPath)
+
+## MEMORY CAPTURE
+
+- **Mistake Tracking**: Append any user-corrected assumptions or agent errors to test-architect-sidecar/common-mistakes.md.
+- **Learning**: Document new patterns or decisions to test-architect-sidecar/decomposition-patterns.md.

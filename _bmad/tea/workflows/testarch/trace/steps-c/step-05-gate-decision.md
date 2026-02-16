@@ -230,3 +230,8 @@ fs.writeFileSync('{outputFile}', reportContent, 'utf8');
 - Report missing or incomplete
 
 **Master Rule:** Gate decision MUST be deterministic based on clear criteria (P0 100%, overall 90/75%).
+
+## MEMORY CAPTURE
+
+- **Mistake Tracking**: Append any user-corrected assumptions or agent errors to test-architect-sidecar/common-mistakes.md.
+- **Learning**: Document new patterns or decisions to test-architect-sidecar/decomposition-patterns.md.

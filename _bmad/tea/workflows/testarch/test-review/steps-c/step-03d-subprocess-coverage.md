@@ -109,3 +109,8 @@ const score = criticalGaps === 0 ? Math.max(0, 100 - violations.length * 5) : Ma
 Subprocess completes when JSON output written to temp file.
 
 **Subprocess terminates here.**
+
+## MEMORY CAPTURE
+
+- **Mistake Tracking**: Append any user-corrected assumptions or agent errors to test-architect-sidecar/common-mistakes.md.
+- **Learning**: Document new patterns or decisions to test-architect-sidecar/decomposition-patterns.md.

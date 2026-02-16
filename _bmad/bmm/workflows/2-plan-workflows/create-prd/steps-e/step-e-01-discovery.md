@@ -214,7 +214,13 @@ Present MENU OPTIONS below for user selection
 - ALWAYS halt and wait for user input
 - Only proceed based on user selection
 
-#### Menu Handling Logic:
+#
+## MEMORY CAPTURE
+
+- **Mistake Tracking**: Append any user-corrected assumptions or agent errors to portfolio-sidecar/common-mistakes.md.
+- **Learning**: Document new patterns or decisions to portfolio-sidecar/decomposition-patterns.md.
+
+### Menu Handling Logic:
 
 - IF C (Convert): Read fully and follow: {altStepFile} (step-e-01b-legacy-conversion.md)
 - IF E (Edit As-Is): Display "Proceeding with edits..." then load next step

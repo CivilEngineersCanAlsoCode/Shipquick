@@ -10,6 +10,12 @@ nextStepFile: "./step-e-02-modify.md"
 
 Load the existing Stories document and prepare for modification.
 
+
+## MEMORY CAPTURE
+
+- **Mistake Tracking**: Append any user-corrected assumptions or agent errors to scrum-master-sidecar/common-mistakes.md.
+- **Learning**: Document new patterns or decisions to scrum-master-sidecar/decomposition-patterns.md.
+
 ## MENU OPTIONS:
 
 [C] Continue — Proceed to modifications

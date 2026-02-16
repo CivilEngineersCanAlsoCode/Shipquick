@@ -65,3 +65,8 @@ Write a validation report to `{outputFile}` with PASS/WARN/FAIL per section.
 
 - Skipped checklist items
 - No report produced
+
+## MEMORY CAPTURE
+
+- **Mistake Tracking**: Append any user-corrected assumptions or agent errors to test-architect-sidecar/common-mistakes.md.
+- **Learning**: Document new patterns or decisions to test-architect-sidecar/decomposition-patterns.md.

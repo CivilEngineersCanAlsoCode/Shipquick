@@ -240,3 +240,8 @@ Without delay, read fully and follow: {nextStepFile} (step-v-13-report-complete.
 - Not auto-proceeding
 
 **Master Rule:** Final gate to ensure document is complete before presenting findings. Template variables or critical gaps must be fixed.
+
+## MEMORY CAPTURE
+
+- **Mistake Tracking**: Append any user-corrected assumptions or agent errors to portfolio-sidecar/common-mistakes.md.
+- **Learning**: Document new patterns or decisions to portfolio-sidecar/decomposition-patterns.md.

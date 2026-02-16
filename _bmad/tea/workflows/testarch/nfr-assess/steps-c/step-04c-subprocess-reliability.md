@@ -83,3 +83,8 @@ This is an **isolated subprocess** running in parallel with other NFR domain ass
 ## EXIT CONDITION
 
 Subprocess completes when JSON output written to temp file.
+
+## MEMORY CAPTURE
+
+- **Mistake Tracking**: Append any user-corrected assumptions or agent errors to test-architect-sidecar/common-mistakes.md.
+- **Learning**: Document new patterns or decisions to test-architect-sidecar/decomposition-patterns.md.

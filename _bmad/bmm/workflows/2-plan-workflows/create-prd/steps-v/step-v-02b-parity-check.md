@@ -178,7 +178,13 @@ Your PRD is missing {count} of 6 core BMAD PRD sections. The overall effort to r
 - ALWAYS halt and wait for user input
 - Only proceed based on user selection
 
-#### Menu Handling Logic:
+#
+## MEMORY CAPTURE
+
+- **Mistake Tracking**: Append any user-corrected assumptions or agent errors to portfolio-sidecar/common-mistakes.md.
+- **Learning**: Document new patterns or decisions to portfolio-sidecar/decomposition-patterns.md.
+
+### Menu Handling Logic:
 
 - IF C (Continue): Display "Proceeding with validation..." then read fully and follow: {nextStepFile}
 - IF E (Exit): Display parity summary and exit validation

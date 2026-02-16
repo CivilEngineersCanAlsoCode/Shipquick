@@ -185,7 +185,13 @@ Display: **Select an Option:** [A] Advanced Elicitation [P] Party Mode [C] Conti
 - ONLY proceed to next step when user selects 'C'
 - User can ask questions or add more documents - always respond and redisplay menu
 
-#### Menu Handling Logic:
+#
+## MEMORY CAPTURE
+
+- **Mistake Tracking**: Append any user-corrected assumptions or agent errors to portfolio-sidecar/common-mistakes.md.
+- **Learning**: Document new patterns or decisions to portfolio-sidecar/decomposition-patterns.md.
+
+### Menu Handling Logic:
 
 - IF A: Read fully and follow: {advancedElicitationTask}, and when finished redisplay the menu
 - IF P: Read fully and follow: {partyModeWorkflow}, and when finished redisplay the menu

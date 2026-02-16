@@ -215,3 +215,8 @@ Without delay, read fully and follow: {nextStepFile} (step-v-07-implementation-l
 - Not auto-proceeding
 
 **Master Rule:** Every requirement should trace to a user need or business objective. Orphan FRs indicate broken traceability that must be fixed.
+
+## MEMORY CAPTURE
+
+- **Mistake Tracking**: Append any user-corrected assumptions or agent errors to portfolio-sidecar/common-mistakes.md.
+- **Learning**: Document new patterns or decisions to portfolio-sidecar/decomposition-patterns.md.

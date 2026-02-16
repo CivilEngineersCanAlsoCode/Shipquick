@@ -203,3 +203,8 @@ Without delay, read fully and follow: {nextStepFile} (step-v-08-domain-complianc
 - Not auto-proceeding
 
 **Master Rule:** Requirements specify WHAT, not HOW. Implementation details belong in architecture documents, not PRDs.
+
+## MEMORY CAPTURE
+
+- **Mistake Tracking**: Append any user-corrected assumptions or agent errors to portfolio-sidecar/common-mistakes.md.
+- **Learning**: Document new patterns or decisions to portfolio-sidecar/decomposition-patterns.md.

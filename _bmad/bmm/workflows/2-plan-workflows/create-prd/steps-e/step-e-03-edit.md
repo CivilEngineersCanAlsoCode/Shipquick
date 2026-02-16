@@ -220,7 +220,13 @@ Display:
 - ALWAYS halt and wait for user input
 - Only proceed based on user selection
 
-#### Menu Handling Logic:
+#
+## MEMORY CAPTURE
+
+- **Mistake Tracking**: Append any user-corrected assumptions or agent errors to portfolio-sidecar/common-mistakes.md.
+- **Learning**: Document new patterns or decisions to portfolio-sidecar/decomposition-patterns.md.
+
+### Menu Handling Logic:
 
 - IF V (Validate): Display "Starting validation workflow..." then read fully and follow: steps-v/step-v-01-discovery.md
 - IF S (Summary): Present edit summary and exit
