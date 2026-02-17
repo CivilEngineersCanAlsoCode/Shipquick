@@ -1,0 +1,15 @@
+#!/bin/sh
+# Shipquick Beads Wrapper
+# Executes the vendored version of beads without external dependencies
+
+basedir=$(dirname "$0")
+
+case `uname` in
+    *CYGWIN*|*MINGW*|*MSYS*) basedir=`cygpath -w "$basedir"`;;
+esac
+
+if [ -x "$basedir/node" ]; then
+  exec "$basedir/node" "$basedir/_tools/beads/bin/bd.js" "$@"
+else
+  exec node "$basedir/_tools/beads/bin/bd.js" "$@"
+fi
