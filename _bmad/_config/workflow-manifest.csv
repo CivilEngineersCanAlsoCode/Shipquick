@@ -39,7 +39,7 @@ name,description,module,path
 "test-ci","Setup CI pipeline","test","_bmad/bmm/workflows/7-test/test-ci/workflow.md"
 "test-nfr","NFR Assessment","test","_bmad/bmm/workflows/7-test/test-nfr/workflow.md"
 "test-review","Evaluate test quality","test","_bmad/bmm/workflows/7-test/test-review/workflow.md"
-"test-trace","Traceability Matrix","govern","_bmad/bmm/workflows/6-govern/test-trace/workflow.md"
+"test-trace","Traceability Matrix","test","_bmad/bmm/workflows/6-govern/test-trace/workflow.md"
 "teach-me-testing","Educational QA session","test","_bmad/bmm/workflows/7-test/teach-me-testing/workflow.md"
 "agent-bmad-master","Master activation","agents","_bmad/bmm/workflows/8-agents/bmad-master/workflow.md"
 "agent-analyst","Analyst activation","agents","_bmad/bmm/workflows/8-agents/analyst/workflow.md"
@@ -51,3 +51,4 @@ name,description,module,path
 "learn-from-mistakes","Mistake documentation","meta","_bmad/bmm/workflows/9-meta/learn-from-mistakes/workflow.md"
 "design-handoff","Transfer design assets to engineering","execute","_bmad/bmm/workflows/5-execute/design-handoff/workflow.md"
 "usability-testing","Validate UX with real-world scenarios","define","_bmad/bmm/workflows/1-define/usability-testing/workflow.md"
+"index-docs","Generates or updates index.md","meta","_bmad/bmm/workflows/9-meta/indexing/workflow.md"

@@ -1,5 +1,6 @@
 ---
 description: Facilitate the Inspect & Adapt event at the end of a PI
+beadsCommand: /033-run-inspect-and-adapt
 ---
 
 # /033 Run Inspect & Adapt Workflow

@@ -1,12 +1,13 @@
 ---
+description: "Activate the BMAD Master Orchestrator for project-wide guidance"
 editStep: "./steps-e/step-e-01.md"
-validateStep: "./steps-v/step-v-01.md"description: "Activate the BMAD Master Orchestrator for project-wide guidance"
+validateStep: "./steps-v/step-v-01.md"
 main_config: "{project-root}/_bmad/bmm/config.yaml"
 persona_file: "{project-root}/_bmad/agents/bmad-master.md"
 sidecar_file: "{project-root}/_bmad/_memory/global-learnings.md"
 ---
-editStep: "./steps-e/step-e-01.md"
-validateStep: "./steps-v/step-v-01.md"# Persona Activation: BMAD Master
+
+# Persona Activation: BMAD Master
 
 ## ACTIVATION SEQUENCE
 

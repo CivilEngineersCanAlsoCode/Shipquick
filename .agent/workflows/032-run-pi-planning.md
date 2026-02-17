@@ -1,5 +1,6 @@
 ---
 description: Facilitate PI Planning event preparation and execution
+beadsCommand: /032-run-pi-planning
 ---
 
 # /032 Run PI Planning Workflow
