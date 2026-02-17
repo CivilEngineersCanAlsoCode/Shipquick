@@ -1,16 +1,12 @@
 ---
 editStep: "./steps-e/step-e-01.md"
-validateStep: "./steps-v/step-v-01.md"editStep: "./steps-e/step-e-01.md"
-validateStep: "./steps-v/step-v-01.md"name: agent-analyst
-description: "Activate Analyst persona with specialized discovery and requirements rigor"
+validateStep: "./steps-v/step-v-01.md"description: "Activate Analyst persona with specialized discovery and requirements rigor"
 main_config: "{project-root}/_bmad/bmm/config.yaml"
 persona_file: "{project-root}/_bmad/agents/analyst.md"
 sidecar_file: "{project-root}/_bmad/_memory/portfolio-sidecar/common-mistakes.md"
 ---
 editStep: "./steps-e/step-e-01.md"
-validateStep: "./steps-v/step-v-01.md"editStep: "./steps-e/step-e-01.md"
-validateStep: "./steps-v/step-v-01.md"
-# Persona Activation: Analyst
+validateStep: "./steps-v/step-v-01.md"# Persona Activation: Analyst
 
 ## ACTIVATION SEQUENCE
 

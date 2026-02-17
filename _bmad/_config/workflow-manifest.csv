@@ -49,3 +49,5 @@ name,description,module,path
 "help","Context-aware help","meta","_bmad/bmm/workflows/9-meta/help/workflow.md"
 "party-mode","Group discussion mode","meta","_bmad/bmm/workflows/9-meta/party-mode/workflow.md"
 "learn-from-mistakes","Mistake documentation","meta","_bmad/bmm/workflows/9-meta/learn-from-mistakes/workflow.md"
+"design-handoff","Transfer design assets to engineering","execute","_bmad/bmm/workflows/5-execute/design-handoff/workflow.md"
+"usability-testing","Validate UX with real-world scenarios","define","_bmad/bmm/workflows/1-define/usability-testing/workflow.md"
