@@ -1,0 +1,171 @@
+# AutoFlow: Test & Validate Workflow
+# QA execution loop — validate built workflows
+# Type: Core (Essential)
+
+name: test-validate
+description: QA validation loop for built n8n workflows
+version: "1.0.0"
+type: core
+
+trigger:
+  type: workflow
+  source: create-automation
+  description: Called from main pipeline or directly for ad-hoc validation
+
+# -------------------------------------------------------------------
+# Input / Output Schemas
+# -------------------------------------------------------------------
+input_schema:
+  required:
+    workflow_json:
+      type: object
+      description: Built n8n workflow JSON to validate
+    mock_data:
+      type: object
+      description: Mock data from Blueprint
+    io_specification:
+      type: object
+      description: I/O spec defining expected inputs/outputs
+  optional:
+    previous_test_results:
+      type: object
+      description: Previous test results for retry context
+
+output_schema:
+  test_report:
+    type: object
+    description: Pass/fail per node with data flow validation results
+  all_passed:
+    type: boolean
+    description: Whether all tests passed
+
+# -------------------------------------------------------------------
+# Steps
+# -------------------------------------------------------------------
+steps:
+
+  # ---- Step 1: Load Workflow ----
+  - id: load_workflow
+    name: Load Workflow
+    description: Load built JSON and mock data
+    nodes:
+      - id: workflow_trigger
+        type: n8n-nodes-base.executeWorkflowTrigger
+        description: Entry point when called as sub-workflow
+
+      - id: parse_inputs
+        type: n8n-nodes-base.set
+        description: Extract workflow JSON, mock data, and I/O spec
+
+      - id: extract_nodes
+        type: n8n-nodes-base.code
+        description: Parse workflow JSON into individual node list
+        config:
+          language: javascript
+
+  # ---- Step 2: Node Validation ----
+  - id: node_validation
+    name: Node Validation
+    description: Validate each node's configuration and connections
+    nodes:
+      - id: iterate_nodes
+        type: n8n-nodes-base.splitInBatches
+        description: Process each node individually
+
+      - id: validate_node_config
+        type: n8n-nodes-base.code
+        description: Check node has required fields, valid type, proper config
+        config:
+          language: javascript
+
+      - id: validate_connections
+        type: n8n-nodes-base.code
+        description: Verify all connections reference existing nodes
+        config:
+          language: javascript
+
+      - id: node_results
+        type: n8n-nodes-base.set
+        description: Collect per-node validation results
+
+  # ---- Step 3: Data Flow Test ----
+  - id: data_flow_test
+    name: Data Flow Test
+    description: Test data flow through the entire pipeline
+    nodes:
+      - id: inject_mock_data
+        type: n8n-nodes-base.code
+        description: Inject mock data at entry points
+
+      - id: simulate_flow
+        type: n8n-nodes-base.code
+        description: Trace data through node connections, validate transformations
+        config:
+          language: javascript
+
+      - id: compare_outputs
+        type: n8n-nodes-base.code
+        description: Compare actual outputs against I/O spec expectations
+        config:
+          language: javascript
+
+      - id: flow_results
+        type: n8n-nodes-base.set
+        description: Collect data flow test results
+
+  # ---- Step 4: Retry Loop ----
+  - id: retry_loop
+    name: Retry Loop
+    description: "On failure: retry up to 3x with different approaches"
+    nodes:
+      - id: check_pass
+        type: n8n-nodes-base.if
+        description: Check if all validations passed
+        config:
+          conditions:
+            - field: failures_count
+              operation: equals
+              value: 0
+
+      - id: retry_counter
+        type: n8n-nodes-base.code
+        description: Track retry count, decide retry or escalate
+        config:
+          max_retries: 3
+
+      - id: attempt_fix
+        type: "@n8n/n8n-nodes-langchain.agent"
+        description: Inspector agent attempts to fix identified issues
+        config:
+          agent_type: toolsAgent
+          system_prompt: inspector-persona
+
+      - id: trigger_alternative
+        type: n8n-nodes-base.executeWorkflow
+        description: On exhausted retries, call alternative-suggest
+        config:
+          workflow_id: alternative-suggest
+
+  # ---- Step 5: Report ----
+  - id: report
+    name: Generate Report
+    description: Generate test report with pass/fail per node
+    nodes:
+      - id: compile_report
+        type: n8n-nodes-base.code
+        description: Compile all results into structured test report
+        config:
+          language: javascript
+
+      - id: format_output
+        type: n8n-nodes-base.set
+        description: Format final output with test_report and all_passed flag
+
+# -------------------------------------------------------------------
+# Error Handling
+# -------------------------------------------------------------------
+error_handling:
+  global_timeout: 300000  # 5 minutes
+  on_unhandled_error:
+    workflow: escalate-to-user
+    context: "Unhandled error during test validation"

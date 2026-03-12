@@ -1,0 +1,175 @@
+# AutoFlow: Deploy to n8n Workflow
+# Push validated workflow JSON to n8n instance
+# Type: Core (Essential)
+
+name: deploy-to-n8n
+description: Deploy validated workflow to n8n instance
+version: "1.0.0"
+type: core
+
+trigger:
+  type: workflow
+  source: create-automation
+  description: Called after successful test-validate or manually
+
+# -------------------------------------------------------------------
+# Input / Output Schemas
+# -------------------------------------------------------------------
+input_schema:
+  required:
+    workflow_json:
+      type: object
+      description: Validated n8n workflow JSON
+    n8n_instance_url:
+      type: string
+      description: n8n instance URL from module config
+  optional:
+    existing_workflow_id:
+      type: string
+      description: Existing workflow ID for updates
+    credential_mappings:
+      type: object
+      description: Map of credential placeholders to real credential IDs
+
+output_schema:
+  deployed_workflow_id:
+    type: string
+    description: ID of the deployed workflow in n8n
+  credential_instructions:
+    type: array
+    description: Human-in-the-loop credential setup steps
+  deployment_status:
+    type: string
+    enum: [success, partial, failed]
+
+# -------------------------------------------------------------------
+# Steps
+# -------------------------------------------------------------------
+steps:
+
+  # ---- Step 1: Pre-Deploy Check ----
+  - id: pre_deploy_check
+    name: Pre-Deploy Check
+    description: Verify workflow passed validation
+    nodes:
+      - id: workflow_trigger
+        type: n8n-nodes-base.executeWorkflowTrigger
+        description: Entry point when called as sub-workflow
+
+      - id: check_validation
+        type: n8n-nodes-base.if
+        description: Verify test_report.all_passed is true
+        config:
+          conditions:
+            - field: test_report.all_passed
+              operation: equals
+              value: true
+
+      - id: abort_if_invalid
+        type: n8n-nodes-base.stop
+        description: Abort deployment if validation not passed
+
+  # ---- Step 2: Connect to n8n ----
+  - id: connect_n8n
+    name: Connect to n8n
+    description: Establish API connection to n8n instance
+    nodes:
+      - id: health_check
+        type: n8n-nodes-base.httpRequest
+        description: Ping n8n instance health endpoint
+        config:
+          method: GET
+          url: "{{ $json.n8n_instance_url }}/healthz"
+
+      - id: validate_connection
+        type: n8n-nodes-base.if
+        description: Verify n8n instance is reachable
+        config:
+          conditions:
+            - field: statusCode
+              operation: equals
+              value: 200
+
+  # ---- Step 3: Create/Update Workflow ----
+  - id: create_update_workflow
+    name: Create/Update Workflow
+    description: Push JSON to n8n via API
+    nodes:
+      - id: check_existing
+        type: n8n-nodes-base.if
+        description: Check if updating existing or creating new
+        config:
+          conditions:
+            - field: existing_workflow_id
+              operation: isNotEmpty
+
+      - id: create_workflow
+        type: n8n-nodes-base.n8n
+        description: Create new workflow via n8n API
+        config:
+          operation: create
+          resource: workflow
+
+      - id: update_workflow
+        type: n8n-nodes-base.n8n
+        description: Update existing workflow via n8n API
+        config:
+          operation: update
+          resource: workflow
+
+      - id: capture_workflow_id
+        type: n8n-nodes-base.set
+        description: Store the deployed workflow ID
+
+  # ---- Step 4: Credential Instructions ----
+  - id: credential_instructions
+    name: Credential Instructions
+    description: Generate human-in-the-loop credential setup steps
+    nodes:
+      - id: extract_credentials
+        type: n8n-nodes-base.code
+        description: Find all credential placeholders in workflow JSON
+        config:
+          language: javascript
+
+      - id: generate_instructions
+        type: "@n8n/n8n-nodes-langchain.agent"
+        description: Generate clear setup instructions per credential
+        config:
+          agent_type: toolsAgent
+          system_prompt: welder-persona
+
+  # ---- Step 5: Verify Deployment ----
+  - id: verify_deployment
+    name: Verify Deployment
+    description: Confirm workflow exists and is accessible in n8n
+    nodes:
+      - id: fetch_workflow
+        type: n8n-nodes-base.n8n
+        description: GET the deployed workflow to confirm it exists
+        config:
+          operation: get
+          resource: workflow
+
+      - id: verify_nodes
+        type: n8n-nodes-base.code
+        description: Verify deployed node count matches expected
+        config:
+          language: javascript
+
+      - id: deployment_output
+        type: n8n-nodes-base.set
+        description: Package deployment results
+
+# -------------------------------------------------------------------
+# Error Handling
+# -------------------------------------------------------------------
+error_handling:
+  global_timeout: 120000  # 2 minutes
+  on_unhandled_error:
+    workflow: escalate-to-user
+    context: "Deployment to n8n failed"
+  on_connection_error:
+    action: retry
+    max_retries: 3
+    backoff_ms: 2000

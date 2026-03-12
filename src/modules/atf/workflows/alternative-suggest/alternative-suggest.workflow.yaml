@@ -1,0 +1,135 @@
+# AutoFlow: Alternative Suggest Workflow
+# Propose alternatives when tests/builds fail
+# Type: Feature (Specialized)
+
+name: alternative-suggest
+description: Propose alternative approaches when tests fail
+version: "1.0.0"
+type: feature
+
+trigger:
+  type: workflow
+  source: test-validate
+  description: Called when Inspector exhausts retries
+
+# -------------------------------------------------------------------
+# Input / Output Schemas
+# -------------------------------------------------------------------
+input_schema:
+  required:
+    failed_test_results:
+      type: object
+      description: Failed test results from Inspector
+    original_node_selections:
+      type: array
+      description: Nodes that were used in the failing workflow
+    user_preferences:
+      type: object
+      description: User preferences from Scout (cost tier, platforms)
+  optional:
+    previous_alternatives:
+      type: array
+      description: Previously tried alternative approaches
+
+output_schema:
+  alternatives:
+    type: array
+    items:
+      type: object
+      properties:
+        approach: { type: string }
+        replacement_nodes: { type: array }
+        trade_offs: { type: string }
+        confidence: { type: string, enum: [high, medium, low] }
+        cost_impact: { type: string }
+    description: Ranked alternative proposals with trade-offs
+
+# -------------------------------------------------------------------
+# Steps
+# -------------------------------------------------------------------
+steps:
+
+  # ---- Step 1: Analyze Failure ----
+  - id: analyze_failure
+    name: Analyze Failure
+    description: Understand what failed and why
+    nodes:
+      - id: workflow_trigger
+        type: n8n-nodes-base.executeWorkflowTrigger
+        description: Entry point
+
+      - id: failure_parser
+        type: n8n-nodes-base.code
+        description: Parse test results to identify failing nodes and error types
+        config:
+          language: javascript
+
+      - id: root_cause_analysis
+        type: "@n8n/n8n-nodes-langchain.agent"
+        description: Analyze root cause of failure
+        config:
+          agent_type: toolsAgent
+          system_prompt: inspector-persona
+
+  # ---- Step 2: Check Preferences ----
+  - id: check_preferences
+    name: Check Preferences
+    description: Review user's preferences from Scout
+    nodes:
+      - id: load_preferences
+        type: n8n-nodes-base.set
+        description: Load user preferences (cost tier, platforms, constraints)
+
+      - id: filter_constraints
+        type: n8n-nodes-base.code
+        description: Determine what alternatives are acceptable given constraints
+
+  # ---- Step 3: Find Alternatives ----
+  - id: find_alternatives
+    name: Find Alternatives
+    description: Search for alternative nodes/approaches
+    nodes:
+      - id: node_discovery_call
+        type: n8n-nodes-base.executeWorkflow
+        description: Query node-discovery for alternatives
+        config:
+          workflow_id: node-discovery
+
+      - id: approach_generator
+        type: "@n8n/n8n-nodes-langchain.agent"
+        description: Generate alternative architectural approaches
+        config:
+          agent_type: toolsAgent
+          system_prompt: inspector-persona
+
+      - id: exclude_tried
+        type: n8n-nodes-base.code
+        description: Filter out previously attempted alternatives
+
+  # ---- Step 4: Propose Solutions ----
+  - id: propose_solutions
+    name: Propose Solutions
+    description: Present ranked alternatives with trade-offs
+    nodes:
+      - id: rank_alternatives
+        type: n8n-nodes-base.code
+        description: Score and rank alternatives by confidence and cost
+        config:
+          language: javascript
+
+      - id: format_proposals
+        type: n8n-nodes-base.code
+        description: Format each alternative with clear trade-off descriptions
+
+      - id: format_output
+        type: n8n-nodes-base.set
+        description: Package alternatives output array
+
+# -------------------------------------------------------------------
+# Error Handling
+# -------------------------------------------------------------------
+error_handling:
+  global_timeout: 120000  # 2 minutes
+  on_unhandled_error:
+    workflow: escalate-to-user
+    context: "Could not generate alternatives — human input needed"

@@ -1,0 +1,135 @@
+# AutoFlow: Learning Capture Workflow
+# Log patterns and learnings to ChromaDB
+# Type: Feature (Specialized)
+
+name: learning-capture
+description: Capture learnings and upload to ChromaDB knowledge base
+version: "1.0.0"
+type: feature
+
+trigger:
+  type: workflow
+  source: create-automation
+  description: Called by Foreman after pipeline completion
+
+# -------------------------------------------------------------------
+# Input / Output Schemas
+# -------------------------------------------------------------------
+input_schema:
+  required:
+    workflow_details:
+      type: object
+      description: Completed workflow details (what was built)
+    test_results:
+      type: object
+      description: Test results from Inspector
+    alternatives_tried:
+      type: array
+      description: Any alternative approaches tried
+  optional:
+    user_feedback:
+      type: string
+      description: User feedback on the workflow
+
+output_schema:
+  capture_status:
+    type: string
+    enum: [success, partial, failed]
+    description: Whether learnings were successfully captured
+  entries_created:
+    type: integer
+    description: Number of knowledge base entries created
+
+# -------------------------------------------------------------------
+# Steps
+# -------------------------------------------------------------------
+steps:
+
+  # ---- Step 1: Extract Patterns ----
+  - id: extract_patterns
+    name: Extract Patterns
+    description: Identify what worked, what failed, what was learned
+    nodes:
+      - id: workflow_trigger
+        type: n8n-nodes-base.executeWorkflowTrigger
+        description: Entry point
+
+      - id: pattern_extractor
+        type: "@n8n/n8n-nodes-langchain.agent"
+        description: Analyze build history to extract reusable patterns
+        config:
+          agent_type: toolsAgent
+          system_prompt: foreman-persona
+
+      - id: categorize
+        type: n8n-nodes-base.code
+        description: Categorize patterns (node combos, error fixes, architectures)
+        config:
+          language: javascript
+
+  # ---- Step 2: Format Q&A ----
+  - id: format_qa
+    name: Format Q&A
+    description: Create question-answer pairs for knowledge base
+    nodes:
+      - id: qa_generator
+        type: "@n8n/n8n-nodes-langchain.agent"
+        description: Generate Q&A pairs from extracted patterns
+        config:
+          agent_type: toolsAgent
+          system_prompt: foreman-persona
+
+      - id: add_metadata
+        type: n8n-nodes-base.code
+        description: Add metadata (timestamp, platforms, cost tier, tags)
+        config:
+          language: javascript
+
+      - id: validate_qa
+        type: n8n-nodes-base.code
+        description: Validate Q&A pairs are well-formed and non-duplicate
+
+  # ---- Step 3: Upload to ChromaDB ----
+  - id: upload_chromadb
+    name: Upload to ChromaDB
+    description: Store formatted learnings in vector database
+    nodes:
+      - id: batch_entries
+        type: n8n-nodes-base.splitInBatches
+        description: Process entries in batches for upload
+
+      - id: embed_and_store
+        type: n8n-nodes-base.httpRequest
+        description: Send entries to ChromaDB API
+        config:
+          method: POST
+          url: "{{ $env.CHROMADB_URL }}/api/v1/collections/{{ $env.CHROMADB_COLLECTION }}/add"
+
+      - id: track_uploads
+        type: n8n-nodes-base.code
+        description: Track successful/failed uploads
+
+  # ---- Step 4: Confirm Capture ----
+  - id: confirm_capture
+    name: Confirm Capture
+    description: Verify successful upload and report
+    nodes:
+      - id: verify_entries
+        type: n8n-nodes-base.httpRequest
+        description: Query ChromaDB to verify entries exist
+        config:
+          method: POST
+          url: "{{ $env.CHROMADB_URL }}/api/v1/collections/{{ $env.CHROMADB_COLLECTION }}/query"
+
+      - id: format_output
+        type: n8n-nodes-base.set
+        description: Package capture_status and entries_created
+
+# -------------------------------------------------------------------
+# Error Handling
+# -------------------------------------------------------------------
+error_handling:
+  global_timeout: 120000  # 2 minutes
+  on_unhandled_error:
+    action: log_warning
+    message: "Learning capture failed — pipeline still succeeded"

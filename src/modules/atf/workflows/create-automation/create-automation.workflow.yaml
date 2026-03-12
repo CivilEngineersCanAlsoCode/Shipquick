@@ -1,0 +1,276 @@
+# AutoFlow: Create Automation Workflow
+# Main end-to-end pipeline — 7-agent assembly line
+# Type: Core (Essential)
+
+name: create-automation
+description: Main end-to-end n8n workflow automation pipeline
+version: "1.0.0"
+type: core
+
+trigger:
+  type: manual
+  source: user-request
+  description: User submits an automation idea
+
+# -------------------------------------------------------------------
+# Input / Output Schemas
+# -------------------------------------------------------------------
+input_schema:
+  required:
+    automation_idea:
+      type: string
+      description: User's automation idea/description
+    target_platforms:
+      type: array
+      items: string
+      description: Target platforms (e.g., X, Reddit, LinkedIn)
+  optional:
+    cost_tier:
+      type: string
+      enum: [free, low, medium, high]
+      default: low
+      description: Preferred cost tier from module config
+    existing_credentials:
+      type: array
+      items: string
+      description: Existing n8n credential IDs
+    schedule:
+      type: string
+      description: Cron or human-readable schedule
+
+output_schema:
+  workflow_json:
+    type: object
+    description: Complete n8n workflow JSON (orchestrator + sub-workflows)
+  test_report:
+    type: object
+    description: Validation report with pass/fail per node
+  architecture_doc:
+    type: object
+    description: Architecture documentation with sticky notes
+
+# -------------------------------------------------------------------
+# Steps
+# -------------------------------------------------------------------
+steps:
+
+  # ---- Step 1: Requirements Gathering (Scout) ----
+  - id: requirements_gathering
+    name: Requirements Gathering
+    agent: scout
+    description: Scout interviews user, captures automation idea and preferences
+    nodes:
+      - id: trigger_start
+        type: n8n-nodes-base.manualTrigger
+        description: Pipeline entry point
+
+      - id: parse_user_input
+        type: n8n-nodes-base.code
+        description: Parse and normalize user's automation idea
+        config:
+          language: javascript
+
+      - id: scout_interview
+        type: "@n8n/n8n-nodes-langchain.agent"
+        description: Scout agent gathers detailed requirements
+        config:
+          agent_type: conversationalAgent
+          system_prompt: scout-persona
+
+      - id: requirements_output
+        type: n8n-nodes-base.set
+        description: Package requirements into structured context bundle
+    outputs:
+      - requirements_bundle
+      - user_preferences
+    error_handling:
+      on_failure: escalate-to-user
+      message: "Could not gather complete requirements"
+
+  # ---- Step 2: I/O Specification (Blueprint) ----
+  - id: io_specification
+    name: I/O Specification
+    agent: blueprint
+    description: Blueprint defines inputs, outputs, data schemas, mock data
+    nodes:
+      - id: load_requirements
+        type: n8n-nodes-base.set
+        description: Load requirements bundle from Scout
+
+      - id: blueprint_agent
+        type: "@n8n/n8n-nodes-langchain.agent"
+        description: Blueprint defines I/O spec and generates mock data
+        config:
+          agent_type: toolsAgent
+          system_prompt: blueprint-persona
+
+      - id: mock_data_sub
+        type: n8n-nodes-base.executeWorkflow
+        description: Trigger mock-data-generator sub-workflow
+        config:
+          workflow_id: mock-data-generator
+    outputs:
+      - io_specification
+      - mock_data_set
+    error_handling:
+      on_failure: retry
+      max_retries: 2
+
+  # ---- Step 3: Node Discovery (Forge Master) ----
+  - id: node_discovery
+    name: Node Discovery
+    agent: forge-master
+    description: Forge Master finds and compares available n8n nodes
+    nodes:
+      - id: node_discovery_sub
+        type: n8n-nodes-base.executeWorkflow
+        description: Trigger node-discovery sub-workflow
+        config:
+          workflow_id: node-discovery
+
+      - id: rank_nodes
+        type: n8n-nodes-base.code
+        description: Rank nodes by cost, reliability, complexity
+    outputs:
+      - ranked_node_selections
+    error_handling:
+      on_failure: alternative-suggest
+
+  # ---- Step 4: Architecture Design (Assembler) ----
+  - id: architecture_design
+    name: Architecture Design
+    agent: assembler
+    description: Assembler decomposes into orchestrator + sub-workflows
+    nodes:
+      - id: decompose_sub
+        type: n8n-nodes-base.executeWorkflow
+        description: Trigger workflow-decompose sub-workflow
+        config:
+          workflow_id: workflow-decompose
+
+      - id: assembler_agent
+        type: "@n8n/n8n-nodes-langchain.agent"
+        description: Assembler designs architecture with sticky notes
+        config:
+          agent_type: toolsAgent
+          system_prompt: assembler-persona
+    outputs:
+      - architecture_spec
+      - sub_workflow_definitions
+    error_handling:
+      on_failure: retry
+      max_retries: 2
+
+  # ---- Step 5: Backlog Creation (Foreman) ----
+  - id: backlog_creation
+    name: Backlog Creation
+    agent: foreman
+    description: Foreman creates project backlog with tasks
+    nodes:
+      - id: foreman_agent
+        type: "@n8n/n8n-nodes-langchain.agent"
+        description: Foreman breaks architecture into build tasks
+        config:
+          agent_type: toolsAgent
+          system_prompt: foreman-persona
+
+      - id: store_backlog
+        type: n8n-nodes-base.set
+        description: Store structured backlog for Welder
+    outputs:
+      - build_backlog
+    error_handling:
+      on_failure: retry
+      max_retries: 1
+
+  # ---- Step 6: Build (Welder) ----
+  - id: build
+    name: Build Workflow JSON
+    agent: welder
+    description: Welder constructs n8n workflow JSON from specs
+    nodes:
+      - id: welder_agent
+        type: "@n8n/n8n-nodes-langchain.agent"
+        description: Welder builds n8n workflow JSON node-by-node
+        config:
+          agent_type: toolsAgent
+          system_prompt: welder-persona
+
+      - id: assemble_json
+        type: n8n-nodes-base.code
+        description: Assemble final n8n-compatible workflow JSON
+
+      - id: add_sticky_notes
+        type: n8n-nodes-base.code
+        description: Add sticky note documentation to every node
+    outputs:
+      - workflow_json
+    error_handling:
+      on_failure: retry
+      max_retries: 3
+
+  # ---- Step 7: Test & Validate (Inspector) ----
+  - id: test_validate
+    name: Test & Validate
+    agent: inspector
+    description: Inspector validates data flow, retries on failure
+    nodes:
+      - id: test_sub
+        type: n8n-nodes-base.executeWorkflow
+        description: Trigger test-validate sub-workflow
+        config:
+          workflow_id: test-validate
+
+      - id: check_results
+        type: n8n-nodes-base.if
+        description: Check if all tests passed
+        config:
+          conditions:
+            - field: test_report.all_passed
+              operation: equals
+              value: true
+
+      - id: retry_or_alternative
+        type: n8n-nodes-base.switch
+        description: Route to retry, alternative-suggest, or success
+    outputs:
+      - test_report
+      - validated_workflow_json
+    error_handling:
+      on_failure: alternative-suggest
+      max_retries: 3
+
+  # ---- Step 8: Learning Capture (Foreman) ----
+  - id: learning_capture
+    name: Learning Capture
+    agent: foreman
+    description: Foreman logs learnings to ChromaDB
+    nodes:
+      - id: learning_sub
+        type: n8n-nodes-base.executeWorkflow
+        description: Trigger learning-capture sub-workflow
+        config:
+          workflow_id: learning-capture
+
+      - id: pipeline_complete
+        type: n8n-nodes-base.set
+        description: Mark pipeline as complete, package final outputs
+    outputs:
+      - final_workflow_json
+      - final_test_report
+      - architecture_doc
+    error_handling:
+      on_failure: log_warning
+      message: "Learning capture failed but workflow is complete"
+
+# -------------------------------------------------------------------
+# Global Error Handling
+# -------------------------------------------------------------------
+error_handling:
+  global_timeout: 600000  # 10 minutes
+  on_unhandled_error:
+    workflow: escalate-to-user
+    context: "Unhandled error in create-automation pipeline"
+  on_timeout:
+    workflow: escalate-to-user
+    context: "Pipeline timed out"

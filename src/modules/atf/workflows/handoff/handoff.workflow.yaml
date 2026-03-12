@@ -1,0 +1,150 @@
+# AutoFlow: Handoff Workflow
+# Transfer context between agents on the assembly line
+# Type: Utility (Support)
+
+name: handoff
+description: Transfer context bundle between agents
+version: "1.0.0"
+type: utility
+
+trigger:
+  type: command
+  source: "[HO]"
+  description: Any agent can trigger via shared [HO] command
+
+# -------------------------------------------------------------------
+# Input / Output Schemas
+# -------------------------------------------------------------------
+input_schema:
+  required:
+    source_agent:
+      type: string
+      description: Agent handing off (e.g., scout, blueprint)
+    target_agent:
+      type: string
+      description: Agent receiving handoff
+    context_bundle:
+      type: object
+      description: Current agent's outputs to transfer
+  optional:
+    priority_notes:
+      type: string
+      description: Priority notes or flags for receiving agent
+    required_outputs:
+      type: array
+      items: string
+      description: List of required output keys to validate
+
+output_schema:
+  handoff_status:
+    type: string
+    enum: [success, incomplete, failed]
+    description: Whether handoff completed successfully
+  missing_outputs:
+    type: array
+    items: string
+    description: Any required outputs that were missing
+  acknowledgment:
+    type: object
+    properties:
+      received_by: { type: string }
+      received_at: { type: string }
+      context_valid: { type: boolean }
+
+# -------------------------------------------------------------------
+# Steps
+# -------------------------------------------------------------------
+steps:
+
+  # ---- Step 1: Package Context ----
+  - id: package_context
+    name: Package Context
+    description: Bundle current agent's outputs into context
+    nodes:
+      - id: workflow_trigger
+        type: n8n-nodes-base.executeWorkflowTrigger
+        description: Entry point
+
+      - id: collect_outputs
+        type: n8n-nodes-base.code
+        description: Collect and structure all outputs from source agent
+        config:
+          language: javascript
+
+      - id: add_metadata
+        type: n8n-nodes-base.set
+        description: Add handoff metadata (timestamp, source, priority)
+
+  # ---- Step 2: Validate Completeness ----
+  - id: validate_completeness
+    name: Validate Completeness
+    description: Ensure no required outputs are missing
+    nodes:
+      - id: check_required
+        type: n8n-nodes-base.code
+        description: Verify all required outputs are present and non-empty
+        config:
+          language: javascript
+
+      - id: completeness_gate
+        type: n8n-nodes-base.if
+        description: Route based on completeness check
+        config:
+          conditions:
+            - field: missing_count
+              operation: equals
+              value: 0
+
+      - id: warn_incomplete
+        type: n8n-nodes-base.set
+        description: Flag incomplete handoff with missing output list
+
+  # ---- Step 3: Transfer ----
+  - id: transfer
+    name: Transfer
+    description: Hand context bundle to next agent
+    nodes:
+      - id: route_to_agent
+        type: n8n-nodes-base.switch
+        description: Route to correct target agent
+        config:
+          rules:
+            - value: scout
+            - value: blueprint
+            - value: forge-master
+            - value: assembler
+            - value: foreman
+            - value: welder
+            - value: inspector
+
+      - id: deliver_context
+        type: n8n-nodes-base.code
+        description: Store context bundle for target agent to pick up
+
+  # ---- Step 4: Confirm ----
+  - id: confirm
+    name: Confirm
+    description: Verify receiving agent acknowledges
+    nodes:
+      - id: wait_ack
+        type: n8n-nodes-base.wait
+        description: Brief wait for acknowledgment
+        config:
+          timeout_ms: 5000
+
+      - id: check_ack
+        type: n8n-nodes-base.if
+        description: Check if acknowledgment received
+
+      - id: format_output
+        type: n8n-nodes-base.set
+        description: Package handoff_status and acknowledgment
+
+# -------------------------------------------------------------------
+# Error Handling
+# -------------------------------------------------------------------
+error_handling:
+  global_timeout: 30000  # 30 seconds
+  on_unhandled_error:
+    workflow: escalate-to-user
+    context: "Agent handoff failed — manual intervention may be needed"
