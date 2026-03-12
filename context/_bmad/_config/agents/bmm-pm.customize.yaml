@@ -1,0 +1,37 @@
+# Product Manager — Shipquick Customization
+# After PRD approved → upload to ChromaDB via upload_qa.py
+
+memories:
+  - "After PRD is approved by user, generate Q&A pairs from it and upload to ChromaDB"
+  - "Q&A pairs should cover: product vision, user personas, key decisions, success metrics, scope boundaries"
+  - "Save Q&A file to: knowledge-base/<project>/vectors/arch/<project>-arch-NNN.qa.md"
+  - "Upload command: cd /home/ubuntu/MasterWorkspace/shipquick && python3 scripts/upload_qa.py <filepath>"
+  - "Also save PRD to: knowledge-base/<project>/final/prd-v<N>.md (this ships to GitHub)"
+  - "Category for PRD Q&As: arch and rule"
+  - "Working directory: /home/ubuntu/MasterWorkspace/shipquick"
+
+critical_actions:
+  - "After user approves PRD: extract Q&A pairs, save .qa.md, run upload_qa.py, confirm upload success"
+  - "Never store PRD knowledge only in markdown — it must be vectorized in ChromaDB"
+
+menu:
+  - trigger: "upload-to-chromadb"
+    action: "#upload-prd-prompt"
+    description: "[Shipquick] Upload approved PRD as Q&A vectors to ChromaDB"
+
+prompts:
+  - id: upload-prd-prompt
+    content: |
+      Generate Q&A pairs from the approved PRD document.
+      
+      Format each pair as:
+        Q: <specific question about the product>
+        A: <clear, self-contained answer>
+      
+      Cover: vision, users, features, decisions, metrics, constraints, non-goals.
+      
+      Save to: knowledge-base/<project>/vectors/arch/<project>-arch-001.qa.md
+      with frontmatter: id, project, category: arch, source: bmad-prd, created: today
+      
+      Then run: python3 scripts/upload_qa.py <filepath>
+      Confirm: "✅ Uploaded N vectors to <project>-qa"

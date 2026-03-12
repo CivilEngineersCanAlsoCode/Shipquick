@@ -1,0 +1,49 @@
+installation:
+  version: 6.0.4
+  installDate: 2026-03-11T03:46:05.983Z
+  lastUpdated: 2026-03-11T03:46:05.983Z
+modules:
+  - name: core
+    version: 6.0.4
+    installDate: 2026-03-11T03:46:04.894Z
+    lastUpdated: 2026-03-11T03:46:04.894Z
+    source: built-in
+    npmPackage: null
+    repoUrl: null
+  - name: bmm
+    version: 6.0.4
+    installDate: 2026-03-11T03:46:01.610Z
+    lastUpdated: 2026-03-11T03:46:04.894Z
+    source: built-in
+    npmPackage: null
+    repoUrl: null
+  - name: bmb
+    version: 0.1.6
+    installDate: 2026-03-11T03:46:02.379Z
+    lastUpdated: 2026-03-11T03:46:05.172Z
+    source: external
+    npmPackage: bmad-builder
+    repoUrl: https://github.com/bmad-code-org/bmad-builder
+  - name: tea
+    version: 1.5.3
+    installDate: 2026-03-11T03:46:03.056Z
+    lastUpdated: 2026-03-11T03:46:05.457Z
+    source: external
+    npmPackage: bmad-method-test-architecture-enterprise
+    repoUrl: https://github.com/bmad-code-org/bmad-method-test-architecture-enterprise
+  - name: gds
+    version: 0.1.10
+    installDate: 2026-03-11T03:46:03.777Z
+    lastUpdated: 2026-03-11T03:46:05.722Z
+    source: external
+    npmPackage: bmad-game-dev-studio
+    repoUrl: https://github.com/bmad-code-org/bmad-module-game-dev-studio.git
+  - name: cis
+    version: 0.1.8
+    installDate: 2026-03-11T03:46:04.333Z
+    lastUpdated: 2026-03-11T03:46:05.982Z
+    source: external
+    npmPackage: bmad-creative-intelligence-suite
+    repoUrl: https://github.com/bmad-code-org/bmad-module-creative-intelligence-suite
+ides:
+  - claude-code

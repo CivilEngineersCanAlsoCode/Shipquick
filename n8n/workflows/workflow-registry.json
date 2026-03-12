@@ -1,0 +1,27 @@
+{
+  "upload_shipquick": {
+    "id": "LxE6HWnZFyMdZadN",
+    "webhook": "/webhook/upload-document",
+    "collection": "shipquick-qa"
+  },
+  "upload_lifeos": {
+    "id": "OdAmhMehtsK8vF3D",
+    "webhook": "/webhook/upload-lifeos",
+    "collection": "lifeos-qa"
+  },
+  "upload_sync": {
+    "id": "Y5gShmSZZazTgNgm",
+    "webhook": "/webhook/upload-sync",
+    "collection": "sync-qa"
+  },
+  "upload_flex": {
+    "id": "NL9slDsQjzvvLIWO",
+    "webhook": "/webhook/upload-flex",
+    "collection": "flex-qa"
+  },
+  "fetch_all": {
+    "id": "emM2HPepToz0aKps",
+    "webhook": "/webhook/fetch-context",
+    "collection": "param:collection"
+  }
+}

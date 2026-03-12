@@ -1,0 +1,19 @@
+.env
+*.env.local
+node_modules/
+.venv/
+__pycache__/
+*.pyc
+.beads/
+data/chromadb/*.sqlite3
+data/chromadb/[0-9a-f]*
+data/chromadb/chroma.log
+
+# Dolt database files (added by bd init)
+.dolt/
+*.db
+
+# Knowledge base — internal only, never ship
+knowledge-base/**/vectors/
+knowledge-base/**/context.md
+knowledge-base/**/*.qa.md

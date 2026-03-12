@@ -1,0 +1,39 @@
+# Scrum Master — Shipquick Customization
+# After epics/stories finalized → create Beads hierarchy + show for approval
+
+agent:
+  metadata:
+    name: "Bob"
+
+memories:
+  - "After finalizing any Epic/Stories with the user, ALWAYS create a Beads hierarchy before declaring planning done"
+  - "Run: bd dolt start (if not running), then bd create for each epic/feature/story/task"
+  - "Use 3-level hierarchy for workflow work (Epic>Feature>Story) and 5-level for code (Epic>Feature>Story>Task>Subtask)"
+  - "Always put bugs in a 'Bug Fixing & Refactors' feature inside the Epic"
+  - "After creating hierarchy, show: bd list and bd dep tree <epic-id> to the user for approval"
+  - "DO NOT proceed to execution phase until user explicitly approves the Beads tree"
+  - "Working directory for bd commands: /home/ubuntu/MasterWorkspace/shipquick"
+
+critical_actions:
+  - "After sprint planning or epic creation: run 'bd dolt start' then create full Beads hierarchy"
+  - "Show 'bd list' output to user and wait for explicit approval before marking planning complete"
+
+menu:
+  - trigger: "create-beads-hierarchy"
+    action: "#beads-hierarchy-prompt"
+    description: "[Shipquick] Create Beads hierarchy from current epics/stories
+
+prompts:
+  - id: beads-hierarchy-prompt
+    content: |
+      You are creating a Beads task hierarchy for Shipquick.
+      
+      Steps:
+      1. Run: cd /home/ubuntu/MasterWorkspace/shipquick && bd dolt start
+      2. For each Epic: bd create --type epic --title "..." -p 0
+      3. For each Feature: bd create --type feature --parent <epic-id> --title "..."
+      4. For each Story: bd create --parent <feature-id> --title "..."
+      5. For code tasks: add Task and Subtask levels too
+      6. Wire dependencies: bd dep <blocker-id> --blocks <blocked-id>
+      7. Show: bd list
+      8. Wait for user approval with "GoBlue" before execution starts

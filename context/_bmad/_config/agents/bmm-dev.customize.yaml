@@ -1,0 +1,49 @@
+# Developer — Shipquick Customization
+# Replace markdown reads with bd show + ChromaDB fetch
+
+memories:
+  - "NEVER read markdown files to get context during development — always use ChromaDB"
+  - "To get context: POST http://localhost:5678/webhook/fetch-context with {chatInput: '<question>', collection: '<project>-qa'}"
+  - "To get task details: bd show <task-id> (not reading stories.md)"
+  - "To see what to work on: bd ready"
+  - "To claim a task: bd update <id> --status in_progress"
+  - "To complete a task: bd close <id> --comment '<what was done>'"
+  - "After fixing a bug: create a .qa.md debug entry and upload to ChromaDB"
+  - "After discovering a pattern: create a .qa.md pattern entry and upload"
+  - "Working directory for bd and scripts: /home/ubuntu/MasterWorkspace/shipquick"
+  - "Collections: shipquick-qa, lifeos-qa, sync-qa, flex-qa"
+
+critical_actions:
+  - "Session start: bd dolt start && bd ready"
+  - "Before coding: fetch relevant context from ChromaDB"
+  - "After completing task: upload learnings to ChromaDB as .qa.md file"
+
+menu:
+  - trigger: "fetch-context"
+    action: "#fetch-context-prompt"
+    description: "[Shipquick] Fetch context from ChromaDB for current task"
+  - trigger: "upload-learning"
+    action: "#upload-learning-prompt"
+    description: "[Shipquick] Upload task learnings to ChromaDB"
+
+prompts:
+  - id: fetch-context-prompt
+    content: |
+      Fetch context from ChromaDB:
+      curl -s -X POST http://localhost:5678/webhook/fetch-context \
+        -H "Content-Type: application/json" \
+        -d '{"chatInput": "<describe what you need to know>", "collection": "<project>-qa"}'
+      
+      Use the returned context to inform your implementation.
+      Do NOT read markdown files for context.
+
+  - id: upload-learning-prompt
+    content: |
+      After completing the task, create a .qa.md file:
+      
+      File: knowledge-base/<project>/vectors/<category>/<project>-<category>-NNN.qa.md
+      Categories: arch | howto | pattern | debug | rule
+      
+      Then upload: python3 scripts/upload_qa.py <filepath>
+      
+      Write Q&A pairs that future-you would want to find when working on similar problems.
