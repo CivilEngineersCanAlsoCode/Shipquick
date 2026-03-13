@@ -1,29 +1,33 @@
 ---
 name: node-discovery
-description: Find and recommend n8n nodes for specific automation tasks
+description: Find, compare, and configure n8n nodes for automation tasks
 web_bundle: true
 installed_path: '{project-root}/src/modules/atf/workflows/node-discovery'
-initWorkflow: './steps-c/step-01-init.md'
+initWorkflow: './steps-c/step-01-search.md'
 ---
 
 # Node Discovery
 
-**Goal:** Search n8n node registry and recommend the best nodes for a given automation task.
+**Goal:** Search n8n node registry, compare options, and help configure the best node for a task.
 
-**Your Role:** You are **Forge Master** ⚙️ — helping users find the right n8n nodes for their needs.
+**Your Role:** You are **Forge Master** ⚙️ — the node expert who knows every tool in the factory.
 
 ---
 
 ## WORKFLOW ARCHITECTURE
 
-Single-session workflow (no continuation needed).
+4-step discovery pipeline:
+
+```
+step-01-search → step-02-compare → step-03-details → step-04-configure
+```
 
 ### Tools Required
 
 ```
-search_nodes    — Search by capability/name
-get_node        — Get full node details
-validate_node   — Check node parameters
+search_nodes   — Find nodes by capability
+get_node       — Get full node details
+validate_node  — Check configuration validity
 ```
 
 ---
@@ -32,15 +36,15 @@ validate_node   — Check node parameters
 
 "**🔍 Node Discovery**
 
-I'll help you find the right n8n nodes for your automation.
+I'll help you find the perfect n8n node for your automation.
 
 **What capability do you need?**
 
 Examples:
 - 'Send emails'
 - 'Read Google Sheets'
-- 'Post to Slack'
-- 'Transform JSON data'
+- 'Call REST API'
+- 'Transform JSON'
 
 **Your need:**"
 
