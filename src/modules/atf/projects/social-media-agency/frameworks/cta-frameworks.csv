@@ -1,0 +1,33 @@
+id,name,emoji,description,example,best_for,engagement_level,linkedin_specific,source
+CT01,Open-Question,❓,"Ask a genuine open-ended question that invites diverse answers","What's the one PM skill you wish you learned earlier? Drop it below.",pm career,high,true,LinkedIn engagement tactics
+CT02,Poll-Vote,📊,"Present 2-4 options and ask people to vote in comments","Which matters more for a PM? A) Technical skills B) Communication C) Empathy. Vote below.",pm career,high,true,LinkedIn native engagement
+CT03,Share-Your-Story,📖,"Invite readers to share their own related experience","Have you ever shipped something nobody used? Tell me your story in the comments.",pm personal,high,true,Community building
+CT04,Tag-Someone,👥,"Ask readers to tag someone who needs to see this","Tag a PM who needs to hear this today.",pm career,medium,true,LinkedIn viral mechanics
+CT05,Agreement-Check,✅,"Ask if people agree or disagree to spark debate","Agree or disagree: every PM should code for at least 6 months. Tell me why.",pm hottake,high,true,Debate-driven engagement
+CT06,Reflection-Prompt,🪞,"Ask readers to reflect on their own situation","When was the last time you talked to an actual customer? Think about it.",pm career,medium,true,Introspective content
+CT07,Challenge-CTA,💪,"Challenge the audience to take a specific action","Challenge: this week ask one 'why' question in every meeting. See what changes.",pm howto,medium,true,Action-based engagement
+CT08,Resource-Offer,🎁,"Offer a free resource in exchange for engagement","I made a template for this. Comment 'TEMPLATE' and I'll send it to you.",howto pm,high,true,Lead generation tactics
+CT09,Follow-For-More,🔔,"Direct invitation to follow for more content on this topic","If you found this useful I write about PM frameworks every week. Hit follow.",pm career,low,true,Audience growth tactics
+CT10,Agree-Disagree,⚖️,"Simple binary choice to lower the barrier to commenting","Agree or disagree? Drop a 👍 or 👎 in the comments.",hottake pm,high,true,Low-friction engagement
+CT11,Save-This,🔖,"Tell readers to save/bookmark the post for future reference","Save this for your next stakeholder meeting. You'll thank yourself later.",pm howto,medium,true,LinkedIn save algorithm
+CT12,Comment-Below,💬,"Direct ask for comments with a specific prompt","What would you add to this list? I know I missed some good ones.",howto pm,high,true,Direct engagement ask
+CT13,DM-Me,📩,"Invite private messages for deeper conversation","If you're going through something similar DM me. Happy to chat.",career personal,medium,true,Relationship building
+CT14,Try-This,🧪,"Ask readers to try your advice and report back","Try this in your next 1-on-1 and let me know what happens.",pm howto,medium,true,Action-based engagement
+CT15,What-Would-You-Do,🤔,"Present a scenario and ask readers for their approach","Your CEO wants to launch in 2 weeks. The feature is 60% done. What do you do?",pm startup,high,true,Scenario-based engagement
+CT16,Fill-in-Blank,✏️,"Give an incomplete sentence for readers to complete","The hardest part of being a PM is ________. Fill in the blank.",pm career,high,true,Low-barrier engagement
+CT17,Hot-Take-Invite,🔥,"Invite readers to share their own hot takes","What's your most unpopular PM opinion? I'll go first in the comments.",pm hottake,high,true,Debate-driven engagement
+CT18,Repost-Request,🔁,"Ask readers to repost if they found value","If this helped you it'll probably help someone in your network too. Hit repost.",howto career,medium,true,LinkedIn viral mechanics
+CT19,One-Word-Answer,🎯,"Ask for a one-word response to maximize comment volume","Describe your PM career in one word. Mine: chaos.",pm career,high,true,Low-friction engagement
+CT20,Advice-Request,🙋,"Ask for advice showing you're still learning","I'm working on getting better at this. What's worked for you?",pm career,high,true,Humble engagement
+CT21,Prediction-Ask,🔮,"Ask readers to predict a future trend or outcome","Where do you think PM roles will be in 3 years? I shared mine. Now your turn.",pm ai_automation,medium,true,Future-facing engagement
+CT22,Rate-This,⭐,"Ask readers to rate something on a scale","On a scale of 1-10 how important is SQL for a PM? I say 6.",pm career,medium,true,Quantitative engagement
+CT23,This-or-That,🔀,"Present two options and ask which one readers prefer","Product sense or analytical skills — which one gets you hired faster?",pm career,high,true,Binary choice engagement
+CT24,Story-Continuation,📝,"Ask readers what happened next or what they think should happen","What would you have done differently? Tell me in the comments.",pm personal,medium,true,Narrative engagement
+CT25,Accountability,📌,"Publicly commit to something and invite others to join","I'm committing to writing one LinkedIn post every day for 30 days. Who's joining me?",personal howto,medium,true,Public commitment
+CT26,Controversial-Pick,🌶️,"Share your pick and ask readers for theirs","Best PM book ever written? I'll fight anyone who doesn't say Inspired. What's yours?",pm career,high,true,Debate-driven engagement
+CT27,Experience-Level,📈,"Ask readers to respond based on their experience level","Junior PMs — what's confusing you right now? Senior PMs — what do you wish juniors knew?",pm career,high,true,Segmented engagement
+CT28,Myth-Check,🔍,"Present a common belief and ask if readers agree it's a myth","Is 'the customer is always right' actually true? What's your experience?",pm startup,medium,true,Debate-driven engagement
+CT29,Gratitude-Prompt,🙏,"Ask readers to share gratitude about a professional moment","Who's someone at work who made your career better? Give them a shoutout below.",career personal,medium,true,Positive engagement
+CT30,Quick-Tip-Exchange,💡,"Share one tip and ask for one in return","Here's my best meeting hack. Now give me yours. Best one gets a shoutout next week.",pm howto,high,true,Reciprocal engagement
+CT31,Finish-the-List,📋,"Share an incomplete list and ask readers to add to it","I listed 5. I know there are more. What did I miss?",howto pm,high,true,Collaborative content
+CT32,Emoji-Response,🎭,"Ask readers to respond with just an emoji","Drop a 🔥 if you've lived through this. Drop a 😅 if you're living it right now.",personal pm,medium,true,Ultra-low-friction engagement
