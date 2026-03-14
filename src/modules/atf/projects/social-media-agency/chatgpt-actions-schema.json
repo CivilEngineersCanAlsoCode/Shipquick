@@ -271,6 +271,141 @@
           "200": { "description": "Post saved with MongoDB _id" }
         }
       }
+    },
+    "/webhook/sma-fetch-post": {
+      "post": {
+        "operationId": "fetchPost",
+        "summary": "Fetch posts by ID or by filters (status, channel, limit, date range)",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "post_id": { "type": "string", "description": "Specific post ID to fetch" },
+                  "status": { "type": "string", "description": "Filter by status: Draft, Drafted, Formatting, Previewed, Ready_ToPublish, Published" },
+                  "channel": { "type": "string", "description": "Content channel", "default": "linkedin" },
+                  "limit": { "type": "integer", "description": "Max number of posts to return" },
+                  "days": { "type": "integer", "description": "Lookback period in days" },
+                  "scheduled_date": { "type": "string", "description": "Filter by scheduled date (YYYY-MM-DD)" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Single post object if post_id provided, otherwise { posts: [], count: N }" }
+        }
+      }
+    },
+    "/webhook/sma-update-post": {
+      "post": {
+        "operationId": "updatePost",
+        "summary": "Update a post by ID. Merges updates into existing document.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["post_id", "updates"],
+                "properties": {
+                  "post_id": { "type": "string", "description": "Post ID to update" },
+                  "updates": { "type": "object", "description": "Fields to merge into existing post document" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Update confirmation with success, post_id, and updated_fields" }
+        }
+      }
+    },
+    "/webhook/sma-publish-linkedin": {
+      "post": {
+        "operationId": "publishLinkedIn",
+        "summary": "Publish a post to LinkedIn. ONE SHOT — no retry.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["post_id", "content"],
+                "properties": {
+                  "post_id": { "type": "string", "description": "Post ID being published" },
+                  "content": { "type": "string", "description": "Full post content to publish" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Success with linkedin_post_urn and linkedin_post_url, or failure with error" }
+        }
+      }
+    },
+    "/webhook/sma-notify-telegram": {
+      "post": {
+        "operationId": "notifyTelegram",
+        "summary": "Send notification to SMA Control Group on Telegram",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["message"],
+                "properties": {
+                  "message": { "type": "string", "description": "Notification message to send" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Success with message_id" }
+        }
+      }
+    },
+    "/webhook/sma-analytics-collect": {
+      "post": {
+        "operationId": "collectAnalytics",
+        "summary": "Submit metrics from JS snippet or screenshot OCR. Appends to metrics_history.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["posts"],
+                "properties": {
+                  "posts": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": ["post_url"],
+                      "properties": {
+                        "post_url": { "type": "string", "description": "LinkedIn post URL" },
+                        "likes": { "type": "integer", "description": "Like count" },
+                        "comments": { "type": "integer", "description": "Comment count" },
+                        "shares": { "type": "integer", "description": "Share/repost count" },
+                        "impressions": { "type": "integer", "description": "Impression count" },
+                        "follower_count": { "type": "integer", "description": "Follower count at time of collection" }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Success with processed and skipped counts" }
+        }
+      }
     }
   }
 }
