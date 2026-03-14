@@ -1,13 +1,13 @@
 # Step D.3 — Update Post Status
 
-**Agent:** Content Publisher
+**Agent:** Content Publisher (Relay)
 **Trigger:** D.2 completed successfully — post is live on LinkedIn.
 
 ---
 
 ## What You Do
 
-Update the post record in the database to reflect its published state. This ensures the rest of the pipeline (Analytics, dashboards, etc.) knows the post is live.
+Update the post record in MongoDB to reflect its published state. This ensures the rest of the pipeline (E-Analytics, dashboards, duplicate guards) knows the post is live. Four fields are updated: `status`, `published_at`, `linkedin_post_urn`, and `linkedin_post_url`.
 
 ---
 
@@ -15,12 +15,14 @@ Update the post record in the database to reflect its published state. This ensu
 
 **POST** `https://n8n.linkright.in/webhook/sma-update-post`
 
+**Exact Payload:**
 ```json
 {
-  "post_id": "<post_id>",
+  "post_id": "<post_id from D.2>",
   "status": "Published",
-  "linkedin_post_urn": "<urn from D.2>",
-  "published_at": "<ISO 8601 timestamp from D.2>"
+  "published_at": "<ISO 8601 timestamp from D.2, e.g. 2026-03-14T10:30:00Z>",
+  "linkedin_post_urn": "<URN from D.2, e.g. urn:li:share:7307123456789012345>",
+  "linkedin_post_url": "<URL from D.2, e.g. https://www.linkedin.com/feed/update/urn:li:share:7307123456789012345>"
 }
 ```
 
@@ -39,27 +41,29 @@ Update the post record in the database to reflect its published state. This ensu
 **If update succeeds (HTTP 200, success: true):**
 
 Tell the user:
-> "Post record updated — status is now `Published`, URN and timestamp saved."
+> "Post record updated — status ab `Published` hai, URN aur timestamp save ho gaye."
 
 Proceed to **D.4**.
 
 **If update fails (non-200, error in response, timeout):**
 
-This is a non-critical failure. The post is already live on LinkedIn. Inform the user clearly:
+This is a **non-critical failure**. The post is already live on LinkedIn — the publish cannot be undone.
 
-> "Warning: The post is LIVE on LinkedIn, but I couldn't update the database record. Error: [details]. The post won't show as Published in the dashboard until this is fixed."
+Tell the user:
+> "Warning: Post LinkedIn pe LIVE hai, lekin database record update nahi ho paya. Error: `[details]`. Dashboard mein `Published` nahi dikhega jab tak manually fix nahi hota."
 >
-> "You may need to manually update the record or re-run this step later. The LinkedIn post URN is: `[urn]`."
+> "LinkedIn URN: `[urn]` — yeh save kar lo agar manual fix karna pade."
 
-Retry once after 5 seconds. If it fails again, log the details and proceed to D.4 anyway — the Telegram notification should still go out.
+**Retry once** after 5 seconds. If it fails again:
+> "Retry bhi fail ho gaya. n8n workflow `SMA/Data/Write/UpdatePost` check karo. Post live hai, D.4 (Telegram notification) pe proceed kar raha hoon."
 
-**Critical:** Do NOT attempt to rollback or delete the LinkedIn post. It's live. There is no undo.
+Log the error details and proceed to D.4 anyway — the team notification should still go out.
 
 ---
 
-## Verification
+## Verification (Optional)
 
-After a successful update, optionally verify by fetching the post again:
+After a successful update, optionally verify by re-fetching the post:
 
 **POST** `https://n8n.linkright.in/webhook/sma-fetch-post`
 
@@ -71,19 +75,21 @@ After a successful update, optionally verify by fetching the post again:
 
 Confirm that:
 - `status` is `Published`
-- `linkedin_post_urn` matches what was saved
-- `published_at` is set
+- `linkedin_post_urn` matches the URN from D.2
+- `linkedin_post_url` is set
+- `published_at` is set and matches
 
-If verification fails, warn the user but still proceed to D.4.
+If verification fails, warn the user but still proceed to D.4. The post is live regardless.
 
 ---
 
 ## What NOT to Do
 
-- Do NOT rollback the LinkedIn post if the update fails — it's already live
-- Do NOT skip this step — downstream workflows (E-Analytics) depend on the updated status
-- Do NOT overwrite fields other than `status`, `linkedin_post_urn`, and `published_at`
-- Do NOT block the workflow if update fails — proceed to D.4
+- Do NOT rollback or delete the LinkedIn post if the update fails — it's already live, there is no undo
+- Do NOT skip this step — downstream workflows (E-Analytics) depend on the `Published` status and `linkedin_post_urn`
+- Do NOT overwrite fields other than `status`, `published_at`, `linkedin_post_urn`, and `linkedin_post_url`
+- Do NOT block the entire workflow if the update fails — proceed to D.4
+- Do NOT fabricate any field values — all must come from the D.2 response
 
 ---
 
@@ -91,9 +97,11 @@ If verification fails, warn the user but still proceed to D.4.
 
 Pass to **D.4**:
 ```
-post_id — the post ID
-title — the post title
-linkedin_post_urn — the LinkedIn URN
-published_at — the publication timestamp
-update_status — "success" or "failed" (for Telegram notification context)
+post_id            — the post ID
+title              — the post title
+linkedin_post_urn  — the LinkedIn URN
+linkedin_post_url  — the full LinkedIn URL
+published_at       — the publication timestamp
+delay_applied      — the random delay that was applied (minutes)
+update_status      — "success" or "failed" (so D.4 can include a warning if needed)
 ```

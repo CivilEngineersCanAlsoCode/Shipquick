@@ -1,29 +1,44 @@
 ---
 name: content-drafting
 description: Draft, refine, and finalize content for a specific post — collaborative writing between AI and user
-initWorkflow: './steps-c/step-01-pick-post.md'
+initWorkflow: './steps-c/step-B1-pick-post.md'
 ---
 
 # Content Drafting
 
-**Goal:** Take an idea from the Content Calendar and turn it into publish-ready content.
+**Goal:** Take the earliest undrafted scheduled post and turn it into a publish-ready LinkedIn draft through collaborative AI-human writing.
 
 **System:** BMAD workflow — interactive. AI drafts, user refines. Multiple iterations until user approves.
+
+**Depends on:** A-ContentIdeation (must have posts with status `Scheduled_NoDraft`)
 
 ---
 
 ## Steps
 
-1. **Pick Post** — Select which idea to draft (from Notion or user's choice)
-2. **Generate Draft** — AI creates first draft based on idea, channel, tone
-3. **Refine** — User reviews, gives feedback, AI iterates
-4. **Finalize** — Save final content to Notion, mark as "Ready to Publish"
+1. **B.1 — Pick Post** — Auto-fetch earliest `Scheduled_NoDraft` post via `sma-fetch-post`, display to user, confirm
+2. **B.2 — Generate Draft** — Gather context (brief, experiences, top posts), load 7 framework CSVs, AI curates top 3-5 per framework, user picks 1 each, generate draft
+3. **B.3 — Refine** — User reviews draft, gives feedback, AI iterates (max 3 suggested, hard cap 5). Quality checks: 800-1600 chars, FK Grade 7, hook under 210 chars
+4. **B.4 — Finalize** — Save to MongoDB via `sma-update-post` (status → `Drafted`), update Google Sheet, present next actions
+
+## Webhooks Used
+
+| Webhook | Step | Purpose |
+|---------|------|---------|
+| sma-fetch-post | B.1 | Fetch earliest undrafted post |
+| sma-fetch-briefs | B.2 | Original research data |
+| sma-search-experiences | B.2 | Deep experience search + duplicate detection |
+| sma-fetch-past-posts | B.2 | Top 5 performing posts (tone reference) |
+| sma-save-experience | B.2 | Save user-shared new experience |
+| sma-update-post | B.3, B.4 | Save incomplete/final draft |
+| sma-update-sheet-status | B.4 | Mark brief as Drafted |
 
 ## Inputs
-- Content Calendar entry (or user describes what to write)
-- Channel-specific constraints (LinkedIn char limits, Telegram formatting, etc.)
+- Post with status `Scheduled_NoDraft` in MongoDB (from A-ContentIdeation)
+- 7 framework CSVs + content-methods.csv (local files)
+- LinkedIn channel constraints (800-1600 chars, no markdown)
 
 ## Outputs
-- Finalized content saved to Notion Content Calendar
-- Status updated to "Ready to Publish"
-- Go Live Date confirmed
+- Post content saved to MongoDB with status `Drafted`
+- Google Sheet brief status updated to `Drafted`
+- Draft metadata: char_count, word_count, hook_type, cta_type, tone, format, iterations
