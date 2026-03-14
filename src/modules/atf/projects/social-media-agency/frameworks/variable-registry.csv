@@ -1,0 +1,49 @@
+variable_id,workflow,category,variable_name,description,current_value,data_type,min,max,unit,storage_location,config_doc_id,editable_by_user,priority
+VAR_A01,A-ContentIdeation,scoring,scoring_weight_freshness,Fibonacci weight applied to freshness score when calculating total,8,integer,1,21,weight,mongodb_config,scoring_weights,true,P1
+VAR_A02,A-ContentIdeation,scoring,scoring_weight_personal_experience,Fibonacci weight applied to personal experience score when calculating total,5,integer,1,21,weight,mongodb_config,scoring_weights,true,P1
+VAR_A03,A-ContentIdeation,scoring,scoring_weight_research_quality,Fibonacci weight applied to research quality score when calculating total,3,integer,1,21,weight,mongodb_config,scoring_weights,true,P1
+VAR_A04,A-ContentIdeation,threshold,individual_min_freshness,Minimum freshness score a brief must achieve to pass gate check,5,integer,1,10,score,mongodb_config,scoring_scales,true,P1
+VAR_A05,A-ContentIdeation,threshold,individual_min_personal_experience,Minimum personal experience score a brief must achieve to pass gate check,3,integer,1,10,score,mongodb_config,scoring_scales,true,P1
+VAR_A06,A-ContentIdeation,threshold,individual_min_research_quality,Minimum research quality score a brief must achieve to pass gate check,2,integer,1,10,score,mongodb_config,scoring_scales,true,P1
+VAR_A07,A-ContentIdeation,threshold,total_minimum_percent,Minimum percentage of max possible score a brief must reach to qualify,50,integer,10,100,percent,mongodb_config,scoring_scales,true,P1
+VAR_A08,A-ContentIdeation,scoring,max_score_per_factor,Maximum score any single scoring factor can receive,10,integer,5,20,score,mongodb_config,scoring_scales,true,P2
+VAR_A09,A-ContentIdeation,limit,top_n_posts_to_select,Number of top-scoring briefs to present for user selection,3,integer,1,10,count,mongodb_config,scoring_scales,true,P2
+VAR_A10,A-ContentIdeation,timing,lookback_days_freshness,Number of days to look back when checking for duplicate/recent posts,14,integer,7,90,days,mongodb_config,scoring_scales,true,P2
+VAR_A11,A-ContentIdeation,limit,max_posts_planned_at_once,Maximum number of posts that can be planned in a single ideation session,3,integer,1,10,count,mongodb_config,posting_schedule,true,P2
+VAR_A12,A-ContentIdeation,limit,posts_per_day,Default number of posts to schedule per day,1,integer,1,3,count,mongodb_config,posting_schedule,true,P1
+VAR_A13,A-ContentIdeation,threshold,vector_search_similarity_threshold,Minimum cosine similarity for experience vector search matches,0.80,float,0.50,1.00,similarity,mongodb_config,scoring_scales,true,P2
+VAR_A14,A-ContentIdeation,limit,vector_search_limit_per_query,Maximum number of experience matches to return per vector search query,3,integer,1,10,count,mongodb_config,scoring_scales,true,P3
+VAR_B01,B-ContentDrafting,format,char_limit_min,Minimum character count for a drafted post,800,integer,200,2000,characters,mongodb_config,formatting_config,true,P1
+VAR_B02,B-ContentDrafting,format,char_limit_max,Maximum character count for a drafted post,1600,integer,500,3000,characters,mongodb_config,formatting_config,true,P1
+VAR_B03,B-ContentDrafting,format,max_emojis,Maximum number of emojis allowed in a single post,3,integer,0,10,count,mongodb_config,formatting_config,true,P2
+VAR_B04,B-ContentDrafting,format,max_hindi_sentences,Maximum number of Hindi/Hinglish sentences allowed in a post,3,integer,0,10,count,mongodb_config,formatting_config,true,P2
+VAR_B05,B-ContentDrafting,format,max_lines_per_block,Maximum consecutive lines before a visual break is required,3,integer,2,5,count,mongodb_config,formatting_config,true,P2
+VAR_B06,B-ContentDrafting,limit,max_refinement_iterations,Maximum number of AI refinement loops before forcing output,5,integer,3,10,count,mongodb_config,formatting_config,true,P2
+VAR_B07,B-ContentDrafting,threshold,iteration_warning_threshold,Iteration count at which a warning is shown to the user,3,integer,2,8,count,mongodb_config,formatting_config,true,P3
+VAR_B08,B-ContentDrafting,threshold,flesch_kincaid_max_grade,Maximum Flesch-Kincaid grade level for readability compliance,7,integer,5,12,grade,mongodb_config,formatting_config,true,P1
+VAR_B09,B-ContentDrafting,format,hashtag_count_min,Minimum number of hashtags to include in a post,3,integer,0,10,count,mongodb_config,formatting_config,true,P2
+VAR_B10,B-ContentDrafting,format,hashtag_count_max,Maximum number of hashtags to include in a post,6,integer,3,15,count,mongodb_config,formatting_config,true,P2
+VAR_B11,B-ContentDrafting,threshold,duplicate_threshold_high,Similarity score above which a draft is flagged as a near-duplicate,0.95,float,0.85,1.00,similarity,mongodb_config,engagement_config,true,P1
+VAR_B12,B-ContentDrafting,threshold,duplicate_threshold_similar,Similarity score above which a draft is flagged as similar to existing content,0.80,float,0.60,0.95,similarity,mongodb_config,engagement_config,true,P2
+VAR_B13,B-ContentDrafting,limit,top_performing_posts_count,Number of top-performing past posts to fetch for style reference,5,integer,3,20,count,mongodb_config,engagement_config,true,P2
+VAR_B14,B-ContentDrafting,timing,top_performing_lookback_days,Number of days to look back when fetching top-performing posts,30,integer,7,180,days,mongodb_config,engagement_config,true,P2
+VAR_B15,B-ContentDrafting,engagement,engagement_weight_likes,Weight multiplier for likes in engagement score calculation,1,integer,1,10,weight,mongodb_config,engagement_config,true,P2
+VAR_B16,B-ContentDrafting,engagement,engagement_weight_comments,Weight multiplier for comments in engagement score calculation,3,integer,1,10,weight,mongodb_config,engagement_config,true,P2
+VAR_B17,B-ContentDrafting,engagement,engagement_weight_shares,Weight multiplier for shares in engagement score calculation,2,integer,1,10,weight,mongodb_config,engagement_config,true,P2
+VAR_C01,C-ContentReview,scoring,quality_checks_enabled,Whether automated quality checks run during content review,true,boolean,,,flag,mongodb_config,review_config,true,P1
+VAR_C02,C-ContentReview,scoring,auto_fix_enabled,Whether the system automatically applies suggested fixes without user confirmation,false,boolean,,,flag,mongodb_config,review_config,true,P2
+VAR_D01,D-ContentPublishing,timing,random_delay_min,Minimum random delay before publishing a scheduled post,0,integer,0,30,minutes,mongodb_config,posting_schedule,true,P2
+VAR_D02,D-ContentPublishing,timing,random_delay_max,Maximum random delay before publishing a scheduled post,60,integer,10,120,minutes,mongodb_config,posting_schedule,true,P2
+VAR_D03,D-ContentPublishing,limit,max_posts_per_day,Maximum number of posts that can be published in a single day,1,integer,1,3,count,mongodb_config,posting_schedule,true,P1
+VAR_D04,D-ContentPublishing,timing,default_publish_time,Default time of day to publish posts (24h format),09:00,string,,,HH:MM,mongodb_config,posting_schedule,true,P1
+VAR_D05,D-ContentPublishing,timing,timezone,Timezone used for all scheduling and publishing operations,Asia/Kolkata,string,,,tz_name,mongodb_config,posting_schedule,true,P1
+VAR_D06,D-ContentPublishing,display,linkedin_visibility,Default visibility setting for LinkedIn posts,PUBLIC,string,,,enum,mongodb_config,posting_schedule,true,P2
+VAR_E01,E-AnalyticsReview,timing,no_data_reminder_hours,Hours after publishing with no analytics before sending a reminder,48,integer,24,168,hours,mongodb_config,analytics_config,true,P2
+VAR_E02,E-AnalyticsReview,timing,report_period_days,Number of days covered in each analytics report,7,integer,1,30,days,mongodb_config,analytics_config,true,P2
+VAR_E03,E-AnalyticsReview,limit,top_posts_in_report,Number of top-performing posts to highlight in analytics reports,5,integer,3,20,count,mongodb_config,analytics_config,true,P3
+VAR_E04,E-AnalyticsReview,engagement,engagement_benchmark_likes,Minimum likes count considered a successful post,50,integer,10,500,count,mongodb_config,analytics_config,true,P2
+VAR_E05,E-AnalyticsReview,engagement,engagement_benchmark_comments,Minimum comments count considered a successful post,10,integer,5,100,count,mongodb_config,analytics_config,true,P2
+VAR_F01,F-ContentFormatting,format,default_target_format,Default output format template for content generation,linkedin_post,string,,,format_name,mongodb_config,formatting_config,true,P2
+VAR_F02,F-ContentFormatting,format,staircase_direction,Default staircase formatting direction for visual flow,descending,string,,,enum,mongodb_config,formatting_config,true,P3
+VAR_F03,F-ContentFormatting,display,positioning_line_enabled,Whether to include a positioning/credential line at the end of posts,true,boolean,,,flag,mongodb_config,formatting_config,true,P2
+VAR_F04,F-ContentFormatting,display,follow_line_enabled,Whether to include a follow CTA line at the end of posts,true,boolean,,,flag,mongodb_config,formatting_config,true,P2
