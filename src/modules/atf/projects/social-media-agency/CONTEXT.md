@@ -69,15 +69,16 @@ A (Ideation) → B (Drafting) → F (Formatting) → C (Review) → D (Publishin
 | /sma-fetch-briefs | POST | A.1 |
 | /sma-fetch-past-posts | POST | A.2, A.7, B.1 |
 | /sma-search-experiences | POST | A.3, B.2 |
-| /sma-fetch-config | POST | A.4, A.7, B.2 |
-| /sma-save-config | POST | A.5 |
+| /sma-fetch-config | POST | A.4, A.7, B.2, E.1, E.5 |
+| /sma-save-config | POST | A.5, E.4, E.5 |
 | /sma-update-sheet-status | POST | A.6, A.8 |
 | /sma-save-experience | POST | A.6 |
 | /sma-save-post | POST | A.8 |
 | /sma-save-to-notion | POST | A.8 |
-| /sma-fetch-post | POST | B.1, C.1, D.1 |
+| /sma-fetch-post | POST | B.1, C.1, D.1, E.1 |
 | /sma-update-post | POST | B.4, C.2, D.3 |
 | /sma-publish-linkedin | POST | D.2 |
+| /sma-analytics-collect | POST | E.1 (background, Chrome Extension) |
 
 ## Workflow Details
 
@@ -110,9 +111,12 @@ A (Ideation) → B (Drafting) → F (Formatting) → C (Review) → D (Publishin
 - D.3: Update status → Published + linkedin_post_urn + published_at
 - D.4: Telegram notification to SMA control group
 
-### E — Analytics Review (plan incomplete, E.1 discussed)
-- E.1: Collect metrics via Chrome Extension (passive DOM reading)
-- E.2-E.5: TBD
+### E — Analytics Review (5 steps, DETAILED)
+- E.1: Fetch published posts with Chrome Extension metrics from MongoDB
+- E.2: Store & Aggregate — per-pillar, per-method, per-day, per-hook averages + benchmarks
+- E.3: Analyze Performance — post vs avg, rankings, trends, interactive dashboard + discussion
+- E.4: Strategy Recommendations — pillar rebalancing, format insights, timing, combos, variety alerts → save
+- E.5: Feedback Loop — update scoring_weights, pillar_priority, preferred methods, flag underperformers → self-improving
 
 ### F — Content Formatting (new, split from B)
 - F.1: Pick drafted post
