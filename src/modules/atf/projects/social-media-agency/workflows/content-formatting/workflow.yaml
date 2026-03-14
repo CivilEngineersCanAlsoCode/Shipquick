@@ -1,0 +1,15 @@
+name: content-formatting
+description: "Apply LinkedIn-specific formatting rules to drafted posts — staircase layout, UPPERCASE headers, emoji placement, Hindi rules, code-block preview"
+code: F
+config_source: "{project-root}/_lr/_config/manifest.yaml"
+installed_path: "{project-root}/_lr/flex/workflows/content-formatting"
+instructions: "{installed_path}/instructions.md"
+validation: "{installed_path}/checklist.md"
+template: "{installed_path}/templates/formatted-post.template.md"
+input_file_patterns:
+  drafted_posts:
+    pattern: "data/drafted-posts.json"
+    strategy: FULL_LOAD
+  formatting_rules:
+    pattern: "data/reference/formatting-rules.csv"
+    strategy: FULL_LOAD

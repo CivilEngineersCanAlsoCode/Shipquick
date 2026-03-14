@@ -1,0 +1,14 @@
+name: content-review
+description: "Fetch previewed posts, let user review each one (approve, edit, reschedule, or drop), and update MongoDB status to Ready_ToPublish or send back for formatting."
+config_source: "{project-root}/_lr/_config/manifest.yaml"
+installed_path: "{project-root}/_lr/flex/workflows/content-review"
+instructions: "{installed_path}/instructions.md"
+validation: "{installed_path}/checklist.md"
+template: "{installed_path}/templates/review-summary.template.md"
+input_file_patterns:
+  posts:
+    pattern: "data/reference/scheduled-posts.yaml"
+    strategy: FULL_LOAD
+  review_config:
+    pattern: "data/reference/review-config.yaml"
+    strategy: FULL_LOAD

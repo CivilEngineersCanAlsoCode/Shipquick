@@ -1,0 +1,17 @@
+name: content-drafting
+description: "Pick a scheduled post, collaboratively draft content using frameworks and personal experiences, refine through user feedback, and save the finalized draft to MongoDB."
+config_source: "{project-root}/_lr/_config/manifest.yaml"
+installed_path: "{project-root}/_lr/flex/workflows/content-drafting"
+instructions: "{installed_path}/instructions.md"
+validation: "{installed_path}/checklist.md"
+template: "{installed_path}/templates/draft-output.template.md"
+input_file_patterns:
+  content_methods:
+    pattern: "data/reference/content-methods.csv"
+    strategy: FULL_LOAD
+  frameworks:
+    pattern: "data/reference/*.csv"
+    strategy: FULL_LOAD
+  experiences:
+    pattern: "data/reference/experiences.yaml"
+    strategy: FULL_LOAD

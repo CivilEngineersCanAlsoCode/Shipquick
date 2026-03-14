@@ -1,0 +1,12 @@
+name: content-publishing
+description: "Fetch ready posts, publish to LinkedIn with delay + duplicate guard, update status, notify via Telegram"
+code: D
+config_source: "{project-root}/_lr/_config/manifest.yaml"
+installed_path: "{project-root}/_lr/flex/workflows/content-publishing"
+instructions: "{installed_path}/instructions.md"
+validation: "{installed_path}/checklist.md"
+template: "{installed_path}/templates/publish-report.template.md"
+input_file_patterns:
+  ready_posts:
+    pattern: "data/ready-posts.json"
+    strategy: FULL_LOAD

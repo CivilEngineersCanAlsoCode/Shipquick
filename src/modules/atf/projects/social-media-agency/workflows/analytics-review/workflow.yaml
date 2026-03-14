@@ -1,0 +1,15 @@
+name: analytics-review
+description: "Collect LinkedIn engagement metrics via Chrome Extension, score performance, discuss insights, adjust content strategy"
+code: E
+config_source: "{project-root}/_lr/_config/manifest.yaml"
+installed_path: "{project-root}/_lr/flex/workflows/analytics-review"
+instructions: "{installed_path}/instructions.md"
+validation: "{installed_path}/checklist.md"
+template: "{installed_path}/templates/analytics-report.template.md"
+input_file_patterns:
+  published_posts:
+    pattern: "data/published-posts.json"
+    strategy: FULL_LOAD
+  kpi_data:
+    pattern: "data/kpi-metrics.json"
+    strategy: FULL_LOAD
