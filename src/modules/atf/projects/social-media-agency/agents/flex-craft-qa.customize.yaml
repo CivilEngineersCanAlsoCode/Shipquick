@@ -1,0 +1,5 @@
+agent: flex-craft-qa
+custom_rules: []
+project_overrides:
+  tone: professional
+  platform_focus: linkedin
