@@ -3,8 +3,8 @@
 ## Pre-Review Checks (4)
 
 - [ ] Published posts exist for the selected review period
-- [ ] Chrome Extension data is available (likes, comments, shares collected)
-- [ ] Notion KPIs database is accessible via n8n webhook
+- [ ] Metrics data is available via JS DevTools snippet or ChatGPT Actions (likes, comments, shares, follower_count collected)
+- [ ] At least Day 1 metrics_history snapshot exists for posts in review period
 - [ ] User is available for interactive discussion (E.3–E.4)
 
 ## Analysis Checks (5)

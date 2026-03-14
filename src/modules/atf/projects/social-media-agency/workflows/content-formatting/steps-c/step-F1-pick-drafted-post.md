@@ -27,7 +27,7 @@ Fetch all posts with status `Drafted` from MongoDB via the `sma-fetch-post` webh
 {
   "posts": [
     {
-      "post_id": "67a1b2c3d4e5f6...",
+      "_id": "67a1b2c3d4e5f6...",
       "title": "Why Most PMs Build Features Nobody Wants",
       "topic": "product-market-fit",
       "brief_summary": "Lesson from launching 3 failed features in 6 months",
@@ -98,7 +98,7 @@ Once the user selects a post, immediately update its status to `Formatting` to p
 ```json
 {
   "success": true,
-  "post_id": "67a1b2c3d4e5f6...",
+  "_id": "67a1b2c3d4e5f6...",
   "status": "Formatting"
 }
 ```
@@ -176,7 +176,7 @@ Re-prompt. Do NOT default to any post.
 Pass to **F.2**:
 ```
 selected_post — full post object:
-  - post_id
+  - _id
   - title
   - topic
   - brief_summary

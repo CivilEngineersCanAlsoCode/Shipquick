@@ -1,6 +1,6 @@
 # Step 01 — Load Session Context
 
-**Agent:** Content Strategist
+**Agent:** Pixel (flex-crafter)
 **Trigger:** User starts the formatting workflow ("Format karo", "Post format do", "Formatting shuru karo", or any equivalent).
 
 ---

@@ -15,9 +15,10 @@ This workflow takes a scheduled post (status: `Scheduled_NoDraft`) and collabora
    - User confirms which post to draft.
 
 ### Phase 2: Framework Loading (Step B.2)
-2. **Fetch Frameworks & Experiences:**
-   - POST to `sma-fetch-config` for formatting and engagement config.
-   - POST to `sma-search-experiences` with the post topic for deeper experience matches (limit: 3, broader search than A.3).
+2. **Fetch Context & Frameworks:**
+   - POST to `sma-fetch-briefs` for original brief research data (if source_brief_id exists).
+   - POST to `sma-search-experiences` with the post topic for deeper experience matches (limit: 3, min_similarity: 0.80).
+   - POST to `sma-fetch-past-posts` for top 5 performing posts (tone reference).
    - Load framework CSVs locally:
      - `content-methods.csv` (60 methods across 10 categories)
      - `content-formats.csv` (35 formats)
@@ -27,7 +28,7 @@ This workflow takes a scheduled post (status: `Scheduled_NoDraft`) and collabora
      - `tone-frameworks.csv` (32 tones)
      - `positioning-templates.csv` (32 templates)
 
-### Phase 3: Curation & Draft Generation (Step B.3)
+### Phase 3: Curation & Draft Generation (Step B.2 continued)
 3. **AI Curates Top Options:** For each framework CSV, AI selects top 3–5 most relevant options for the post topic and content pillar.
 4. **User Picks 1 Each:** Present curated options to user. User selects:
    - 1 content format
@@ -35,15 +36,16 @@ This workflow takes a scheduled post (status: `Scheduled_NoDraft`) and collabora
    - 1 narrative framework
    - 1 CTA framework
    - 1 tone framework
+   - 1 positioning template
 5. **Generate Draft:** Using selected frameworks + linked experiences + topic:
-   - Apply the draft template: Hook → Body → CTA → Hashtags
+   - Apply the draft template: Hook → Body → Key Takeaway → CTA → Positioning → Hashtags
    - Channel: LinkedIn (800–1600 ASCII chars)
    - Tone: casual + witty, authentic, English only
    - Strong hook in first 2 lines
    - End with CTA or engagement question
    - 3–6 hashtags at end
 
-### Phase 4: Refinement (Step B.3 continued)
+### Phase 4: Refinement (Step B.3)
 6. **User Reviews:** Present draft to user. User can:
    - Request changes ("make it shorter", "change the hook", "add my experience about X", "too formal")
    - Approve ("good" / "done" / "perfect")
@@ -68,10 +70,12 @@ This workflow takes a scheduled post (status: `Scheduled_NoDraft`) and collabora
 | Webhook | Method | Steps |
 |---------|--------|-------|
 | sma-fetch-post | POST | B.1 |
-| sma-fetch-past-posts | POST | B.1 (context) |
-| sma-search-experiences | POST | B.2 |
-| sma-fetch-config | POST | B.2 |
-| sma-update-post | POST | B.4 |
+| sma-fetch-briefs | POST | B.2 (original brief) |
+| sma-search-experiences | POST | B.2 (deep search + dup check) |
+| sma-fetch-past-posts | POST | B.2 (tone reference) |
+| sma-save-experience | POST | B.2 (user-shared new experience) |
+| sma-update-post | POST | B.3, B.4 |
+| sma-update-sheet-status | POST | B.4 (mark brief Drafted) |
 
 ## Key Constraints
 - LinkedIn only (v1), 800–1600 ASCII characters per post

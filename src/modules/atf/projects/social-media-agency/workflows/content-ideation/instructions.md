@@ -51,7 +51,7 @@ This workflow transforms raw topic briefs (sourced from ChatGPT via Google Sheet
 - LinkedIn only (v1), max 3 posts planned per session
 - 1 post per day, no weekends unless configured
 - MongoDB is source of truth — Notion is view-only mirror
-- 0.80 default similarity threshold for experience matching
+- 0.80 default similarity threshold for experience matching (A.3 preview uses 0.3 for broader initial results)
 - English for vector-searchable content
 - All user communication in Hinglish (Hindi-English mix)
 - Never invent or hallucinate briefs — always use webhook data

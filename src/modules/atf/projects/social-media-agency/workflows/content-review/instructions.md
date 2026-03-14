@@ -4,7 +4,7 @@
 This workflow is the quality gate between formatting and publishing. The agent fetches all posts with status `Previewed`, presents each one to the user for review, and applies the user's decision (approve, edit, reschedule, or drop). Approved posts are updated to `Ready_ToPublish` in MongoDB, making them eligible for auto-publication by D-ContentPublishing.
 
 ## Agents Involved
-- **Content Strategist (Echo):** Presents posts for review, applies user decisions, updates MongoDB.
+- **Pixel (flex-crafter):** Presents posts for review, applies user decisions, updates MongoDB.
 
 ## Execution Flow
 

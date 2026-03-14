@@ -1,7 +1,7 @@
 ---
 name: content-drafting
 description: Draft, refine, and finalize content for a specific post — collaborative writing between AI and user
-initWorkflow: './steps-c/step-B1-pick-post.md'
+initWorkflow: './steps-c/step-01-load-session-context.md'
 ---
 
 # Content Drafting
@@ -17,7 +17,7 @@ initWorkflow: './steps-c/step-B1-pick-post.md'
 ## Steps
 
 1. **B.1 — Pick Post** — Auto-fetch earliest `Scheduled_NoDraft` post via `sma-fetch-post`, display to user, confirm
-2. **B.2 — Generate Draft** — Gather context (brief, experiences, top posts), load 7 framework CSVs, AI curates top 3-5 per framework, user picks 1 each, generate draft
+2. **B.2 — Generate Draft** — Gather context (brief, experiences, top posts), load 8 framework CSVs, curate from 6 categories, user picks 1 each, generate draft
 3. **B.3 — Refine** — User reviews draft, gives feedback, AI iterates (max 3 suggested, hard cap 5). Quality checks: 800-1600 chars, FK Grade 7, hook under 210 chars
 4. **B.4 — Finalize** — Save to MongoDB via `sma-update-post` (status → `Drafted`), update Google Sheet, present next actions
 

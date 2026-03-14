@@ -1,25 +1,43 @@
 # Analytics Review — Agent Instructions
 
 ## Overview
-This workflow reviews the performance of published LinkedIn content using engagement metrics collected via the Chrome Extension. The agent fetches stored metrics, aggregates data, analyzes performance across multiple dimensions, generates strategy recommendations, and closes the self-improving feedback loop by updating system parameters. ALL data reads and writes go through n8n webhooks — the agent has ZERO direct DB/API access.
+This workflow reviews the performance of published LinkedIn content using engagement metrics collected via JS DevTools snippet (primary) or ChatGPT Actions (backup). Metrics are collected at multiple time points (Day 1, 3, 7, 14, 30) per post, stored as `metrics_history[]` snapshots. The agent fetches stored metrics, aggregates data, analyzes performance across multiple dimensions (including resurgence detection), generates strategy recommendations, and closes the self-improving feedback loop by updating system parameters. ALL data reads and writes go through n8n webhooks — the agent has ZERO direct DB/API access.
 
 ## Agents Involved
 - **Content Strategist (Echo):** Drives the entire analytics review — fetches metrics, calculates aggregations, presents analysis, facilitates discussion, generates recommendations, and applies feedback loop updates.
 
-## Chrome Extension
-The Chrome Extension is a passive DOM reader (Manifest V3) that collects engagement metrics directly from the LinkedIn feed. It reads:
+## Data Collection Mechanisms
+
+### Primary: JS DevTools Snippet
+Satvik runs a JavaScript snippet in Chrome DevTools on the LinkedIn activity page. The snippet reads DOM-visible metrics:
 - **Likes** (reactions count)
 - **Comments** (comment count)
 - **Shares** (repost count)
 - **Impressions** (view count, when available)
+- **Follower count** (captured from profile, baseline on first run per post)
 
-The extension does NOT interact with the LinkedIn API. It reads what is visible in the DOM when the user visits their post analytics page. Data is sent to the n8n webhook `POST /sma-analytics-collect` automatically via a background service worker. The n8n workflow then:
+The snippet does NOT interact with the LinkedIn API — it reads what is visible in the DOM. Data is sent to the n8n webhook `POST /sma-analytics-collect`.
+
+### Backup: ChatGPT Actions
+Screenshot of LinkedIn post analytics is uploaded to ChatGPT. Vision OCR extracts the metrics, and a ChatGPT Action sends the extracted data to the same n8n webhook.
+
+### Multi-Point Collection Schedule
+Each post is collected at **Day 1, 3, 7, 14, 30** after publishing:
+- **Day 1:** Baseline metrics + follower_count
+- **Day 3:** Early traction snapshot
+- **Day 7:** Mid-term performance
+- **Day 14:** Resurgence detection checkpoint
+- **Day 30:** Final performance snapshot
+
+### n8n Processing (per collection)
 1. Finds the post in `linkedin_posts` by `linkedin_post_urn`
-2. Updates `engagement_metrics: { likes, comments, shares, impressions }`
-3. Calculates `engagement_score = likes + (comments × 3) + (shares × 2)`
-4. Saves `metrics_collected_at` timestamp
+2. Appends snapshot to `metrics_history[]`: `{ likes, comments, shares, impressions, follower_count, collection_day, collected_at }`
+3. Updates latest `engagement_metrics` with most recent values
+4. Calculates `engagement_score = likes + (comments × 3) + (shares × 2)`
+5. Calculates `engagement_rate = (engagement_score / follower_count) × 100`
+6. Saves `metrics_collected_at` timestamp
 
-This collection happens in the background — by the time the user starts an analytics review, metrics are already stored.
+Collection is manual — Satvik runs the snippet at each scheduled collection day. By the time the user starts an analytics review, metrics_history should have multiple snapshots per post.
 
 ## Engagement Scoring Formula
 ```
@@ -91,14 +109,14 @@ engagement_score = likes × 1 + comments × 3 + shares × 2
 ## Webhooks
 | Webhook | Method | Step | Purpose |
 |---------|--------|------|---------|
-| `/sma-analytics-collect` | POST | Background | Chrome Extension → n8n (raw metrics) |
+| `/sma-analytics-collect` | POST | Manual, multi-point | JS snippet / ChatGPT Actions → n8n (raw metrics snapshot → metrics_history[]) |
 | `/sma-fetch-post` | POST | E.1 | Fetch published posts with engagement metrics |
 | `/sma-fetch-config` | POST | E.1, E.5 | Load analytics/scoring/engagement config |
 | `/sma-save-config` | POST | E.4, E.5 | Save recommendations, weights, priorities |
 
 ## Error Handling
 - **No published posts for period:** Inform user, suggest shortening review window or checking D-Publishing
-- **Chrome Extension data missing:** Ask user to visit LinkedIn analytics page with extension active, then retry
+- **Metrics data missing:** Ask user to run JS DevTools snippet on LinkedIn activity page (or upload screenshot to ChatGPT Actions), then retry
 - **n8n webhook unreachable:** Retry once, then ask user to verify n8n is running (`SMA/Data/Read/FetchPost`)
 - **Partial data:** Proceed with available data, clearly flag which posts lack metrics
 - **Fewer than 5 posts:** Set `low_confidence` flag, add caveats to all recommendations
@@ -108,7 +126,7 @@ engagement_score = likes × 1 + comments × 3 + shares × 2
 ## Key Constraints
 - LinkedIn only (v1)
 - Agent has ZERO direct DB/API access — ALL via n8n webhooks
-- Chrome Extension is passive — reads DOM, never writes to or interacts with LinkedIn
+- JS snippet / ChatGPT Actions are passive — read DOM or screenshot, never write to or interact with LinkedIn
 - All user communication in Hinglish (Hindi-English mix)
 - Never invent or hallucinate metrics — always use webhook data
 - Insights are suggestions, not directives — user makes final strategy decisions

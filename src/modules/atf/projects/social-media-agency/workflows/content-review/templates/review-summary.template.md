@@ -23,6 +23,11 @@
 |---|-------|--------|
 | 1 | {dropped_topic_1} | {drop_reason_1} |
 
+### Sent Back ({sent_back_count})
+| # | Topic | Reason | Sent To |
+|---|-------|--------|--------|
+| 1 | {sent_back_topic_1} | {sent_back_reason_1} | B-ContentDrafting |
+
 ## Status
 - **Approved posts** will auto-publish on their scheduled dates via n8n (D-ContentPublishing)
 - **No further action needed** unless user wants to draft or ideate more content

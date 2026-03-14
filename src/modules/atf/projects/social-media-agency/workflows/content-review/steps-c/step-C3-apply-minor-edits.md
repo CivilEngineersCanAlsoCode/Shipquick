@@ -1,6 +1,6 @@
 # Step C.3 — Apply Minor Edits
 
-**Agent:** Content Strategist (Echo)
+**Agent:** Pixel (flex-crafter)
 **Trigger:** User chose "Edit" in C.2 for the current post.
 
 ---

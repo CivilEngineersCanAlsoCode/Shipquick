@@ -1,5 +1,5 @@
 name: analytics-review
-description: "Collect LinkedIn engagement metrics via Chrome Extension, score performance, discuss insights, adjust content strategy"
+description: "Collect LinkedIn engagement metrics via JS DevTools snippet (+ ChatGPT Actions backup), multi-point scoring, discuss insights, adjust content strategy"
 code: E
 config_source: "{project-root}/_lr/_config/manifest.yaml"
 installed_path: "{project-root}/_lr/flex/workflows/analytics-review"

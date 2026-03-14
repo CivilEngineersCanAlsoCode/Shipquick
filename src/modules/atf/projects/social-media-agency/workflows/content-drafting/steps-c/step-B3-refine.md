@@ -153,8 +153,8 @@ Save incomplete draft to MongoDB with status `Drafting` (not `Drafted`):
     "content": "[current draft text]",
     "status": "Drafting",
     "draft_metadata": {
-      "word_count": 0,
-      "char_count": 0,
+      "word_count": "[actual]",
+      "char_count": "[actual]",
       "iterations": "[current iteration]",
       "incomplete": true
     },

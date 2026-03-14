@@ -2,7 +2,7 @@
 name: content-ideation
 description: Fetch briefs from Google Sheet, enrich with personal experiences, score using Fibonacci-weighted system, and produce a 3-day LinkedIn content schedule saved to MongoDB + Notion.
 code: A
-initWorkflow: './steps-c/step-A1-fetch-briefs.md'
+initWorkflow: './steps-c/step-01-load-session-context.md'
 ---
 
 # A — Content Ideation

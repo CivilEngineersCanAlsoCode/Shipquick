@@ -4,7 +4,7 @@
 This workflow transforms raw drafted posts into LinkedIn-ready formatted content. The agent takes a post that has passed through B-Drafting (status = `Drafted`), applies the full LinkedIn v1 formatting ruleset, generates a code-block preview, and gets user approval to advance the post to `Previewed` status. ALL data reads and writes go through n8n webhooks — the agent has ZERO direct DB/API access.
 
 ## Agents Involved
-- **Content Strategist (Echo):** Drives the entire formatting flow — fetches drafted posts, applies formatting rules, generates previews, and manages the approval cycle.
+- **Pixel (flex-crafter):** Drives the entire formatting flow — fetches drafted posts, applies formatting rules, generates previews, and manages the approval cycle.
 
 ## Pre-requisites
 - The post MUST be in `Drafted` status (came through the B-Drafting workflow)
@@ -111,7 +111,7 @@ Add 3-6 hashtags at the very end of the post (after the CTA, separated by a blan
 ## Key Constraints
 - LinkedIn only (v1), one post formatted at a time
 - Agent has ZERO direct DB/API access — everything through n8n webhooks
-- ALL 12 formatting rules must be applied — none are optional
+- ALL 16 formatting rules (FR01-FR16) must be applied — none are optional
 - Character count (800-1600) is a HARD limit, not a suggestion
 - Code-block preview is MANDATORY before approval
 - Never invent post content — only format what exists in the draft
@@ -136,7 +136,7 @@ Add 3-6 hashtags at the very end of the post (after the CTA, separated by a blan
 - **Post has no raw content:** Do not attempt to format an empty post. Tell the user the draft is incomplete and suggest going back to B-Drafting.
 
 ## Success Criteria
-- Post formatted with ALL 12 LinkedIn v1 rules applied
+- Post formatted with ALL 16 LinkedIn v1 rules (FR01-FR16) applied
 - Character count within 800-1600 range
 - Code-block preview shown to user
 - User explicitly approved the formatted version

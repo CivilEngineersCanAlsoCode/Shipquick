@@ -1,6 +1,6 @@
 # Step C.4 — Finalize Review Session
 
-**Agent:** Content Strategist (Echo)
+**Agent:** Pixel (flex-crafter)
 **Trigger:** All posts in `posts_to_review[]` have been processed (every post has a decision).
 
 ---
@@ -15,7 +15,7 @@ You present a final summary of all review decisions, handle any skipped posts, l
 
 From **C.2** (and **C.3** if edits were made):
 - `posts_to_review[]` — all posts with decisions recorded
-- `approved_count`, `edited_count`, `rescheduled_count`, `dropped_count`
+- `approved_count`, `edited_count`, `rescheduled_count`, `dropped_count`, `sent_back_count`
 - `skipped_posts[]` — posts where webhook calls failed (if any)
 
 ---
@@ -57,7 +57,8 @@ Log this for manual follow-up. Do NOT block the rest of the finalization.
 > | Approved | {approved_count} | {list of approved topics} |
 > | Edited & Approved | {edited_count} | {list of edited topics} |
 > | Rescheduled | {rescheduled_count} | {list of rescheduled topics + new dates} |
-> | Dropped / Sent Back | {dropped_count} | {list of dropped/sent-back topics} |
+> | Dropped | {dropped_count} | {list of dropped topics} |
+> | Sent Back | {sent_back_count} | {list of sent-back topics} |
 > | Failed (needs manual fix) | {skipped_count} | {list if any} |
 >
 > **Total reviewed: {total}**
@@ -147,6 +148,7 @@ review_session = {
   edited: {edited_count},
   rescheduled: {rescheduled_count},
   dropped: {dropped_count},
+  sent_back: {sent_back_count},
   failed: {skipped_count},
   decisions: [
     { post_id: "...", topic: "...", decision: "approved|edited|rescheduled|dropped|sent_back", details: "..." },

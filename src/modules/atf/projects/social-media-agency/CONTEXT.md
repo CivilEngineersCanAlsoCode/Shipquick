@@ -67,18 +67,19 @@ A (Ideation) → B (Drafting) → F (Formatting) → C (Review) → D (Publishin
 | Webhook | Method | Used By |
 |---------|--------|---------|
 | /sma-fetch-briefs | POST | A.1 |
-| /sma-fetch-past-posts | POST | A.2, A.7, B.1 |
+| /sma-fetch-past-posts | POST | A.2, A.7, B.2 |
 | /sma-search-experiences | POST | A.3, B.2 |
-| /sma-fetch-config | POST | A.4, A.7, B.2, E.1, E.5 |
+| /sma-fetch-config | POST | A.4, A.7, E.1, E.5 |
 | /sma-save-config | POST | A.5, E.4, E.5 |
 | /sma-update-sheet-status | POST | A.6, A.8 |
 | /sma-save-experience | POST | A.6 |
 | /sma-save-post | POST | A.8 |
 | /sma-save-to-notion | POST | A.8 |
-| /sma-fetch-post | POST | B.1, C.1, D.1, E.1 |
-| /sma-update-post | POST | B.4, C.2, D.3 |
+| /sma-fetch-post | POST | B.1, C.1, D.1, E.1, F.1 |
+| /sma-update-post | POST | B.4, C.2, D.2, D.3, F.1, F.4 |
 | /sma-publish-linkedin | POST | D.2 |
-| /sma-analytics-collect | POST | E.1 (background, Chrome Extension) |
+| /sma-notify-telegram | POST | D.4 |
+| /sma-analytics-collect | POST | E.1 (manual, JS DevTools snippet / ChatGPT Actions, multi-point: Day 1,3,7,14,30) |
 
 ## Workflow Details
 
@@ -92,14 +93,11 @@ A (Ideation) → B (Drafting) → F (Formatting) → C (Review) → D (Publishin
 - A.7: Check open slots, assign dates
 - A.8: Save to MongoDB + Notion + update Sheet
 
-### B — Content Drafting (needs detailed steps)
+### B — Content Drafting (4 steps, COMPLETE)
 - B.1: Pick earliest Scheduled_NoDraft post (auto or user choice)
-- B.2: Fetch frameworks (content-methods.csv, 7 vocab CSVs), fetch experiences
-- B.3: AI curates top 3-5 per CSV, user picks 1 each
-- B.3.1-B.3.6: Format, hook, narrative, CTA, tone, generate
-- B.3.7-B.3.18: Formatting rules (→ moved to F-ContentFormatting)
-- B.4: User reviews, iterates, finalizes → status Drafted
-- B.5: Save draft to MongoDB
+- B.2: Fetch context (brief, experiences, top posts), load 8 framework CSVs, AI curates top 3-5 per category, user picks 1 each from 6 categories, generate first draft
+- B.3: Iterative refinement loop — user feedback, AI revises (max 3 suggested, hard cap 5), quality checks
+- B.4: Finalize and save to MongoDB (status → Drafted), update Google Sheet, present next actions
 
 ### C — Content Review (2+ steps)
 - C.1: Fetch post by ID (status: Previewed)
@@ -112,9 +110,9 @@ A (Ideation) → B (Drafting) → F (Formatting) → C (Review) → D (Publishin
 - D.4: Telegram notification to SMA control group
 
 ### E — Analytics Review (5 steps, DETAILED)
-- E.1: Fetch published posts with Chrome Extension metrics from MongoDB
-- E.2: Store & Aggregate — per-pillar, per-method, per-day, per-hook averages + benchmarks
-- E.3: Analyze Performance — post vs avg, rankings, trends, interactive dashboard + discussion
+- E.1: Fetch published posts with metrics_history[] from MongoDB (collected via JS snippet / ChatGPT Actions at Day 1,3,7,14,30)
+- E.2: Store & Aggregate — per-pillar, per-method, per-day, per-hook averages + benchmarks + engagement_velocity
+- E.3: Analyze Performance — post vs avg, rankings, trends, resurgence detection (Day 14 > Day 7 by >20%), interactive dashboard + discussion
 - E.4: Strategy Recommendations — pillar rebalancing, format insights, timing, combos, variety alerts → save
 - E.5: Feedback Loop — update scoring_weights, pillar_priority, preferred methods, flag underperformers → self-improving
 

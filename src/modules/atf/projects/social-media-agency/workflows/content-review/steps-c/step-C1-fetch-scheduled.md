@@ -1,6 +1,6 @@
 # Step C.1 — Fetch Scheduled Posts (Previewed)
 
-**Agent:** Content Strategist (Echo)
+**Agent:** Pixel (flex-crafter)
 **Trigger:** User says something like "Review karo", "Posts check karo", "Content review", or starts the review workflow. Also triggered by handoff from F-ContentFormatting after preview is complete.
 
 ---
@@ -66,6 +66,7 @@ Initialize tracking counters:
 - `edited_count` → 0
 - `rescheduled_count` → 0
 - `dropped_count` → 0
+- `sent_back_count` → 0
 
 Display summary to the user:
 
@@ -139,4 +140,5 @@ approved_count        — 0
 edited_count          — 0
 rescheduled_count     — 0
 dropped_count         — 0
+sent_back_count       — 0
 ```

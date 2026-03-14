@@ -2,6 +2,7 @@
 name: content-review
 description: Review all scheduled posts before they go live — preview, edit, approve, or reschedule
 initWorkflow: './steps-c/step-C1-fetch-scheduled.md'
+code: C
 ---
 
 # Content Review
@@ -10,7 +11,7 @@ initWorkflow: './steps-c/step-C1-fetch-scheduled.md'
 
 **System:** BMAD workflow — interactive. This is the quality gate between formatting and publishing.
 
-**Agent:** Content Strategist (Echo)
+**Agent:** Pixel (flex-crafter)
 
 ---
 

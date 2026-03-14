@@ -11,16 +11,39 @@ You aggregate the raw per-post engagement metrics into meaningful summaries: ave
 
 ---
 
-## Action 1: Calculate Per-Post Engagement Score (Validation)
+## Action 1: Validate Scores + Calculate Engagement Velocity
 
 For each post in `posts[]`, verify the engagement score matches the formula:
 
 ```
 engagement_score = likes + (comments × 3) + (shares × 2)
+engagement_rate  = (engagement_score / follower_count) × 100
 ```
 
 If any post's stored `engagement_score` doesn't match recalculation, flag it:
 > "Post '[title]' ka engagement_score mismatch hai — stored: [X], calculated: [Y]. Recalculated value use kar raha hoon."
+
+### Engagement Velocity (from metrics_history[])
+
+For each post with 2+ snapshots in `metrics_history[]`, calculate **engagement_velocity** — the rate of score change between consecutive snapshots:
+
+```json
+{
+  "title": "Why most developers hate meetings",
+  "metrics_history_count": 3,
+  "velocity": [
+    { "from_day": 1, "to_day": 3, "score_change": "+25", "velocity": "+12.5/day" },
+    { "from_day": 3, "to_day": 7, "score_change": "+18", "velocity": "+4.5/day" }
+  ],
+  "trajectory": "decelerating"
+}
+```
+
+**Trajectory classification:**
+- All velocities positive and increasing → **accelerating**
+- All velocities positive but decreasing → **decelerating** (normal)
+- Latest velocity negative → **declining**
+- Later velocity > earlier velocity → **resurgent** (flag for E.3)
 
 Update in working memory (do NOT call update webhook here — this is read-only aggregation).
 
@@ -162,7 +185,7 @@ Exclude from that specific aggregation, include in others. Flag:
 - ❌ Do NOT call any webhooks in this step — it is pure computation
 - ❌ Do NOT show raw aggregation JSON to the user — summarize in Hinglish
 - ❌ Do NOT drop posts with partial data — include them where possible
-- ❌ Do NOT average impressions if most posts lack impression data (Chrome Extension limitation)
+- ❌ Do NOT average impressions if most posts lack impression data (snippet collection limitation)
 - ❌ Do NOT present analysis or recommendations here — that's E.3 and E.4
 
 ---
@@ -184,12 +207,13 @@ Exclude from that specific aggregation, include in others. Flag:
 
 Pass to **E.3**:
 ```
-posts[]                  — array with validated engagement scores
+posts[]                  — array with validated engagement scores + engagement_velocity
 pillar_aggregation[]     — ranked by avg_engagement_score
 method_aggregation[]     — ranked by avg_engagement_score, with combos
 day_aggregation[]        — ranked by avg_engagement_score
 hook_aggregation[]       — ranked by avg_engagement_score
 benchmarks{}             — avg, median, top/bottom quartile thresholds
+velocity_data[]          — per-post engagement velocity + trajectory
 low_confidence           — boolean flag
 period_label             — from E.1
 analytics_config         — from E.1

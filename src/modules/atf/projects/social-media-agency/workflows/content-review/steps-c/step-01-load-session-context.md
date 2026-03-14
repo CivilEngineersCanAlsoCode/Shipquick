@@ -28,4 +28,5 @@
    - `edited_count` → 0
    - `rescheduled_count` → 0
    - `dropped_count` → 0
+   - `sent_back_count` → 0
 5. [PROCEED] → C.1 (Fetch Scheduled Posts)

@@ -1,6 +1,6 @@
 # Step E.02 — Apply Formatting Edit
 
-**Agent:** Content Strategist (Edit Mode)
+**Agent:** Pixel (Edit Mode)
 **Trigger:** Assessment complete in E.01, user confirmed which edits to apply.
 
 ---

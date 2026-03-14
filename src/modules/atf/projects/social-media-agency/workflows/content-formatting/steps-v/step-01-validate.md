@@ -1,6 +1,6 @@
 # Step V.01 — Validate Formatted Post
 
-**Agent:** Content Strategist (Validation Mode)
+**Agent:** Pixel (Validation Mode)
 **Trigger:** Called after the formatting workflow completes, or independently to verify a post with `Previewed` status.
 
 ---

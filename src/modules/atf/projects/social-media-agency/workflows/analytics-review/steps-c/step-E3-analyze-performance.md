@@ -98,7 +98,35 @@ Using `day_aggregation[]` from E.2:
 
 ---
 
-## Analysis Dimension 6: Week-over-Week Trend
+## Analysis Dimension 6: Resurgence Detection
+
+For each post with Day 7 and Day 14 snapshots in `metrics_history[]`, check for resurgence:
+
+```
+resurgence_ratio = (day_14_engagement_score - day_7_engagement_score) / day_7_engagement_score
+```
+
+**Resurgence rule:** If `resurgence_ratio > 0.20` (Day 14 score > Day 7 by >20%), flag as **resurgent**.
+
+```json
+{
+  "title": "Why most developers hate meetings",
+  "day_7_score": 72,
+  "day_14_score": 95,
+  "resurgence_ratio": 0.32,
+  "resurgent": true,
+  "insight": "Post gained 32% more engagement between Day 7-14 — likely algorithmic re-distribution or viral second wave"
+}
+```
+
+**Insights to surface:**
+- Resurgent posts → "Yeh post Day 7 ke baad phir se viral hua! +[X]% growth. Iska pattern samjhein — kya topic, format, ya timing special tha?"
+- Posts with `trajectory: "resurgent"` from E.2 velocity data confirm this finding
+- Feed resurgent patterns to E.4 recommendations (what to replicate)
+
+---
+
+## Analysis Dimension 7: Week-over-Week Trend
 
 If review period covers 2+ weeks, calculate weekly averages:
 
@@ -147,6 +175,9 @@ Show the user a structured summary in Hinglish:
 2. [method] + [hook] — avg score [X]
 
 📅 BEST DAY: [day] (avg score: [X])
+
+🔄 RESURGENT POSTS (Day 14 > Day 7 by >20%)
+1. "[title]" — Day 7: [X] → Day 14: [Y] (+Z%)
 ```
 
 ---
@@ -210,8 +241,9 @@ Don't force it. Summarize AI observations and proceed:
 - [ ] Method ranking presented with best combos
 - [ ] Framework analysis (hooks, CTAs, tones) presented
 - [ ] Timing analysis with best/worst day identified
+- [ ] Resurgence detection run on posts with Day 7 + Day 14 data
 - [ ] Week-over-week trend calculated (if applicable)
-- [ ] Dashboard presented in structured Hinglish format
+- [ ] Dashboard presented in structured Hinglish format (including resurgent posts)
 - [ ] User discussion conducted, qualitative insights captured
 - [ ] Low-confidence caveat shown if < 5 posts
 
@@ -228,6 +260,7 @@ framework_ranking{}      — hooks, ctas, tones, formats ranked
 best_combos[]            — top 3 method+hook combos
 day_ranking[]            — sorted by avg_engagement_score
 trend{}                  — direction + change_pct
+resurgent_posts[]        — posts where Day 14 > Day 7 by >20%
 user_insights[]          — qualitative insights from discussion
 benchmarks{}             — from E.2
 low_confidence           — boolean

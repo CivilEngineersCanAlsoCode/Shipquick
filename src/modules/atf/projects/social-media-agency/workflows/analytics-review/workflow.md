@@ -14,21 +14,22 @@ initWorkflow: './steps-c/step-01-load-session-context.md'
 
 ## Steps
 
-1. **E.1 — Fetch Metrics** — Retrieve published posts with Chrome Extension engagement metrics from MongoDB
+1. **E.1 — Fetch Metrics** — Retrieve published posts with engagement metrics (collected via JS snippet / ChatGPT Actions) from MongoDB
 2. **E.2 — Store & Aggregate** — Calculate per-pillar, per-method, per-day, per-hook averages and benchmarks
-3. **E.3 — Analyze Performance** — Post vs average classification, pillar/method/framework ranking, timing analysis, week-over-week trend, interactive discussion
+3. **E.3 — Analyze Performance** — Post vs average classification, pillar/method/framework ranking, timing analysis, week-over-week trend, resurgence detection, interactive discussion
 4. **E.4 — Strategy Recommendations** — Pillar rebalancing, format insights, timing optimization, method combos, variety alerts → save to sma_config.analytics_recommendations
 5. **E.5 — Feedback Loop** — Update scoring_weights, content_pillar_priority, feed top methods to B-Drafting, flag underperformers → close the self-improving loop
 
 ## Data Flow
 
 ```
-Chrome Extension (passive DOM reading)
-    ↓ POST /sma-analytics-collect (background, automatic)
-n8n → MongoDB (linkedin_posts.engagement_metrics + engagement_score)
-    ↓ E.1: Fetch stored metrics
-    ↓ E.2: Aggregate in-memory
-    ↓ E.3: Analyze + discuss with user
+JS DevTools snippet (Satvik runs manually on LinkedIn activity page)
+  OR ChatGPT Actions (screenshot upload → vision OCR → webhook)
+    ↓ POST /sma-analytics-collect (manual, multi-point: Day 1,3,7,14,30)
+n8n → MongoDB (linkedin_posts.metrics_history[] + engagement_score + engagement_rate)
+    ↓ E.1: Fetch stored metrics (with metrics_history time-series)
+    ↓ E.2: Aggregate in-memory (+ engagement_velocity from snapshots)
+    ↓ E.3: Analyze + resurgence detection + discuss with user
     ↓ E.4: Generate recommendations → save to sma_config
     ↓ E.5: Update scoring_weights, pillar_priority, method prefs
     ↓
@@ -36,7 +37,7 @@ A-Ideation (next cycle reads updated config) → self-improving loop
 ```
 
 ## Inputs
-- Published posts with engagement_metrics (from Chrome Extension → n8n → MongoDB)
+- Published posts with metrics_history[] (from JS snippet / ChatGPT Actions → n8n → MongoDB)
 - Analytics config (`sma_config.analytics_config`)
 - Scoring weights (`sma_config.scoring_weights`)
 - Engagement config (`sma_config.engagement_config`)
@@ -52,7 +53,7 @@ A-Ideation (next cycle reads updated config) → self-improving loop
 ## Webhooks
 | Webhook | Method | Step | Purpose |
 |---------|--------|------|---------|
-| `/sma-analytics-collect` | POST | (background) | Chrome Extension → n8n (raw metrics) |
+| `/sma-analytics-collect` | POST | (manual, multi-point) | JS snippet / ChatGPT Actions → n8n (raw metrics snapshot → metrics_history[]) |
 | `/sma-fetch-post` | POST | E.1 | Fetch published posts with metrics |
 | `/sma-fetch-config` | POST | E.1, E.5 | Load analytics/scoring/engagement config |
 | `/sma-save-config` | POST | E.4, E.5 | Save recommendations + updated weights |
@@ -60,4 +61,5 @@ A-Ideation (next cycle reads updated config) → self-improving loop
 ## Engagement Score Formula
 ```
 engagement_score = likes + (comments × 3) + (shares × 2)
+engagement_rate  = (engagement_score / follower_count) × 100
 ```

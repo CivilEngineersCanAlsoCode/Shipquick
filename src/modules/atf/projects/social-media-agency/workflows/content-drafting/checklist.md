@@ -4,14 +4,14 @@
 
 - [ ] At least 1 post exists with status `Scheduled_NoDraft` in MongoDB
 - [ ] Framework CSVs are accessible (content-methods, content-formats, hook, narrative, CTA, tone, positioning)
-- [ ] n8n webhooks active (FetchPost, SearchExperiences, FetchConfig, UpdatePost)
+- [ ] n8n webhooks active (FetchPost, FetchBriefs, FetchPastPosts, SearchExperiences, SaveExperience, UpdatePost, UpdateSheetStatus)
 - [ ] Vector index operational for experience search
 - [ ] User is available for interactive framework selection and draft review
 
 ## Framework Selection (4)
 
 - [ ] AI curated top 3–5 options per framework category (not random, relevant to topic)
-- [ ] User explicitly selected 1 item per category (format, hook, narrative, CTA, tone)
+- [ ] User explicitly selected 1 item per category (format, hook, narrative, CTA, tone, positioning)
 - [ ] All selected frameworks exist in the actual CSV files (not invented)
 - [ ] Framework selections recorded for the post record
 

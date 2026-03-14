@@ -7,15 +7,22 @@
 
 ## What You Do
 
-You kick off the analytics review by fetching engagement metrics for all published posts in the review period. The Chrome Extension has already been sending raw metrics to the `/sma-analytics-collect` webhook in the background — this step retrieves those stored metrics from MongoDB.
+You kick off the analytics review by fetching engagement metrics for all published posts in the review period. Satvik has been collecting metrics via the JS DevTools snippet (or ChatGPT Actions backup) at scheduled collection days — this step retrieves those stored metrics_history snapshots from MongoDB.
 
 ---
 
-## Pre-Requisite: Chrome Extension Data Flow
+## Pre-Requisite: Data Collection Flow
 
-The Chrome Extension (Manifest V3) runs as a background service worker. It passively reads the LinkedIn DOM when the user visits their post analytics page and sends metrics to n8n:
+### Primary: JS DevTools Snippet
+Satvik runs a JavaScript snippet in Chrome DevTools on the LinkedIn activity page. The snippet reads DOM-visible metrics and sends to n8n.
 
-**Chrome Extension → POST** `https://n8n.linkright.in/webhook/sma-analytics-collect`
+### Backup: ChatGPT Actions
+Screenshot of LinkedIn post analytics uploaded to ChatGPT → vision OCR extracts metrics → ChatGPT Action sends to n8n webhook.
+
+### Collection Schedule
+Each post is collected at **Day 1, 3, 7, 14, 30** after publishing.
+
+**JS Snippet / ChatGPT Actions → POST** `https://n8n.linkright.in/webhook/sma-analytics-collect`
 
 ```json
 {
@@ -24,17 +31,22 @@ The Chrome Extension (Manifest V3) runs as a background service worker. It passi
   "comments": 8,
   "shares": 3,
   "impressions": 1250,
+  "follower_count": 5200,
+  "collection_day": 7,
   "collected_at": "2026-03-14T10:30:00Z"
 }
 ```
 
 **n8n workflow (`SMA/Analytics/Collect`):**
 1. Find post in `linkedin_posts` by `linkedin_post_urn`
-2. Update `engagement_metrics: { likes, comments, shares, impressions }`
-3. Calculate `engagement_score = likes + (comments × 3) + (shares × 2)`
-4. Save `metrics_collected_at` timestamp
+2. Append snapshot to `metrics_history[]` array (never overwrite — each collection is a timestamped snapshot)
+3. If first collection for this post: store `follower_count` as `follower_baseline`
+4. Update latest `engagement_metrics: { likes, comments, shares, impressions }`
+5. Calculate `engagement_score = likes + (comments × 3) + (shares × 2)`
+6. Calculate `engagement_rate = (engagement_score / follower_count) × 100`
+7. Save `metrics_collected_at` timestamp
 
-> This happens automatically — step E.1 reads the already-stored data.
+> This is manual — Satvik runs the snippet at scheduled collection days. By the time an analytics review starts, metrics_history should have multiple snapshots per post.
 
 ---
 
@@ -86,7 +98,14 @@ Store in session: `period_start`, `period_end`, `period_label`
         "impressions": 1250
       },
       "engagement_score": 72,
-      "metrics_collected_at": "2026-03-11T10:30:00Z"
+      "follower_baseline": 5200,
+      "engagement_rate": 1.38,
+      "metrics_history": [
+        { "collection_day": 1, "likes": 15, "comments": 3, "shares": 1, "impressions": 400, "follower_count": 5200, "collected_at": "2026-03-11T10:30:00Z" },
+        { "collection_day": 3, "likes": 30, "comments": 6, "shares": 2, "impressions": 850, "follower_count": 5210, "collected_at": "2026-03-13T11:00:00Z" },
+        { "collection_day": 7, "likes": 42, "comments": 8, "shares": 3, "impressions": 1250, "follower_count": 5230, "collected_at": "2026-03-17T09:00:00Z" }
+      ],
+      "metrics_collected_at": "2026-03-17T09:00:00Z"
     }
   ]
 }
@@ -126,7 +145,7 @@ Proceed to **E.2**.
 
 **If posts.length > 0 BUT some posts lack engagement_metrics:**
 Flag the posts missing metrics. Tell the user:
-> "[X] posts ke metrics abhi nahi aaye. Chrome Extension se LinkedIn analytics page visit karo, phir wapas aao. Baaki [Y] posts ke saath proceed karein?"
+> "[X] posts ke metrics abhi nahi aaye. JS snippet run karo LinkedIn activity page pe (ya ChatGPT Actions mein screenshot upload karo), phir wapas aao. Baaki [Y] posts ke saath proceed karein?"
 
 If user says yes, proceed with available data. If no, halt and wait.
 
@@ -155,7 +174,7 @@ Do NOT proceed to E.2 if post fetch fails. Config failure is non-blocking.
 ## What NOT to Do
 
 - ❌ Do NOT invent or hallucinate metrics — always use webhook data
-- ❌ Do NOT call the LinkedIn API directly — Chrome Extension handles collection
+- ❌ Do NOT call the LinkedIn API directly — JS snippet / ChatGPT Actions handle collection
 - ❌ Do NOT proceed without at least 1 post with metrics
 - ❌ Do NOT show raw JSON to the user — summarize in Hinglish
 - ❌ Do NOT recalculate engagement_score here — it was calculated in the n8n collection workflow
@@ -177,7 +196,7 @@ Do NOT proceed to E.2 if post fetch fails. Config failure is non-blocking.
 
 Pass to **E.2**:
 ```
-posts[]            — array of post objects with engagement_metrics
+posts[]            — array of post objects with engagement_metrics + metrics_history[]
 period_start       — review period start date
 period_end         — review period end date
 period_label       — "last week" / "last month" / custom

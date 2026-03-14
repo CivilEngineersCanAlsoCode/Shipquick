@@ -1,6 +1,6 @@
 # Step 01b — Resume If Interrupted
 
-**Agent:** Content Strategist
+**Agent:** Pixel (flex-crafter)
 **Trigger:** Step 01 detected a post with status `Formatting` (indicating an interrupted session).
 
 ---

@@ -1,6 +1,6 @@
 # Step E.01 — Assess Formatting Issues
 
-**Agent:** Content Strategist (Edit Mode)
+**Agent:** Pixel (Edit Mode)
 **Trigger:** User wants to edit/correct a previously formatted post, or validation revealed issues that need fixing.
 
 ---
@@ -37,7 +37,7 @@ Present the list and let user pick which post to edit.
 Extract the `formatted_content` field from the post record. If it does not exist, fall back to `raw_content`.
 
 ### 3. Run Formatting Audit
-Check all 12 LinkedIn v1 rules against the current content:
+Check all 16 LinkedIn v1 rules against the current content:
 
 1. **Character count:** Is it 800-1600? If not, by how much?
 2. **Rich text:** Any bold/italic/underline markers?

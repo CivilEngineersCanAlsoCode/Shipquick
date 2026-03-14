@@ -1,6 +1,6 @@
 # Step C.2 — Preview Post & Get User Decision
 
-**Agent:** Content Strategist (Echo)
+**Agent:** Pixel (flex-crafter)
 **Trigger:** Automatically after C.1 for each post in `posts_to_review[]`.
 
 ---
@@ -194,7 +194,7 @@ This is for posts that need fundamental rewriting — not just a typo fix.
 **On success:**
 > "Post wapas drafting queue mein hai. B-ContentDrafting mein pick hoga."
 
-Increment `dropped_count`. Proceed to next post or **C.4**.
+Increment `sent_back_count`. Proceed to next post or **C.4**.
 
 ---
 
@@ -254,6 +254,7 @@ posts_to_review[]      — full array with decisions recorded
 approved_count         — count of approved posts
 edited_count           — count of edited posts
 rescheduled_count      — count of rescheduled posts
-dropped_count          — count of dropped + sent-back posts
+dropped_count          — count of dropped posts
+sent_back_count        — count of sent-back posts
 skipped_posts[]        — any posts that had webhook failures (if any)
 ```

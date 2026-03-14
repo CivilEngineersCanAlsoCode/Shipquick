@@ -120,4 +120,6 @@ After D.4 (regardless of Telegram success/failure), present the full publish sum
 
 This is the final step. No output to pass. The workflow is complete.
 
+**Metrics Reminder:** Run metrics snippet for baseline capture — E (Analytics Review) needs Day 1 metrics as soon as possible after publish.
+
 **Next workflow:** E — Analytics Review (tracks performance metrics of published posts).
