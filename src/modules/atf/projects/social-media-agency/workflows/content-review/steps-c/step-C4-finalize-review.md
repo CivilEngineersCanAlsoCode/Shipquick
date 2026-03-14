@@ -72,8 +72,10 @@ Show what's now in the publish queue:
 > | Date | Topic | Status |
 > |------|-------|--------|
 > | {date_1} | {topic_1} | Ready_ToPublish |
-> | {date_2} | {topic_2} | Ready_ToPublish |
+> | {date_2} | {topic_2} | Previewed (rescheduled) |
 > | ... | ... | ... |
+
+**Note:** Rescheduled posts stay `Previewed` — they will appear in the next review session for re-approval. Do NOT assume Ready_ToPublish automatically.
 
 This is informational only — no webhook call needed, just summarize from the session data (approved + rescheduled posts).
 
