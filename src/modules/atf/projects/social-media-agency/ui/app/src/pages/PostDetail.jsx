@@ -25,6 +25,9 @@ import RocketLaunchIcon from '@mui/icons-material/RocketLaunch';
 import EventIcon from '@mui/icons-material/Event';
 import ReplayIcon from '@mui/icons-material/Replay';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
+import EditNoteIcon from '@mui/icons-material/EditNote';
+import FormatPaintIcon from '@mui/icons-material/FormatPaint';
+import PublishIcon from '@mui/icons-material/Publish';
 import CircleIcon from '@mui/icons-material/Circle';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
@@ -55,7 +58,7 @@ function truncate(str, len = 40) {
 
 const WEBHOOK_MSG = 'Action requires sma-update-post webhook (not built yet)';
 
-export default function PostDetail() {
+export default function PostDetail({ openAgent }) {
   const { id } = useParams();
   const navigate = useNavigate();
   const { state } = useLocation();
@@ -266,6 +269,25 @@ export default function PostDetail() {
               )}
             </Box>
           )}
+
+          {/* AI Actions */}
+          <Box sx={{ mb: 3 }}>
+            <Typography variant="subtitle2" color="text.secondary" sx={{ mb: 2 }}>AI Actions</Typography>
+            <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
+              <Button variant="outlined" size="small" startIcon={<EditNoteIcon />}
+                onClick={() => openAgent?.({ promptId: 'draftPost', label: 'Draft Selected Post', agent: 'claude', postContext: post })}>
+                Draft with AI
+              </Button>
+              <Button variant="outlined" size="small" startIcon={<FormatPaintIcon />}
+                onClick={() => openAgent?.({ promptId: 'formatPost', label: 'Format Post', agent: 'claude', postContext: post })}>
+                Format with AI
+              </Button>
+              <Button variant="outlined" size="small" startIcon={<PublishIcon />}
+                onClick={() => openAgent?.({ promptId: 'publishPost', label: 'Publish Post', agent: 'claude', postContext: post })}>
+                Publish
+              </Button>
+            </Box>
+          </Box>
 
           {/* Actions */}
           <Box sx={{ mb: 3 }}>

@@ -1,9 +1,11 @@
-import React, { Suspense, lazy, useState } from 'react';
+import React, { Suspense, lazy, useState, useCallback } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
-import { Box, CircularProgress, Drawer, useMediaQuery } from '@mui/material';
+import { Box, CircularProgress, Drawer, Fab, useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
+import SmartToyIcon from '@mui/icons-material/SmartToy';
 import NavigationRail from './components/NavigationRail';
 import TopAppBar from './components/TopAppBar';
+import { AgentPanel } from './components';
 
 const Dashboard  = lazy(() => import('./pages/Dashboard'));
 const Posts       = lazy(() => import('./pages/Posts'));
@@ -21,6 +23,15 @@ export default function App() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [agentOpen, setAgentOpen] = useState(false);
+  const [agentPrompt, setAgentPrompt] = useState(null);
+  const [agentPostContext, setAgentPostContext] = useState(null);
+
+  const openAgent = useCallback((prompt, postCtx) => {
+    setAgentPrompt(prompt || null);
+    setAgentPostContext(postCtx || null);
+    setAgentOpen(true);
+  }, []);
 
   return (
     <Box sx={{ display: 'flex', minHeight: '100vh' }}>
@@ -67,16 +78,32 @@ export default function App() {
           <Suspense fallback={<Loading />}>
             <Routes>
               <Route path="/" element={<Navigate to="/dashboard" replace />} />
-              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/dashboard" element={<Dashboard openAgent={openAgent} />} />
               <Route path="/posts" element={<Posts />} />
-              <Route path="/posts/:id" element={<PostDetail />} />
-              <Route path="/analytics" element={<Analytics />} />
+              <Route path="/posts/:id" element={<PostDetail openAgent={openAgent} />} />
+              <Route path="/analytics" element={<Analytics openAgent={openAgent} />} />
               <Route path="/settings" element={<Settings />} />
               <Route path="*" element={<Navigate to="/dashboard" replace />} />
             </Routes>
           </Suspense>
         </Box>
       </Box>
+      {/* Agent FAB */}
+      <Fab
+        color="primary"
+        onClick={() => openAgent()}
+        sx={{ position: 'fixed', bottom: 24, right: 24, zIndex: 1200 }}
+      >
+        <SmartToyIcon />
+      </Fab>
+
+      {/* Agent Panel */}
+      <AgentPanel
+        open={agentOpen}
+        onClose={() => { setAgentOpen(false); setAgentPrompt(null); setAgentPostContext(null); }}
+        initialPrompt={agentPrompt}
+        postContext={agentPostContext}
+      />
     </Box>
   );
 }

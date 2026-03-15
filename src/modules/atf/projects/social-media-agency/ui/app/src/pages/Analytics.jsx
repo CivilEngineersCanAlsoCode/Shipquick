@@ -1,7 +1,7 @@
 import { fetchPosts, n8nFetch, WEBHOOKS } from '../api';
 import { useState, useEffect, useMemo, useCallback } from 'react';
 import {
-  Typography, Box, Skeleton, Alert, Tooltip,
+  Typography, Box, Skeleton, Alert, Tooltip, Button,
   ToggleButtonGroup, ToggleButton,
   Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TableSortLabel,
   Paper,
@@ -44,7 +44,7 @@ function fmtDate(d) {
   return dt.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 }
 
-export default function Analytics() {
+export default function Analytics({ openAgent }) {
   const [posts, setPosts] = useState([]);
   const [weights, setWeights] = useState(DEFAULT_WEIGHTS);
   const [loading, setLoading] = useState(true);
@@ -238,14 +238,18 @@ export default function Analytics() {
         LinkedIn API limited &mdash; metrics collected from JS snippet
       </Alert>
 
-      {/* Period Selector */}
-      <Box sx={{ mb: 3 }}>
+      {/* Period Selector + AI Button */}
+      <Box sx={{ mb: 3, display: 'flex', alignItems: 'center', gap: 2, flexWrap: 'wrap' }}>
         <ToggleButtonGroup value={period} exclusive onChange={(_, v) => v && setPeriod(v)} size="small">
           <ToggleButton value="7">7 days</ToggleButton>
           <ToggleButton value="30">30 days</ToggleButton>
           <ToggleButton value="90">90 days</ToggleButton>
           <ToggleButton value="all">All</ToggleButton>
         </ToggleButtonGroup>
+        <Button variant="outlined" size="small"
+          onClick={() => openAgent?.({ promptId: 'analyzePerformance', label: 'Analyze Performance', agent: 'claude' })}>
+          Analyze with AI
+        </Button>
       </Box>
 
       {/* Overview Cards */}

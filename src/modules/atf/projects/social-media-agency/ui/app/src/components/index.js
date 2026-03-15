@@ -11,3 +11,7 @@ export { default as PostCard } from './PostCard';
 export { default as PipelineFunnel } from './PipelineFunnel';
 export { default as LinkedInPreview } from './LinkedInPreview';
 export { default as ScoreBreakdown } from './ScoreBreakdown';
+
+// Agent Bridge
+export { default as AgentPanel } from './AgentPanel';
+export { default as PromptSelector } from './PromptSelector';

@@ -51,7 +51,7 @@ const ACTION_MAP = {
   Drafted:          { label: 'Needs formatting',        color: '#006a6a' },
 };
 
-export default function Dashboard() {
+export default function Dashboard({ openAgent }) {
   const [posts, setPosts] = useState(null);
   const [config, setConfig] = useState(null);
   const [error, setError] = useState(null);
@@ -269,15 +269,15 @@ export default function Dashboard() {
         </Box>
       </Box>
 
-      {/* FAB */}
+      {/* FAB - Plan Content */}
       <Fab
         variant="extended"
-        color="primary"
-        onClick={() => window.open('https://chatgpt.com', '_blank')}
-        sx={{ position: 'fixed', bottom: 24, right: 24 }}
+        color="secondary"
+        onClick={() => openAgent?.({ promptId: 'planContent', label: 'Plan This Week\'s Content', agent: 'claude' })}
+        sx={{ position: 'fixed', bottom: 24, right: 88 }}
       >
         <AddOutlined sx={{ mr: 1 }} />
-        Open ChatGPT
+        Plan Content
       </Fab>
     </Box>
   );
