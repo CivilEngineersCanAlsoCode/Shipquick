@@ -11,16 +11,16 @@
 
 | Category | Files Checked | PASS | FAIL | Total Issues |
 |----------|--------------|------|------|-------------|
-| Reference YAMLs (data/reference/) | 11 | 8 | 3 | 5 |
+| Reference YAMLs (data/reference/) | 11 | 9 | 2 | 5 |
 | Sidecar Instructions (_memory/) | 7 | 7 | 0 | 0 |
 | module-help.csv | 1 | 1 | 0 | 0 |
 | frameworks/index.csv | 1 | 0 | 1 | 6 |
 | _memory/config.yaml | 1 | 1 | 0 | 0 |
 | docs/pipeline-state-machine.md | 1 | 1 | 0 | 0 |
 | Plans C/D/F | 3 | 3 | 0 | 0 |
-| **TOTAL** | **25** | **21** | **4** | **11** |
+| **TOTAL** | **25** | **22** | **3** | **11** |
 
-**Overall verdict: 4 files FAIL with 11 issues (all count mismatches). No logic, formula, or agent-name errors.**
+**Overall verdict: 3 files FAIL with 11 issues (all count mismatches). No logic, formula, or agent-name errors.**
 
 ---
 
