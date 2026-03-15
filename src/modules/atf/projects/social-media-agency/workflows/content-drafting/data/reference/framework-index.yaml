@@ -5,13 +5,13 @@
 frameworks:
   - id: narrative-frameworks
     path: "frameworks/narrative-frameworks.csv"
-    rows: 32
+    rows: 31
     description: "Narrative structures (AIDA, PAS, Before-After-Bridge, Hero Journey, etc.)"
     used_in: [B-ContentDrafting]
 
   - id: content-methods
     path: "frameworks/content-methods.csv"
-    rows: 62
+    rows: 61
     description: "Content creation methods across 10 categories (ideation, research, hook, narrative, repurposing, engagement, positioning, distribution, analytics, creative)"
     used_in: [B-ContentDrafting]
 
@@ -23,7 +23,7 @@ frameworks:
 
   - id: hook-frameworks
     path: "frameworks/hook-frameworks.csv"
-    rows: 35
+    rows: 34
     description: "Hook strategies (Question, Bold Statement, Counter-Intuitive, Data-Shock, etc.)"
     used_in: [B-ContentDrafting]
 
@@ -41,7 +41,7 @@ frameworks:
 
   - id: positioning-templates
     path: "frameworks/positioning-templates.csv"
-    rows: 32
+    rows: 31
     description: "Positioning lines with follow CTAs for post footers"
     used_in: [B-ContentDrafting, F-ContentFormatting]
 
