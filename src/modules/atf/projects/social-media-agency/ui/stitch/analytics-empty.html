@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>LinkRight SMA - Analytics Empty State</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#1b6a39",
+                        "background-light": "#f6f8f7",
+                        "background-dark": "#131f18",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100">
+<div class="flex h-screen overflow-hidden">
+<!-- NavRail -->
+<aside class="w-20 lg:w-64 border-r border-primary/10 bg-white dark:bg-background-dark flex flex-col items-center lg:items-start py-6 transition-all duration-300">
+<div class="px-6 mb-8 flex items-center gap-3 w-full">
+<div class="size-10 bg-primary rounded-xl flex items-center justify-center text-white">
+<span class="material-symbols-outlined">link</span>
+</div>
+<h1 class="hidden lg:block text-lg font-bold text-primary tracking-tight">LinkRight SMA</h1>
+</div>
+<nav class="flex-1 w-full px-3 space-y-2">
+<a class="flex items-center gap-3 px-3 py-3 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-primary/5 transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary">home</span>
+<span class="hidden lg:block font-medium">Home</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-primary/5 transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary">calendar_today</span>
+<span class="hidden lg:block font-medium">Calendar</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 rounded-xl bg-primary/10 text-primary font-semibold" href="#">
+<span class="material-symbols-outlined fill-1">analytics</span>
+<span class="hidden lg:block">Analytics</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-primary/5 transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary">mail</span>
+<span class="hidden lg:block font-medium">Inbox</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-primary/5 transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary">settings</span>
+<span class="hidden lg:block font-medium">Settings</span>
+</a>
+</nav>
+<div class="px-6 pt-6 border-t border-primary/5 w-full">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded-full bg-primary/20 flex items-center justify-center overflow-hidden" data-alt="User profile placeholder">
+<span class="material-symbols-outlined text-primary text-sm">person</span>
+</div>
+<div class="hidden lg:block overflow-hidden">
+<p class="text-xs font-bold truncate">Admin User</p>
+<p class="text-[10px] text-slate-500 truncate">Free Plan</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 overflow-y-auto bg-background-light dark:bg-background-dark">
+<!-- Header -->
+<header class="sticky top-0 z-10 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md border-b border-primary/5 px-8 py-4 flex items-center justify-between">
+<div>
+<h2 class="text-xl font-bold">Analytics Overview</h2>
+<p class="text-sm text-slate-500">Track your performance across platforms</p>
+</div>
+<div class="flex items-center gap-3">
+<button class="p-2 rounded-lg bg-white dark:bg-slate-800 border border-primary/10 shadow-sm text-slate-600 dark:text-slate-300">
+<span class="material-symbols-outlined text-xl">notifications</span>
+</button>
+<button class="flex items-center gap-2 bg-primary text-white px-4 py-2 rounded-lg font-semibold hover:bg-primary/90 transition-colors">
+<span class="material-symbols-outlined text-xl">add</span>
+<span class="hidden sm:inline">New Post</span>
+</button>
+</div>
+</header>
+<div class="p-8 max-w-7xl mx-auto space-y-8">
+<!-- Time Range Selector -->
+<div class="flex justify-start">
+<div class="inline-flex p-1 bg-primary/5 rounded-xl border border-primary/10">
+<button class="px-4 py-1.5 text-sm font-medium rounded-lg text-slate-500 hover:text-primary">24h</button>
+<button class="px-6 py-1.5 text-sm font-bold rounded-lg bg-white dark:bg-slate-700 text-primary shadow-sm border border-primary/10">7d</button>
+<button class="px-4 py-1.5 text-sm font-medium rounded-lg text-slate-500 hover:text-primary">30d</button>
+<button class="px-4 py-1.5 text-sm font-medium rounded-lg text-slate-500 hover:text-primary">90d</button>
+</div>
+</div>
+<!-- Overview Cards -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="bg-white dark:bg-slate-800 p-6 rounded-xl border border-primary/10 shadow-sm">
+<div class="flex justify-between items-start mb-4">
+<span class="p-2 bg-primary/5 rounded-lg text-primary font-bold">
+<span class="material-symbols-outlined">touch_app</span>
+</span>
+</div>
+<p class="text-sm text-slate-500 font-medium">Total Clicks</p>
+<h3 class="text-3xl font-bold mt-1">0</h3>
+<p class="text-xs text-slate-400 mt-2 flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">remove</span> --% from last period
+                        </p>
+</div>
+<div class="bg-white dark:bg-slate-800 p-6 rounded-xl border border-primary/10 shadow-sm">
+<div class="flex justify-between items-start mb-4">
+<span class="p-2 bg-primary/5 rounded-lg text-primary font-bold">
+<span class="material-symbols-outlined">visibility</span>
+</span>
+</div>
+<p class="text-sm text-slate-500 font-medium">Impressions</p>
+<h3 class="text-3xl font-bold mt-1">0</h3>
+<p class="text-xs text-slate-400 mt-2 flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">remove</span> --% from last period
+                        </p>
+</div>
+<div class="bg-white dark:bg-slate-800 p-6 rounded-xl border border-primary/10 shadow-sm">
+<div class="flex justify-between items-start mb-4">
+<span class="p-2 bg-primary/5 rounded-lg text-primary font-bold">
+<span class="material-symbols-outlined">bolt</span>
+</span>
+</div>
+<p class="text-sm text-slate-500 font-medium">Engagement Rate</p>
+<h3 class="text-3xl font-bold mt-1">0%</h3>
+<p class="text-xs text-slate-400 mt-2 flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">remove</span> --% from last period
+                        </p>
+</div>
+<div class="bg-white dark:bg-slate-800 p-6 rounded-xl border border-primary/10 shadow-sm">
+<div class="flex justify-between items-start mb-4">
+<span class="p-2 bg-primary/5 rounded-lg text-primary font-bold">
+<span class="material-symbols-outlined">person_add</span>
+</span>
+</div>
+<p class="text-sm text-slate-500 font-medium">New Followers</p>
+<h3 class="text-3xl font-bold mt-1">0</h3>
+<p class="text-xs text-slate-400 mt-2 flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">remove</span> --% from last period
+                        </p>
+</div>
+</div>
+<!-- Empty Chart Area -->
+<div class="bg-white dark:bg-slate-800 rounded-xl border border-primary/10 shadow-sm overflow-hidden min-h-[400px] flex flex-col items-center justify-center p-8">
+<div class="text-center max-w-md">
+<div class="mb-6 inline-flex size-24 items-center justify-center rounded-full bg-primary/5 text-primary/40">
+<span class="material-symbols-outlined text-6xl">bar_chart_4_bars</span>
+</div>
+<h3 class="text-lg font-bold mb-2">No data to display</h3>
+<p class="text-slate-500 text-sm leading-relaxed mb-8">
+                            No published posts with metrics yet. Publish content and collect metrics to see analytics.
+                        </p>
+<button class="bg-primary text-white px-6 py-2.5 rounded-lg font-bold hover:bg-primary/90 transition-all flex items-center gap-2 mx-auto">
+<span class="material-symbols-outlined">send</span>
+                            Publish Your First Post
+                        </button>
+</div>
+<!-- Decorative background bars (faded) -->
+<div class="absolute bottom-0 left-0 right-0 h-48 opacity-[0.03] pointer-events-none flex items-end justify-center gap-4 px-12">
+<div class="w-full bg-primary h-24 rounded-t-lg"></div>
+<div class="w-full bg-primary h-40 rounded-t-lg"></div>
+<div class="w-full bg-primary h-16 rounded-t-lg"></div>
+<div class="w-full bg-primary h-32 rounded-t-lg"></div>
+<div class="w-full bg-primary h-56 rounded-t-lg"></div>
+<div class="w-full bg-primary h-28 rounded-t-lg"></div>
+<div class="w-full bg-primary h-44 rounded-t-lg"></div>
+</div>
+</div>
+<!-- Data Table Area -->
+<div class="bg-white dark:bg-slate-800 rounded-xl border border-primary/10 shadow-sm overflow-hidden">
+<div class="px-6 py-4 border-b border-primary/5 flex items-center justify-between">
+<h3 class="font-bold">Post Performance Details</h3>
+<div class="flex gap-2">
+<button class="p-1.5 text-slate-400 hover:text-primary"><span class="material-symbols-outlined">filter_list</span></button>
+<button class="p-1.5 text-slate-400 hover:text-primary"><span class="material-symbols-outlined">download</span></button>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead class="bg-primary/5 text-xs uppercase text-slate-500 font-bold tracking-wider">
+<tr>
+<th class="px-6 py-4">Post</th>
+<th class="px-6 py-4 text-right">Reach</th>
+<th class="px-6 py-4 text-right">Engagement</th>
+<th class="px-6 py-4 text-right">Clicks</th>
+<th class="px-6 py-4 text-center">Status</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-primary/5">
+<tr class="bg-transparent">
+<td class="px-6 py-12 text-center" colspan="5">
+<div class="flex flex-col items-center text-slate-400">
+<span class="material-symbols-outlined text-4xl mb-2">content_paste_off</span>
+<p class="text-sm">No posts found for the selected period</p>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

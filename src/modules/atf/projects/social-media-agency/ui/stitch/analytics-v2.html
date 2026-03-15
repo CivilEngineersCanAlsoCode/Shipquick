@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Analytics - LinkRight SMA</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#1b6a39",
+                        "primary-dark": "#89d89e",
+                        "background-light": "#f6f8f7",
+                        "background-dark": "#111411",
+                        "surface": "#1d201d",
+                        "surface-variant": "#414941",
+                        "on-surface": "#e1e4de",
+                        "on-surface-variant": "#c1c9bf",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }</script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .active-pill {
+            font-variation-settings: 'FILL' 1;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-on-surface transition-colors duration-200">
+<div class="relative flex h-auto min-h-screen w-full flex-col overflow-x-hidden">
+<!-- Header Navigation -->
+<header class="sticky top-0 z-50 flex items-center justify-between border-b border-primary/10 dark:border-surface-variant bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md px-6 py-3 md:px-20 lg:px-40">
+<div class="flex items-center gap-4">
+<div class="size-8 bg-primary rounded-lg flex items-center justify-center text-white">
+<span class="material-symbols-outlined">analytics</span>
+</div>
+<h2 class="text-xl font-bold tracking-tight text-slate-900 dark:text-on-surface">LinkRight SMA</h2>
+</div>
+<div class="flex items-center gap-4">
+<nav class="hidden md:flex items-center gap-6 mr-6">
+<a class="text-sm font-medium hover:text-primary" href="#">Dashboard</a>
+<a class="text-sm font-bold text-primary border-b-2 border-primary pb-1" href="#">Analytics</a>
+<a class="text-sm font-medium hover:text-primary" href="#">Posts</a>
+</nav>
+<div class="flex gap-2">
+<button class="flex size-10 items-center justify-center rounded-xl bg-primary/10 text-primary hover:bg-primary/20 transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="flex size-10 items-center justify-center rounded-xl bg-primary/10 text-primary hover:bg-primary/20 transition-colors">
+<span class="material-symbols-outlined">account_circle</span>
+</button>
+</div>
+</div>
+</header>
+<main class="mx-auto flex w-full max-w-[1280px] flex-col gap-6 p-6 md:px-20 lg:px-40">
+<!-- Page Title and Time Filter -->
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+<div>
+<h1 class="text-2xl font-bold text-slate-900 dark:text-on-surface">Content Performance</h1>
+<p class="text-slate-500 dark:text-on-surface-variant">Detailed breakdown of your social ecosystem engagement.</p>
+</div>
+<div class="flex h-11 items-center rounded-xl bg-primary/5 p-1.5 border border-primary/10">
+<label class="relative flex h-full cursor-pointer items-center justify-center rounded-lg px-4 text-sm font-semibold transition-all hover:text-primary has-[:checked]:bg-white has-[:checked]:text-primary has-[:checked]:shadow-sm dark:has-[:checked]:bg-primary dark:has-[:checked]:text-white">
+<input class="sr-only" name="range" type="radio" value="7d"/>
+                    7d
+                </label>
+<label class="relative flex h-full cursor-pointer items-center justify-center rounded-lg px-4 text-sm font-semibold transition-all hover:text-primary has-[:checked]:bg-white has-[:checked]:text-primary has-[:checked]:shadow-sm dark:has-[:checked]:bg-primary dark:has-[:checked]:text-white">
+<input checked="" class="sr-only" name="range" type="radio" value="30d"/>
+                    30d
+                </label>
+<label class="relative flex h-full cursor-pointer items-center justify-center rounded-lg px-4 text-sm font-semibold transition-all hover:text-primary has-[:checked]:bg-white has-[:checked]:text-primary has-[:checked]:shadow-sm dark:has-[:checked]:bg-primary dark:has-[:checked]:text-white">
+<input class="sr-only" name="range" type="radio" value="90d"/>
+                    90d
+                </label>
+<label class="relative flex h-full cursor-pointer items-center justify-center rounded-lg px-4 text-sm font-semibold transition-all hover:text-primary has-[:checked]:bg-white has-[:checked]:text-primary has-[:checked]:shadow-sm dark:has-[:checked]:bg-primary dark:has-[:checked]:text-white">
+<input class="sr-only" name="range" type="radio" value="all"/>
+                    All
+                </label>
+</div>
+</div>
+<!-- Metric Cards -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="flex flex-col gap-2 rounded-xl border border-primary/10 bg-white dark:bg-surface dark:border-surface-variant p-6 shadow-sm">
+<div class="flex items-center gap-2 text-primary">
+<span class="material-symbols-outlined text-xl dark:text-primary-dark">favorite</span>
+<p class="text-sm font-medium dark:text-on-surface-variant">Total Engagement</p>
+</div>
+<div class="flex items-baseline gap-2">
+<p class="text-3xl font-bold tracking-tight dark:text-on-surface-variant dark:text-on-surface">12.4K</p>
+<span class="text-sm font-bold text-green-600 dark:text-green-400">+12%</span>
+</div>
+</div>
+<div class="flex flex-col gap-2 rounded-xl border border-primary/10 bg-white dark:bg-surface dark:border-surface-variant p-6 shadow-sm">
+<div class="flex items-center gap-2 text-primary">
+<span class="material-symbols-outlined text-xl dark:text-primary-dark">insights</span>
+<p class="text-sm font-medium dark:text-on-surface-variant">Avg per Post</p>
+</div>
+<div class="flex items-baseline gap-2">
+<p class="text-3xl font-bold tracking-tight dark:text-on-surface-variant dark:text-on-surface">425</p>
+<span class="text-sm font-bold text-green-600 dark:text-green-400">+5%</span>
+</div>
+</div>
+<div class="flex flex-col gap-2 rounded-xl border border-primary/10 bg-white dark:bg-surface dark:border-surface-variant p-6 shadow-sm">
+<div class="flex items-center gap-2 text-primary">
+<span class="material-symbols-outlined text-xl dark:text-primary-dark">workspace_premium</span>
+<p class="text-sm font-medium dark:text-on-surface-variant">Best Post Score</p>
+</div>
+<div class="flex items-baseline gap-2">
+<p class="text-3xl font-bold tracking-tight dark:text-on-surface-variant dark:text-on-surface">92/100</p>
+<span class="text-sm font-bold text-green-600 dark:text-green-400">+2%</span>
+</div>
+</div>
+<div class="flex flex-col gap-2 rounded-xl border border-primary/10 bg-white dark:bg-surface dark:border-surface-variant p-6 shadow-sm">
+<div class="flex items-center gap-2 text-primary">
+<span class="material-symbols-outlined text-xl dark:text-primary-dark">post_add</span>
+<p class="text-sm font-medium dark:text-on-surface-variant">Posts Published</p>
+</div>
+<div class="flex items-baseline gap-2">
+<p class="text-3xl font-bold tracking-tight dark:text-on-surface-variant dark:text-on-surface">28</p>
+<span class="text-sm font-bold text-red-600 dark:text-red-400">-1%</span>
+</div>
+</div>
+</div>
+<!-- Engagement Chart -->
+<div class="rounded-xl border border-primary/10 bg-white dark:bg-surface dark:border-surface-variant p-6 shadow-sm">
+<div class="mb-6 flex items-center justify-between">
+<div>
+<h3 class="text-lg font-bold dark:text-on-surface">Engagement Evolution</h3>
+<p class="text-sm text-slate-500 dark:text-on-surface-variant">Likes, comments, and shares across the timeline</p>
+</div>
+<div class="flex gap-4">
+<div class="flex items-center gap-2">
+<span class="size-3 rounded-full bg-primary dark:bg-primary-dark"></span>
+<span class="text-xs font-medium">Likes</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="size-3 rounded-full bg-primary/40"></span>
+<span class="text-xs font-medium">Other</span>
+</div>
+</div>
+</div>
+<div class="h-64 w-full">
+<svg class="h-full w-full" preserveaspectratio="none" viewbox="0 0 800 200">
+<path class="opacity-20" d="M0 160 Q 50 140, 100 150 T 200 120 T 300 140 T 400 80 T 500 100 T 600 60 T 700 90 T 800 40 V 200 H 0 Z" fill="url(#chartGradient)"></path>
+<path class="text-primary dark:text-primary-dark" d="M0 160 Q 50 140, 100 150 T 200 120 T 300 140 T 400 80 T 500 100 T 600 60 T 700 90 T 800 40" fill="none" stroke="currentColor" stroke-width="3"></path>
+<defs><lineargradient id="chartGradient" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#89d89e" stop-opacity="0.4"></stop>
+<stop offset="100%" stop-color="#89d89e" stop-opacity="0"></stop>
+</lineargradient></defs>
+</svg>
+<div class="mt-4 flex justify-between px-2 text-xs font-bold text-slate-400 uppercase tracking-widest">
+<span>Oct 01</span>
+<span>Oct 07</span>
+<span>Oct 14</span>
+<span>Oct 21</span>
+<span>Oct 28</span>
+</div>
+</div>
+</div>
+<!-- Pillar Performance and Top Posts -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+<!-- Bar Chart: Performance by Pillar -->
+<div class="rounded-xl border border-primary/10 bg-white dark:bg-surface dark:border-surface-variant p-6 shadow-sm">
+<h3 class="text-lg font-bold mb-6 dark:text-on-surface">Performance by Content Pillar</h3>
+<div class="flex flex-col gap-6">
+<div class="space-y-2">
+<div class="flex justify-between text-sm">
+<span class="font-medium">Industry Insights</span>
+<span class="font-bold">85%</span>
+</div>
+<div class="h-3 w-full rounded-full bg-primary/10 overflow-hidden">
+<div class="h-full bg-primary dark:bg-primary-dark rounded-full" style="width: 85%"></div>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between text-sm">
+<span class="font-medium">Company Updates</span>
+<span class="font-bold">62%</span>
+</div>
+<div class="h-3 w-full rounded-full bg-primary/10 overflow-hidden">
+<div class="h-full bg-primary dark:bg-primary-dark rounded-full" style="width: 62%"></div>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between text-sm">
+<span class="font-medium">Educational Content</span>
+<span class="font-bold">94%</span>
+</div>
+<div class="h-3 w-full rounded-full bg-primary/10 overflow-hidden">
+<div class="h-full bg-primary dark:bg-primary-dark rounded-full" style="width: 94%"></div>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between text-sm">
+<span class="font-medium">Employee Spotlight</span>
+<span class="font-bold">45%</span>
+</div>
+<div class="h-3 w-full rounded-full bg-primary/10 overflow-hidden">
+<div class="h-full bg-primary dark:bg-primary-dark rounded-full" style="width: 45%"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Data Table: Top Posts -->
+<div class="rounded-xl border border-primary/10 bg-white dark:bg-surface dark:border-surface-variant p-6 shadow-sm">
+<h3 class="text-lg font-bold mb-4 dark:text-on-surface">Top 5 Best Performing Posts</h3>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead>
+<tr class="border-b border-primary/10 text-xs font-bold uppercase tracking-widest text-slate-400">
+<th class="pb-3 pr-4">Post Title</th>
+<th class="pb-3 px-4 text-center">Engagement</th>
+<th class="pb-3 pl-4 text-right">Score</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-primary/5">
+<tr class="hover:bg-primary/5 transition-colors">
+<td class="py-4 pr-4 text-sm font-medium dark:text-on-surface">Navigating the 2024 Market...</td>
+<td class="py-4 px-4 text-center text-sm dark:text-on-surface">2.4k</td>
+<td class="py-4 pl-4 text-right text-sm font-bold dark:text-on-surface dark:text-primary-dark">98</td>
+</tr>
+<tr class="hover:bg-primary/5 transition-colors">
+<td class="py-4 pr-4 text-sm font-medium dark:text-on-surface">Top 10 SMA Strategies for...</td>
+<td class="py-4 px-4 text-center text-sm dark:text-on-surface">1.8k</td>
+<td class="py-4 pl-4 text-right text-sm font-bold dark:text-on-surface dark:text-primary-dark">92</td>
+</tr>
+<tr class="hover:bg-primary/5 transition-colors">
+<td class="py-4 pr-4 text-sm font-medium dark:text-on-surface">Announcing our Q3 results...</td>
+<td class="py-4 px-4 text-center text-sm dark:text-on-surface">1.5k</td>
+<td class="py-4 pl-4 text-right text-sm font-bold dark:text-on-surface dark:text-primary-dark">89</td>
+</tr>
+<tr class="hover:bg-primary/5 transition-colors">
+<td class="py-4 pr-4 text-sm font-medium dark:text-on-surface">How to optimize your profile...</td>
+<td class="py-4 px-4 text-center text-sm dark:text-on-surface">1.2k</td>
+<td class="py-4 pl-4 text-right text-sm font-bold dark:text-on-surface dark:text-primary-dark">85</td>
+</tr>
+<tr class="hover:bg-primary/5 transition-colors">
+<td class="py-4 pr-4 text-sm font-medium dark:text-on-surface">Meet the team behind Link...</td>
+<td class="py-4 px-4 text-center text-sm dark:text-on-surface">940</td>
+<td class="py-4 pl-4 text-right text-sm font-bold dark:text-on-surface dark:text-primary-dark">82</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<!-- Alerts Banner (Tertiary Container) -->
+<div class="rounded-xl bg-amber-50 dark:bg-surface dark:border-surface-variant border border-amber-200 p-6 shadow-sm">
+<div class="flex flex-col md:flex-row items-center gap-4 text-center md:text-left">
+<div class="size-12 rounded-full bg-amber-200 dark:bg-amber-800 flex items-center justify-center text-amber-700 dark:text-amber-200">
+<span class="material-symbols-outlined">bolt</span>
+</div>
+<div class="flex-1">
+<h4 class="font-bold text-amber-900 dark:text-amber-100 dark:text-on-surface">Resurgent Post Alert</h4>
+<p class="text-sm text-amber-800 dark:text-amber-300 dark:text-on-surface-variant">"Navigating the 2024 Market" is seeing a 40% uptick in impressions from legacy shares. Consider a follow-up or re-promotion.</p>
+</div>
+<button class="whitespace-nowrap rounded-lg bg-amber-600 dark:bg-primary-dark px-6 py-2.5 text-sm font-bold text-white dark:text-background-dark hover:bg-amber-700 dark:hover:bg-primary-dark/90 transition-colors">
+                    Review Post
+                </button>
+</div>
+</div>
+</main>
+<!-- Footer Space -->
+<footer class="mt-12 border-t border-primary/10 py-8 text-center text-slate-400">
+<p class="text-sm">© 2024 LinkRight SMA Analytics. All rights reserved.</p>
+</footer>
+</div>
+</body></html>
