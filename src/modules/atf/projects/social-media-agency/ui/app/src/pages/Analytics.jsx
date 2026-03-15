@@ -233,7 +233,10 @@ export default function Analytics() {
 
   return (
     <Box sx={{ maxWidth: 1200, mx: 'auto', p: 3 }}>
-      <Typography variant="h4" sx={{ mb: 3 }}>Analytics</Typography>
+      <Typography variant="h4" sx={{ mb: 1 }}>Analytics</Typography>
+      <Alert severity="info" sx={{ mb: 3 }}>
+        LinkedIn API limited &mdash; metrics collected from JS snippet
+      </Alert>
 
       {/* Period Selector */}
       <Box sx={{ mb: 3 }}>
@@ -254,7 +257,7 @@ export default function Analytics() {
           <MetricCard icon={<TrendingUpOutlined />} label="Avg Engagement" value={Math.round(avgEngagement)} />
         </Grid>
         <Grid size={{ xs: 6, md: 3 }}>
-          <Tooltip title="Requires follower count from JS snippet" arrow>
+          <Tooltip title="LinkedIn API limited — requires follower count from JS snippet" arrow>
             <Box>
               <MetricCard icon={<PercentOutlined />} label="Engagement Rate" value="N/A" />
             </Box>

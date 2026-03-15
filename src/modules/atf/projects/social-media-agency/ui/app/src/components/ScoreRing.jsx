@@ -4,8 +4,8 @@ const SIZES = { small: 40, medium: 64, large: 96 };
 const STROKE = { small: 3, medium: 4, large: 5 };
 
 function getColor(score) {
-  if (score >= 80) return '#2e7d32';
-  if (score >= 60) return '#ed6c02';
+  if (score >= 128) return '#2e7d32';
+  if (score >= 80) return '#ed6c02';
   return '#d32f2f';
 }
 

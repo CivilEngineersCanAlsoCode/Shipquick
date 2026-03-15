@@ -106,7 +106,7 @@ export default function PostDetail() {
     );
   }
 
-  const { title, content_pillar, status, scheduled_date, published_at, scores, metrics, content, hook, body, cta, hashtags } = post;
+  const { title, content_pillar, status, scheduled_date, published_at, scores, metrics, content, hook, body, cta, hashtags, tone } = post;
   const engagement = metrics
     ? (metrics.likes || 0) + (metrics.comments || 0) * 3 + (metrics.shares || 0) * 2
     : null;
@@ -224,6 +224,9 @@ export default function PostDetail() {
                   <PillarChip pillar={content_pillar} />
                 </Box>
               )}
+              <Typography variant="body2">
+                <strong>Tone:</strong> {tone || 'vulnerable-conversational'}
+              </Typography>
             </Box>
           </Box>
 

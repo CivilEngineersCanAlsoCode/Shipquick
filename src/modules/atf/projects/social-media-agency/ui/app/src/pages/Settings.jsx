@@ -208,7 +208,7 @@ export default function Settings() {
       >
         <Tab label="Scoring Weights" />
         <Tab label="Scoring Scales" />
-        <Tab label="Posting Schedule" />
+        <Tab label="Schedule" />
         <Tab label="Formatting" />
         <Tab label="Engagement" />
         <Tab label="Review" />

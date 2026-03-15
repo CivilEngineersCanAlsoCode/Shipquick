@@ -36,7 +36,7 @@ export default function PipelineFunnel({ counts }) {
                 width: 40,
                 height: 40,
                 borderRadius: '50%',
-                bgcolor: STATUS_COLORS[stage.key],
+                bgcolor: STATUS_COLORS[stage.key]?.bg || '#64748b',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
