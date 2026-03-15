@@ -15,7 +15,7 @@ import {
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import { fetchPosts } from '../api';
-import { STATUS_COLORS, STATUS_TEXT_COLORS } from '../theme';
+import { STATUS_COLORS } from '../theme';
 
 const FILTER_TABS = ['All', 'Drafting', 'Previewed', 'Published'];
 
@@ -84,8 +84,8 @@ export default function Posts() {
                     size="small"
                     label={formatStatus(post.status)}
                     sx={{
-                      bgcolor: STATUS_COLORS[post.status] || '#414941',
-                      color: STATUS_TEXT_COLORS[post.status] || '#E1E4DE',
+                      bgcolor: (STATUS_COLORS[post.status] || {}).bg || '#64748b',
+                      color: (STATUS_COLORS[post.status] || {}).text || '#fff',
                       flexShrink: 0,
                     }}
                   />
