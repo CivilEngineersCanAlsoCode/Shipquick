@@ -5,7 +5,7 @@ const WEBHOOKS = {
   fetchBriefs:  `${N8N}/sma-fetch-briefs`,
   fetchPosts:   `${N8N}/sma-fetch-posts`,
   updatePost:   `${N8N}/sma-update-post`,
-  publishPost:  `${N8N}/sma-publish-post`,
+  publishPost:  `${N8N}/sma-publish-linkedin`,
   fetchScores:  `${N8N}/sma-fetch-scores`,
   notify:       `${N8N}/sma-notify`,
 };
