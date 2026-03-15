@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Settings - Error State</title>
+<!-- Tailwind CSS v3 CDN with plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Material Symbols for Icons -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet"/>
+<style data-purpose="custom-typography">
+    /* Using a standard sans-serif that mimics Roboto/Material styling */
+    body {
+      font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background-color: #fef7ff; /* Material M3 Surface color */
+    }
+  </style>
+<style data-purpose="material-layout">
+    /* Specific styling for navigation rail and layout proportions */
+    .nav-rail {
+      width: 80px;
+      height: 100vh;
+      background-color: #f3edf7; /* Surface Container Low */
+    }
+    .main-content {
+      flex: 1;
+      height: 100vh;
+      overflow-y: auto;
+    }
+    .dimmed-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.1);
+      pointer-events: none;
+      z-index: 10;
+    }
+    /* Outlined Card specific styling for M3 */
+    .m3-outlined-card {
+      border: 1px solid #79747e; /* Outline color */
+      border-radius: 12px;
+      background-color: #fef7ff;
+    }
+  </style>
+</head>
+<body class="flex">
+<!-- BEGIN: Navigation Rail -->
+<nav class="nav-rail flex flex-col items-center py-4 space-y-8 border-r border-gray-200 z-20" data-purpose="side-navigation">
+<div class="p-2">
+<span class="material-symbols-outlined text-gray-700">menu</span>
+</div>
+<div class="flex flex-col items-center space-y-6">
+<div class="flex flex-col items-center text-xs text-gray-600">
+<span class="material-symbols-outlined mb-1">home</span>
+<span>Home</span>
+</div>
+<div class="flex flex-col items-center text-xs text-gray-600">
+<span class="material-symbols-outlined mb-1">dashboard</span>
+<span>Stats</span>
+</div>
+<div class="flex flex-col items-center text-xs text-primary font-bold">
+<div class="bg-purple-100 px-4 py-1 rounded-full mb-1">
+<span class="material-symbols-outlined text-purple-900">settings</span>
+</div>
+<span class="text-purple-900">Settings</span>
+</div>
+</div>
+</nav>
+<!-- END: Navigation Rail -->
+<!-- BEGIN: Main Application Area -->
+<div class="main-content flex flex-col relative" data-purpose="application-body">
+<!-- Dimming overlay for error state -->
+<div class="dimmed-overlay"></div>
+<!-- BEGIN: Top App Bar -->
+<header class="h-16 px-6 flex items-center justify-between border-b border-gray-200 bg-white z-20" data-purpose="top-app-bar">
+<div class="flex items-center gap-4">
+<h1 class="text-xl font-normal text-gray-900">Settings</h1>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-gray-600">search</span>
+<div class="w-8 h-8 rounded-full bg-purple-200 flex items-center justify-center text-purple-800 text-sm font-medium">JD</div>
+</div>
+</header>
+<!-- END: Top App Bar -->
+<!-- BEGIN: Page Content -->
+<main class="flex-1 flex items-center justify-center p-6 z-30" data-purpose="content-area">
+<!-- BEGIN: Error State Card -->
+<section class="m3-outlined-card max-w-md w-full p-8 flex flex-col items-center text-center shadow-sm" data-purpose="error-message-card">
+<!-- Error Icon -->
+<div class="mb-4 text-red-600" data-purpose="error-icon-container">
+<span class="material-symbols-outlined !text-5xl" style="font-variation-settings: 'FILL' 1;">warning</span>
+</div>
+<!-- Error Title -->
+<h2 class="text-2xl font-semibold text-gray-900 mb-3">
+          Failed to load configuration
+        </h2>
+<!-- Error Description -->
+<p class="text-gray-600 mb-8 leading-relaxed">
+          We couldn't reach the database to fetch your <code class="bg-gray-100 px-1 rounded">sma_config</code> settings. Please check your connection or retry.
+        </p>
+<!-- Retry Action -->
+<button class="bg-[#e8def8] hover:bg-[#dcd1ed] text-[#1d192b] px-6 py-2.5 rounded-full font-medium transition-colors flex items-center gap-2" data-purpose="retry-button">
+<span class="material-symbols-outlined text-sm">refresh</span>
+          Retry Fetch
+        </button>
+</section>
+<!-- END: Error State Card -->
+</main>
+<!-- END: Page Content -->
+</div>
+<!-- END: Main Application Area -->
+</body></html>
