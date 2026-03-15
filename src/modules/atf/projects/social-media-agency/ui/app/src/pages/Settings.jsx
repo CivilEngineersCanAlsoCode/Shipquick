@@ -1,3 +1,4 @@
+import { n8nFetch, WEBHOOKS, fetchAllConfig, saveConfig } from '../api';
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import {
   Box,
@@ -35,16 +36,6 @@ import {
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
-// ── n8n direct webhook helper ──────────────────────────────────────────
-async function n8nFetch(path, body = {}) {
-  const res = await fetch('http://172.17.0.2:5678/webhook/' + path, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(body),
-  });
-  if (!res.ok) throw new Error('Webhook ' + path + ' failed: ' + res.status);
-  return res.json();
-}
 
 const FIB_MARKS = [1, 2, 3, 5, 8, 13].map((v) => ({ value: v, label: String(v) }));
 const DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
@@ -144,7 +135,7 @@ export default function Settings() {
     setLoading(true);
     setError(null);
     try {
-      const data = await n8nFetch('sma-fetch-config', { config_id: 'all' });
+      const data = await fetchAllConfig();
       const normalized = Array.isArray(data) ? data[0] : data;
       setOriginal(clone(normalized));
       setDraft(clone(normalized));
@@ -185,7 +176,7 @@ export default function Settings() {
     setSaving(true);
     setSaveError(null);
     try {
-      await n8nFetch('sma-save-config', {
+      await n8nFetch(WEBHOOKS.SAVE_CONFIG, {
         config_id: currentKey,
         data: draft[currentKey],
       });

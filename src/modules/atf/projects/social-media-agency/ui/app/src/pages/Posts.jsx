@@ -1,129 +1,217 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import {
   Box,
   Typography,
-  Tabs,
-  Tab,
-  Card,
-  CardContent,
-  CardActionArea,
-  Chip,
-  Alert,
-  CircularProgress,
-  Collapse,
+  TextField,
+  ToggleButtonGroup,
+  ToggleButton,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
+  Pagination,
+  Skeleton,
+  InputAdornment,
 } from '@mui/material';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import ExpandLessIcon from '@mui/icons-material/ExpandLess';
+import Grid from '@mui/material/Grid2';
+import SearchIcon from '@mui/icons-material/Search';
+import ArticleOutlinedIcon from '@mui/icons-material/ArticleOutlined';
+import { PostCard, EmptyState, ErrorBanner } from '../components';
 import { fetchPosts } from '../api';
-import { STATUS_COLORS } from '../theme';
 
-const FILTER_TABS = ['All', 'Drafting', 'Previewed', 'Published'];
+const ACTIVE_STATUSES = new Set([
+  'Scheduled_NoDraft', 'Drafting', 'Drafted', 'Formatting', 'Previewed', 'Ready_ToPublish',
+]);
+const CANCELLED_STATUSES = new Set(['Cancelled', 'Publish_Failed']);
+const PER_PAGE = 12;
 
-function formatStatus(s) {
-  return (s || '').replace(/_/g, ' ');
+function pseudoId(title) {
+  return btoa(title || '').replace(/[^a-zA-Z0-9]/g, '').slice(0, 12);
 }
 
 export default function Posts() {
   const [posts, setPosts] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [tab, setTab] = useState(0);
-  const [expanded, setExpanded] = useState(null);
+  const [filter, setFilter] = useState('All');
+  const [search, setSearch] = useState('');
+  const [sort, setSort] = useState('newest');
+  const [page, setPage] = useState(1);
 
-  useEffect(() => {
+  const load = useCallback(() => {
+    setLoading(true);
+    setError(null);
     fetchPosts()
-      .then((data) => setPosts(Array.isArray(data) ? data : []))
+      .then((data) => {
+        const enriched = (Array.isArray(data) ? data : []).map((p) => ({
+          ...p,
+          _id: pseudoId(p.title),
+        }));
+        setPosts(enriched);
+      })
       .catch((e) => setError(e.message))
       .finally(() => setLoading(false));
   }, []);
 
-  if (loading) return <Box sx={{ display: 'flex', justifyContent: 'center', mt: 20 }}><CircularProgress /></Box>;
-  if (error) return <Alert severity="error" sx={{ mt: 4 }}>{error}</Alert>;
-  if (!posts || posts.length === 0) return <Alert severity="info" sx={{ mt: 4 }}>No posts found.</Alert>;
+  useEffect(() => { load(); }, [load]);
 
-  const filterLabel = FILTER_TABS[tab];
-  const filtered = filterLabel === 'All'
-    ? posts
-    : posts.filter((p) => (p.status || '').toLowerCase().includes(filterLabel.toLowerCase()));
+  const filtered = useMemo(() => {
+    if (!posts) return [];
+    let list = posts;
+
+    // Status filter
+    if (filter === 'Active') list = list.filter((p) => ACTIVE_STATUSES.has(p.status));
+    else if (filter === 'Published') list = list.filter((p) => p.status === 'Published');
+    else if (filter === 'Cancelled') list = list.filter((p) => CANCELLED_STATUSES.has(p.status));
+
+    // Search
+    if (search.trim()) {
+      const q = search.toLowerCase();
+      list = list.filter((p) => (p.title || '').toLowerCase().includes(q));
+    }
+
+    // Sort
+    if (sort === 'newest') {
+      list = [...list].sort((a, b) => new Date(b.scheduled_date || 0) - new Date(a.scheduled_date || 0));
+    } else if (sort === 'oldest') {
+      list = [...list].sort((a, b) => new Date(a.scheduled_date || 0) - new Date(b.scheduled_date || 0));
+    } else if (sort === 'score') {
+      list = [...list].sort((a, b) => {
+        const sa = a.metrics ? (a.metrics.likes || 0) + (a.metrics.comments || 0) * 3 + (a.metrics.shares || 0) * 2 : 0;
+        const sb = b.metrics ? (b.metrics.likes || 0) + (b.metrics.comments || 0) * 3 + (b.metrics.shares || 0) * 2 : 0;
+        return sb - sa;
+      });
+    }
+
+    return list;
+  }, [posts, filter, search, sort]);
+
+  const pageCount = Math.ceil(filtered.length / PER_PAGE);
+  const paged = filtered.slice((page - 1) * PER_PAGE, page * PER_PAGE);
+
+  // Reset page when filters change
+  useEffect(() => { setPage(1); }, [filter, search, sort]);
+
+  // Loading skeletons
+  if (loading) {
+    return (
+      <Box sx={{ maxWidth: 1200, mx: 'auto', px: { xs: 2, sm: 3 }, py: 3 }}>
+        <Typography variant="h4" sx={{ mb: 4, fontWeight: 600 }}>Posts</Typography>
+        <Grid container spacing={3}>
+          {Array.from({ length: 6 }).map((_, i) => (
+            <Grid key={i} size={{ xs: 12, sm: 6, md: 4 }}>
+              <Skeleton variant="rounded" height={180} />
+            </Grid>
+          ))}
+        </Grid>
+      </Box>
+    );
+  }
+
+  // Error
+  if (error) {
+    return (
+      <Box sx={{ maxWidth: 1200, mx: 'auto', px: { xs: 2, sm: 3 }, py: 3 }}>
+        <Typography variant="h4" sx={{ mb: 4, fontWeight: 600 }}>Posts</Typography>
+        <ErrorBanner message={error} onRetry={load} />
+      </Box>
+    );
+  }
+
+  // Empty (no posts at all)
+  if (!posts || posts.length === 0) {
+    return (
+      <Box sx={{ maxWidth: 1200, mx: 'auto', px: { xs: 2, sm: 3 }, py: 3 }}>
+        <Typography variant="h4" sx={{ mb: 4, fontWeight: 600 }}>Posts</Typography>
+        <EmptyState
+          icon={ArticleOutlinedIcon}
+          title="No posts yet"
+          description="Create your first LinkedIn post to get started."
+          actionLabel="Open ChatGPT"
+          actionHref="https://chat.openai.com"
+        />
+      </Box>
+    );
+  }
 
   return (
-    <Box>
-      <Typography variant="h5" sx={{ mb: 4, fontWeight: 500 }}>Posts</Typography>
+    <Box sx={{ maxWidth: 1200, mx: 'auto', px: { xs: 2, sm: 3 }, py: 3 }}>
+      <Typography variant="h4" sx={{ mb: 4, fontWeight: 600 }}>Posts</Typography>
 
-      <Tabs
-        value={tab}
-        onChange={(_, v) => { setTab(v); setExpanded(null); }}
-        sx={{ mb: 4, borderBottom: 1, borderColor: 'divider' }}
-      >
-        {FILTER_TABS.map((label) => (
-          <Tab key={label} label={label} />
-        ))}
-      </Tabs>
+      {/* Filter bar */}
+      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, mb: 3, alignItems: 'center' }}>
+        <ToggleButtonGroup
+          value={filter}
+          exclusive
+          onChange={(_, v) => v && setFilter(v)}
+          size="small"
+        >
+          {['All', 'Active', 'Published', 'Cancelled'].map((f) => (
+            <ToggleButton key={f} value={f}>{f}</ToggleButton>
+          ))}
+        </ToggleButtonGroup>
 
-      <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
-        Showing {filtered.length} post{filtered.length !== 1 ? 's' : ''}
+        <TextField
+          size="small"
+          placeholder="Search posts..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          slotProps={{
+            input: {
+              startAdornment: (
+                <InputAdornment position="start"><SearchIcon fontSize="small" /></InputAdornment>
+              ),
+            },
+          }}
+          sx={{ minWidth: 200 }}
+        />
+
+        <FormControl size="small" sx={{ minWidth: 160 }}>
+          <InputLabel>Sort</InputLabel>
+          <Select value={sort} label="Sort" onChange={(e) => setSort(e.target.value)}>
+            <MenuItem value="newest">Newest first</MenuItem>
+            <MenuItem value="oldest">Oldest first</MenuItem>
+            <MenuItem value="score">Engagement</MenuItem>
+          </Select>
+        </FormControl>
+      </Box>
+
+      {/* Result count */}
+      <Typography variant="caption" color="text.secondary" sx={{ mb: 2, display: 'block' }}>
+        Showing {paged.length} of {filtered.length} posts
       </Typography>
 
-      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-        {filtered.map((post, i) => {
-          const id = post.id || i;
-          const isExpanded = expanded === id;
-          return (
-            <Card key={id} variant="outlined">
-              <CardActionArea onClick={() => setExpanded(isExpanded ? null : id)}>
-                <CardContent sx={{ display: 'flex', alignItems: 'center', gap: 3 }}>
-                  <Box sx={{ flex: 1, minWidth: 0 }}>
-                    <Typography variant="subtitle1" noWrap>
-                      {post.title || post.hook || post.content_pillar || 'Untitled'}
-                    </Typography>
-                    <Typography variant="caption" color="text.secondary">
-                      {post.scheduled_date || post.publish_date || 'No date'}
-                    </Typography>
-                  </Box>
-                  <Chip
-                    size="small"
-                    label={formatStatus(post.status)}
-                    sx={{
-                      bgcolor: (STATUS_COLORS[post.status] || {}).bg || '#64748b',
-                      color: (STATUS_COLORS[post.status] || {}).text || '#fff',
-                      flexShrink: 0,
-                    }}
-                  />
-                  {post.content_pillar && (
-                    <Chip size="small" label={post.content_pillar} variant="outlined" sx={{ flexShrink: 0 }} />
-                  )}
-                  {isExpanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
-                </CardContent>
-              </CardActionArea>
-              <Collapse in={isExpanded}>
-                <CardContent sx={{ pt: 0, bgcolor: 'background.default' }}>
-                  {post.hook && (
-                    <Box sx={{ mb: 2 }}>
-                      <Typography variant="caption" color="text.secondary">Hook</Typography>
-                      <Typography variant="body2">{post.hook}</Typography>
-                    </Box>
-                  )}
-                  {post.body && (
-                    <Box sx={{ mb: 2 }}>
-                      <Typography variant="caption" color="text.secondary">Body</Typography>
-                      <Typography variant="body2" sx={{ whiteSpace: 'pre-wrap' }}>{post.body}</Typography>
-                    </Box>
-                  )}
-                  {post.cta && (
-                    <Box sx={{ mb: 2 }}>
-                      <Typography variant="caption" color="text.secondary">CTA</Typography>
-                      <Typography variant="body2">{post.cta}</Typography>
-                    </Box>
-                  )}
-                  {post.score != null && (
-                    <Typography variant="body2" color="text.secondary">Score: {post.score}</Typography>
-                  )}
-                </CardContent>
-              </Collapse>
-            </Card>
-          );
-        })}
-      </Box>
+      {/* Filtered empty */}
+      {filtered.length === 0 ? (
+        <EmptyState
+          icon={SearchIcon}
+          title="No posts match your filters"
+          description="Try adjusting your search or filter criteria."
+        />
+      ) : (
+        <>
+          {/* Post cards grid */}
+          <Grid container spacing={3}>
+            {paged.map((post) => (
+              <Grid key={post._id} size={{ xs: 12, sm: 6, md: 4 }}>
+                <PostCard post={post} />
+              </Grid>
+            ))}
+          </Grid>
+
+          {/* Pagination */}
+          {pageCount > 1 && (
+            <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
+              <Pagination
+                count={pageCount}
+                page={page}
+                onChange={(_, v) => setPage(v)}
+                color="primary"
+              />
+            </Box>
+          )}
+        </>
+      )}
     </Box>
   );
 }

@@ -1,3 +1,4 @@
+import { fetchPosts, n8nFetch, WEBHOOKS } from '../api';
 import React, { useState, useEffect, useCallback } from 'react';
 import {
   Box,
@@ -21,16 +22,6 @@ import InboxOutlined from '@mui/icons-material/InboxOutlined';
 import { PipelineFunnel, MetricCard, EmptyState, ErrorBanner } from '../components';
 import { PILLAR_COLORS } from '../theme';
 
-// ── n8n direct webhook helper ──────────────────────────────────────────
-async function n8nFetch(path, body = {}) {
-  const res = await fetch('http://172.17.0.2:5678/webhook/' + path, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(body),
-  });
-  if (!res.ok) throw new Error('Webhook failed: ' + res.status);
-  return res.json();
-}
 
 // ── Helpers ────────────────────────────────────────────────────────────
 function getWeekBounds(date) {
@@ -70,8 +61,8 @@ export default function Dashboard() {
     setLoading(true);
     setError(null);
     Promise.all([
-      n8nFetch('sma-fetch-past-posts', { channel: 'linkedin', limit: 50 }),
-      n8nFetch('sma-fetch-config', { config_id: 'posting_schedule' }),
+      fetchPosts(50),
+      n8nFetch(WEBHOOKS.FETCH_CONFIG, { config_id: 'posting_schedule' }),
     ])
       .then(([postsRes, configRes]) => {
         setPosts(Array.isArray(postsRes?.posts) ? postsRes.posts : []);

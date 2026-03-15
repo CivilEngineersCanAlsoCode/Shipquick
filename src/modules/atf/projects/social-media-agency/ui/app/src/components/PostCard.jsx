@@ -17,7 +17,7 @@ export default function PostCard({ post }) {
   return (
     <Card
       variant="outlined"
-      onClick={() => navigate(`/posts/${_id}`)}
+      onClick={() => navigate(`/posts/${_id}`, { state: { post } })}
       sx={{
         height: 180,
         p: 4,

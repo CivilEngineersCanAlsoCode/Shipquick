@@ -1,3 +1,4 @@
+import { fetchPosts, n8nFetch, WEBHOOKS } from '../api';
 import { useState, useEffect, useMemo, useCallback } from 'react';
 import {
   Typography, Box, Skeleton, Alert, Tooltip,
@@ -31,15 +32,6 @@ const PERIOD_DAYS = { '7': 7, '30': 30, '90': 90, all: null };
 
 const DEFAULT_WEIGHTS = { likes: 1, comments: 3, shares: 2 };
 
-async function n8nFetch(path, body = {}) {
-  const res = await fetch('http://172.17.0.2:5678/webhook/' + path, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(body),
-  });
-  if (!res.ok) throw new Error('Webhook failed: ' + res.status);
-  return res.json();
-}
 
 function calcScore(m, w) {
   if (!m) return 0;
@@ -66,8 +58,8 @@ export default function Analytics() {
     setError(null);
     try {
       const [postsRes, configRes] = await Promise.all([
-        n8nFetch('sma-fetch-past-posts', { channel: 'linkedin', limit: 50 }),
-        n8nFetch('sma-fetch-config', { config_id: 'engagement_config' }),
+        fetchPosts(50),
+        n8nFetch(WEBHOOKS.FETCH_CONFIG, { config_id: 'engagement_config' }),
       ]);
       setPosts(postsRes.posts || []);
       const ew = configRes.engagement_config?.engagement_weights;
