@@ -10,3 +10,4 @@ FW08,Content Methods,"60 content methods across 10 categories with output patter
 FW09,Content Elicitation Workflow,"XML workflow for structured content elicitation with AI-guided questions",content-elicitation-workflow.xml,1,B-ContentDrafting
 FW10,Variable Registry,"48 configurable variables across all workflows with storage locations",variable-registry.csv,48,All
 FW11,Config Doc Schemas,"MongoDB sma_config collection schemas for 7 config documents",config-doc-schemas.md,7,All
+FW12,Posting Schedule,"Default Mon/Wed/Fri 6-7 PM IST schedule with A/B test variants and holiday overrides",posting-schedule.yaml,1,"D-ContentPublishing,E-AnalyticsReview"
