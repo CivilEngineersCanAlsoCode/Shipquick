@@ -1,0 +1,106 @@
+# LinkedIn Formatting Rules — Content Formatting (Workflow F)
+# All 16 rules (FR01–FR16) from formatting-rules.csv
+# Source: frameworks/formatting-rules.csv
+
+rules:
+  FR01:
+    name: staircase-formatting
+    category: structure
+    priority: P2
+    description: "Lines progressively shorter or longer within each block creating a visual staircase effect"
+
+  FR02:
+    name: max-three-line-blocks
+    category: structure
+    priority: P1
+    description: "No more than 3 consecutive lines without a blank line separating blocks"
+
+  FR03:
+    name: no-bold-italic-underline
+    category: typography
+    priority: P1
+    description: "Do not use bold/italic/underline. Use UPPERCASE sparingly for emphasis on headers only"
+
+  FR04:
+    name: replace-dashes-with-punctuation
+    category: typography
+    priority: P1
+    description: "Replace em dashes and en dashes with full stops and commas"
+
+  FR05:
+    name: bullets-format
+    category: typography
+    priority: P1
+    description: "Bullets use space-hyphen-space format ( - item)"
+
+  FR06:
+    name: numbered-lists-format
+    category: typography
+    priority: P2
+    description: "Numbered lists use digit-period-space format (1. item)"
+
+  FR07:
+    name: flows-format
+    category: typography
+    priority: P2
+    description: "Sequential flows use arrow format with spaces (A —> B —> C)"
+
+  FR08:
+    name: max-three-emojis
+    category: emoji
+    priority: P1
+    description: "Maximum 3 emojis per post, placed only at points of maximum emotional tension"
+
+  FR09:
+    name: max-three-hindi-sentences
+    category: language
+    priority: P1
+    description: "Maximum 3 Romanised Hindi sentences per post, used only at emotional peaks"
+
+  FR10:
+    name: fk-grade-7-readability
+    category: readability
+    priority: P1
+    description: "FK Grade 7 readability. Ad copy style, layman language, no jargon"
+
+  FR11:
+    name: character-limit
+    category: structure
+    priority: P1
+    description: "Posts must be 800–1600 ASCII characters in length"
+
+  FR12:
+    name: footer-line-1-positioning
+    category: footer
+    priority: P1
+    description: "After CTA, first footer line is positioning statement (who you are + value)"
+
+  FR13:
+    name: footer-line-2-follow
+    category: footer
+    priority: P2
+    description: "After positioning line, add a follow invitation line"
+
+  FR14:
+    name: hashtags-at-end-only
+    category: footer
+    priority: P1
+    description: "3–6 generic hashtags placed only at the very end. Never in body text"
+
+  FR15:
+    name: one-idea-per-post
+    category: structure
+    priority: P2
+    description: "Each post focuses on exactly one core idea or takeaway"
+
+  FR16:
+    name: whitespace-breathing-room
+    category: readability
+    priority: P2
+    description: "Generous whitespace between blocks for visual breathing room on mobile"
+
+summary:
+  total_rules: 16
+  p1_count: 10
+  p2_count: 6
+  categories: [structure, typography, emoji, language, readability, footer]

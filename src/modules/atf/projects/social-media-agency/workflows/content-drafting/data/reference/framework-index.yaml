@@ -1,0 +1,52 @@
+# Framework Index — Content Drafting (Workflow B)
+# Index of all framework CSVs available for draft generation
+# Source: frameworks/ directory
+
+frameworks:
+  - id: narrative-frameworks
+    path: "frameworks/narrative-frameworks.csv"
+    rows: 32
+    description: "Narrative structures (AIDA, PAS, Before-After-Bridge, Hero Journey, etc.)"
+    used_in: [B-ContentDrafting]
+
+  - id: content-methods
+    path: "frameworks/content-methods.csv"
+    rows: 62
+    description: "Content creation methods across 10 categories (ideation, research, hook, narrative, repurposing, engagement, positioning, distribution, analytics, creative)"
+    used_in: [B-ContentDrafting]
+
+  - id: content-formats
+    path: "frameworks/content-formats.csv"
+    rows: 35
+    description: "Content format templates (Story-to-Insight, Data-to-Opinion, Listicle, etc.)"
+    used_in: [B-ContentDrafting]
+
+  - id: hook-frameworks
+    path: "frameworks/hook-frameworks.csv"
+    rows: 35
+    description: "Hook strategies (Question, Bold Statement, Counter-Intuitive, Data-Shock, etc.)"
+    used_in: [B-ContentDrafting]
+
+  - id: tone-frameworks
+    path: "frameworks/tone-frameworks.csv"
+    rows: 32
+    description: "Tone/voice styles (Casual-Witty, Professional-Warm, Storyteller, etc.)"
+    used_in: [B-ContentDrafting]
+
+  - id: cta-frameworks
+    path: "frameworks/cta-frameworks.csv"
+    rows: 32
+    description: "Call-to-action strategies (Open Question, Poll Vote, Share Story, etc.)"
+    used_in: [B-ContentDrafting]
+
+  - id: positioning-templates
+    path: "frameworks/positioning-templates.csv"
+    rows: 32
+    description: "Positioning lines with follow CTAs for post footers"
+    used_in: [B-ContentDrafting, F-ContentFormatting]
+
+  - id: formatting-rules
+    path: "frameworks/formatting-rules.csv"
+    rows: 16
+    description: "LinkedIn formatting constraints (FR01–FR16): staircase, blocks, emoji, readability"
+    used_in: [F-ContentFormatting, C-ContentReview]

@@ -1,0 +1,149 @@
+# LinkedIn Platform Constraints — v1
+# Reference file for F-ContentFormatting workflow
+# Last updated: 2026-03-15
+
+platform: linkedin
+version: v1
+
+# ─── Character Limits ───────────────────────────────────────
+character_limits:
+  post_max: 3000                   # LinkedIn hard limit per post
+  workflow_min: 800                # SMA minimum (formatting rule FR11)
+  workflow_max: 1600               # SMA maximum (formatting rule FR11)
+  see_more_threshold: ~210         # Characters before "...see more" fold on feed
+  comment_max: 1250                # Per comment
+  headline_max: 220                # Profile headline (not post)
+  note:
+    - "see_more_threshold is approximate (~210 chars) and varies by device, font, and line breaks"
+    - "Posts with line breaks may trigger 'see more' earlier than 210 chars"
+    - "The hook MUST fit within this threshold to be visible without expanding"
+
+# ─── Text Formatting ────────────────────────────────────────
+text_formatting:
+  bold: false                      # LinkedIn does NOT render **bold** or markdown bold
+  italic: false                    # LinkedIn does NOT render *italic* or markdown italic
+  underline: false                 # No underline support
+  strikethrough: false             # No strikethrough support
+  markdown: false                  # LinkedIn does NOT render markdown at all
+  rich_unicode:
+    supported: true                # Unicode bold/italic chars (𝗯𝗼𝗹𝗱, 𝘪𝘵𝘢𝘭𝘪𝘤) render
+    allowed_by_sma: false          # SMA policy: do NOT use rich Unicode characters
+    reason: "Accessibility issues, inconsistent rendering, looks spammy"
+  uppercase:
+    allowed: true
+    use_case: "Section headers ONLY (not body emphasis)"
+    max_per_post: 3                # 2-3 UPPERCASE headers maximum
+  workaround_note: "Since LinkedIn is plain text only, use UPPERCASE sparingly for headers. No other emphasis mechanism is available."
+
+# ─── Line Breaks & Whitespace ───────────────────────────────
+line_breaks:
+  single_newline: "renders as line break"
+  double_newline: "renders as blank line (paragraph break)"
+  multiple_blank_lines: "LinkedIn collapses 2+ blank lines into 1"
+  leading_spaces: "preserved (can be used for indentation)"
+  trailing_spaces: "stripped"
+  tab_characters: "not reliably rendered, avoid"
+  note: "Use single blank lines between blocks. Do not rely on multiple blank lines for spacing — LinkedIn will collapse them."
+
+# ─── See More Behavior ──────────────────────────────────────
+see_more:
+  trigger: "~210 characters OR ~3 lines of text (whichever comes first)"
+  behavior: "Post is truncated with '...see more' link. User must tap to expand."
+  mobile_vs_desktop:
+    mobile: "Earlier truncation, smaller viewport, ~2-3 lines visible"
+    desktop: "Slightly more visible before fold, ~3-4 lines"
+  strategy:
+    - "Hook line MUST be compelling enough to earn the 'see more' click"
+    - "Keep hook under 210 characters"
+    - "Front-load value: curiosity, data, or controversy in first line"
+    - "Avoid wasting the above-fold space on greetings or preamble"
+
+# ─── Hashtags ────────────────────────────────────────────────
+hashtags:
+  max_allowed: 30                  # LinkedIn hard limit
+  sma_min: 3                      # SMA policy minimum
+  sma_max: 6                      # SMA policy maximum
+  placement: "end_of_post"        # After CTA + positioning + follow, separated by blank line
+  in_body: false                  # Never embed hashtags in body text
+  format: "#CamelCase"            # Use CamelCase for readability
+  clickable: true                 # Hashtags are clickable links on LinkedIn
+  indexing: true                  # LinkedIn indexes posts by hashtags for topic feeds
+  behavior:
+    - "Hashtags make posts discoverable in topic feeds"
+    - "Too many hashtags (10+) can reduce reach (perceived as spam)"
+    - "3-5 is the sweet spot for LinkedIn algorithm"
+    - "Generic hashtags (#Leadership) have broader reach but more competition"
+    - "Niche hashtags (#SoloFounder) have smaller but more engaged audiences"
+    - "Mix broad + niche for optimal reach"
+
+# ─── Emojis ──────────────────────────────────────────────────
+emojis:
+  supported: true                  # LinkedIn renders all standard Unicode emojis
+  sma_max: 3                      # SMA policy: max 3 per post
+  placement: "tension_points_only" # At moments of emotional shift, not as decoration
+  as_bullets: false                # Do NOT use emojis as bullet markers
+  as_line_starters: false          # Do NOT start every line with an emoji
+  rendering_note: "Emoji rendering varies by OS/device. Stick to common emojis that render consistently."
+
+# ─── Links ───────────────────────────────────────────────────
+links:
+  clickable: true                  # URLs auto-link
+  link_preview: true               # LinkedIn generates a preview card for the first URL
+  algorithm_penalty: true          # Posts with external links get reduced reach
+  sma_policy: "Avoid links in posts. If needed, put in first comment."
+  link_in_comments: "No algorithm penalty when link is in comment"
+
+# ─── Mentions & Tags ────────────────────────────────────────
+mentions:
+  format: "@Name"                  # @ mention triggers notification to mentioned user
+  max_recommended: 3               # More than 3 looks spammy
+  sma_policy: "Use sparingly and only when genuinely relevant"
+
+# ─── Media ───────────────────────────────────────────────────
+media:
+  images:
+    max_per_post: 9                # Carousel / multi-image
+    recommended_ratio: "1:1 or 4:5" # Square or tall portrait for mobile
+    algorithm_boost: "Posts with images get higher reach than text-only"
+  video:
+    max_duration_minutes: 10
+    autoplay: true                 # Videos autoplay (muted) in feed
+    native_preferred: true         # Native uploads get more reach than YouTube links
+  documents:
+    carousel_format: "PDF upload rendered as swipeable carousel"
+    algorithm_boost: "Document/carousel posts get high engagement"
+  sma_v1_policy: "Text-only posts for v1. Media support planned for v2."
+
+# ─── Algorithm Notes (Informal, May Change) ─────────────────
+algorithm:
+  dwell_time: "Time spent reading the post is a strong signal"
+  early_engagement: "Engagement in first 60-90 minutes heavily influences reach"
+  comments_vs_likes: "Comments weighted ~5x more than likes"
+  shares: "Shares (reposts) have strong reach multiplier"
+  connection_vs_follow: "Posts shown more to connections than followers"
+  posting_frequency: "1 post/day is optimal. 2+ posts/day cannibalizes reach."
+  edit_after_post: "Editing a post within 10 min does not affect reach. Later edits may reduce it."
+  note: "Algorithm behavior is not officially documented and changes frequently. These are observed patterns as of early 2026."
+
+# ─── SMA Formatting Rules Summary ───────────────────────────
+sma_formatting_rules:
+  total_rules: 16                  # FR01 through FR16
+  source: "frameworks/formatting-rules.csv"
+  hard_rules:                      # P1 priority, non-negotiable
+    - "FR02: Max 3-line blocks"
+    - "FR03: No bold/italic/underline"
+    - "FR04: Replace dashes with punctuation"
+    - "FR05: Bullets use ' - ' format"
+    - "FR08: Max 3 emojis"
+    - "FR09: Max 3 Hindi sentences"
+    - "FR10: FK Grade 7 readability"
+    - "FR11: 800-1600 character count"
+    - "FR12: Positioning statement in footer"
+    - "FR14: Hashtags at end only"
+  soft_rules:                      # P2 priority, strongly recommended
+    - "FR01: Staircase formatting"
+    - "FR06: Numbered lists use '1. ' format"
+    - "FR07: Flow arrows use 'A —> B —> C'"
+    - "FR13: Follow invitation in footer"
+    - "FR15: One idea per post"
+    - "FR16: Whitespace breathing room"

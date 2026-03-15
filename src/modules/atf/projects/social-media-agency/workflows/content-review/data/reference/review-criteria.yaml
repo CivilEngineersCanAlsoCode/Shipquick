@@ -1,0 +1,59 @@
+# Review Criteria — Content Review (Workflow C)
+# Quality gates, decision types, and review configuration
+# Source: variable-registry.csv (VAR_C01–VAR_C02), formatting-rules.csv
+
+quality_gates:
+  formatting_rules:
+    source: "frameworks/formatting-rules.csv"
+    total_rules: 16
+    p1_rules: 10  # must all pass
+    p2_rules: 6   # should pass, warnings acceptable
+
+  character_count:
+    min: 800
+    max: 1600
+
+  readability:
+    fk_grade_max: 7
+
+  emoji_limit: 3
+  hindi_sentence_limit: 3
+  hashtag_range: [3, 6]
+
+  structural:
+    one_idea_per_post: true
+    staircase_formatting: true
+    max_lines_per_block: 3
+    footer_positioning: required
+    footer_follow: required
+    hashtags_at_end: required
+
+review_config:
+  quality_checks_enabled: true   # VAR_C01
+  auto_fix_enabled: false        # VAR_C02 — user must confirm fixes
+
+decision_types:
+  approve:
+    action: "Set status to Ready_ToPublish"
+    next_workflow: "D-ContentPublishing"
+  edit:
+    action: "Send back for formatting rework"
+    next_workflow: "F-ContentFormatting (edit mode)"
+  reschedule:
+    action: "Change scheduled date, keep in review queue"
+    next_workflow: null
+  drop:
+    action: "Remove from pipeline entirely"
+    next_workflow: null
+
+review_checklist:
+  - "All P1 formatting rules pass"
+  - "Character count within 800–1600 range"
+  - "FK Grade ≤ 7"
+  - "Emoji count ≤ 3"
+  - "Hindi sentences ≤ 3"
+  - "Hashtags 3–6 at end only"
+  - "One idea per post"
+  - "Footer has positioning + follow lines"
+  - "No duplicate/similar content (cosine < 0.80)"
+  - "User explicitly approves"

@@ -1,0 +1,27 @@
+# Scheduling Patterns — Content Ideation (Workflow A)
+# Post frequency, timing, and scheduling constraints
+# Source: config.yaml, variable-registry.csv
+
+frequency:
+  posts_per_week: 3
+  max_posts_per_day: 1        # VAR_D03 — absolute limit
+  max_posts_planned_at_once: 3 # VAR_A11
+
+timing:
+  timezone: "Asia/Kolkata"     # VAR_D05
+  default_publish_time: "09:00" # VAR_D04 — 24h format
+  optimal_window:
+    start: "18:00"             # 6 PM IST
+    end: "19:00"               # 7 PM IST
+  notes: "Evening slot (6-7 PM IST) is primary; 9 AM IST is fallback"
+
+publishing:
+  random_delay:
+    min_minutes: 0             # VAR_D01
+    max_minutes: 60            # VAR_D02
+    purpose: "prevent pattern detection by LinkedIn algorithm"
+  visibility: "PUBLIC"         # VAR_D06
+
+lookback:
+  freshness_days: 14           # VAR_A10 — check for recent/duplicate posts
+  top_performing_days: 30      # VAR_B14 — style reference window

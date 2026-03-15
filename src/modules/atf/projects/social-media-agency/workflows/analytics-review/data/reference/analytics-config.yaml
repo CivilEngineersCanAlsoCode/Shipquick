@@ -1,0 +1,39 @@
+# Analytics Config — Analytics Review (Workflow E)
+# Collection schedule, engagement formula, resurgence threshold
+# Source: variable-registry.csv (VAR_E01–VAR_E05, VAR_B15–VAR_B17)
+
+collection:
+  method: "JS DevTools snippet + ChatGPT Actions backup"
+  schedule:
+    no_data_reminder_hours: 48       # VAR_E01 — hours after publish before reminder
+    report_period_days: 7            # VAR_E02
+
+engagement_formula:
+  description: "(likes × 1) + (comments × 3) + (shares × 2)"
+  weights:
+    likes: 1                         # VAR_B15
+    comments: 3                      # VAR_B16
+    shares: 2                        # VAR_B17
+  rationale: "Comments weighted highest — signal genuine engagement and algorithmic boost"
+
+benchmarks:
+  successful_post:
+    min_likes: 50                    # VAR_E04
+    min_comments: 10                 # VAR_E05
+
+reporting:
+  top_posts_in_report: 5            # VAR_E03
+  top_performing_lookback_days: 30  # VAR_B14
+
+resurgence_detection:
+  enabled: true
+  description: "Flag posts that show renewed engagement after initial decay"
+  trigger: "Engagement spike > 2× average daily rate after 7+ days"
+
+strategy_feedback_loop:
+  description: "Analytics insights feed back into ideation scoring"
+  outputs:
+    - "Top-performing framework combinations"
+    - "Optimal posting times (actual vs scheduled)"
+    - "Hook style effectiveness ranking"
+    - "Content format engagement comparison"
