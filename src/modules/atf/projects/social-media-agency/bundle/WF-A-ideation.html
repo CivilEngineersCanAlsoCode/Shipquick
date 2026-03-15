@@ -101,7 +101,6 @@ input_file_patterns:
       <li><strong>Save (A.8):</strong> For each post:
         <ul>
           <li>Save to MongoDB via <code>sma-save-post</code> (status: <code>Scheduled_NoDraft</code>) — BLOCKING</li>
-          <li>Save to Notion via <code>sma-save-to-notion</code> (status: <code>Scheduled - No Draft</code>) — non-blocking on failure</li>
           <li>Mark source briefs as "Used" in Google Sheet via <code>sma-update-sheet-status</code> — non-blocking on failure</li>
           <li>Present final summary and offer next actions (draft now, more ideas, exit)</li>
         </ul>
@@ -120,7 +119,6 @@ input_file_patterns:
         <tr><td>sma-update-sheet-status</td><td>POST</td><td>A.6, A.8</td></tr>
         <tr><td>sma-save-experience</td><td>POST</td><td>A.6</td></tr>
         <tr><td>sma-save-post</td><td>POST</td><td>A.8</td></tr>
-        <tr><td>sma-save-to-notion</td><td>POST</td><td>A.8</td></tr>
       </tbody>
     </table>
 
@@ -729,22 +727,9 @@ top_n: 3, lookback_days: 14</code></pre>
   "linked_experiences": "[post.linked_experiences]",
   "additional_context": "[post.additional_context]"
 }</code></pre>
-    <div class="error">BLOCKING — do NOT proceed to Notion save for a post that failed MongoDB save.</div>
+    <div class="error">BLOCKING — do NOT skip to sheet update for a post that failed MongoDB save.</div>
 
-    <h3>ACTION A.8.b — Save to Notion (per post)</h3>
-    <p><strong>POST</strong> <code>sma-save-to-notion</code></p>
-    <pre><code>{
-  "database_id": "cc01482c-cd34-83ac-81a8-013e4d767924",
-  "title": "[post.topic]",
-  "channel": "LinkedIn",
-  "go_live_date": "[post.scheduled_date]",
-  "status": "Scheduled - No Draft",
-  "content_pillar": "[Title Case pillar]"
-}</code></pre>
-    <p>Non-blocking on failure — MongoDB is the source of truth.</p>
-    <p><strong>Content pillar mapping:</strong> "career" &rarr; "Career", "pm" &rarr; "PM", "hottake" &rarr; "Hot Take", "howto" &rarr; "How To"</p>
-
-    <h3>ACTION A.8.c — Mark Briefs as Used in Google Sheet</h3>
+    <h3>ACTION A.8.b — Mark Briefs as Used in Google Sheet</h3>
     <p><strong>POST</strong> <code>sma-update-sheet-status</code> — one batch call for ALL posts.</p>
     <pre><code>{
   "action": "mark_used",
@@ -759,14 +744,12 @@ top_n: 3, lookback_days: 14</code></pre>
       <thead><tr><th>Action</th><th>On Failure</th><th>Blocking?</th></tr></thead>
       <tbody>
         <tr><td>sma-save-post (MongoDB)</td><td>Retry once, ask user</td><td>YES</td></tr>
-        <tr><td>sma-save-to-notion</td><td>Retry once, warn &amp; continue</td><td>NO</td></tr>
         <tr><td>sma-update-sheet-status</td><td>Warn user, continue</td><td>NO</td></tr>
       </tbody>
     </table>
 
     <h3>What NOT to Do</h3>
     <ul>
-      <li>Do NOT save to Notion before MongoDB</li>
       <li>Do NOT mark briefs as "Used" if MongoDB save failed</li>
       <li>Do NOT modify content at this stage — save exactly what was confirmed</li>
       <li>Do NOT set status to anything other than <code>Scheduled_NoDraft</code> in MongoDB</li>

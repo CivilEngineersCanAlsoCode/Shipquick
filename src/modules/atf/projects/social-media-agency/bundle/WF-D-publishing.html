@@ -1,0 +1,1237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Workflow D — Content Publishing | Flex SMA Bundle</title>
+  <meta name="bundle-version" content="1.0.0">
+  <meta name="source-module" content="flex-sma">
+  <meta name="workflow-code" content="D">
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 960px; margin: 0 auto; padding: 2rem; color: #1a1a1a; }
+    section { margin: 2rem 0; border-left: 4px solid #2563eb; padding-left: 1.5rem; }
+    article { margin: 1.5rem 0; padding: 1rem; background: #f8fafc; border-radius: 8px; }
+    h1 { color: #1e40af; } h2 { color: #2563eb; } h3 { color: #3b82f6; }
+    code { background: #f1f5f9; padding: 0.2em 0.4em; border-radius: 4px; font-size: 0.9em; }
+    pre { background: #1e293b; color: #e2e8f0; padding: 1rem; border-radius: 8px; overflow-x: auto; }
+    table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+    th, td { border: 1px solid #e2e8f0; padding: 0.5rem 0.75rem; text-align: left; }
+    th { background: #f1f5f9; }
+    .warning { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 0.75rem; margin: 0.5rem 0; }
+    .error { background: #fee2e2; border-left: 4px solid #ef4444; padding: 0.75rem; margin: 0.5rem 0; }
+    details { margin: 0.5rem 0; }
+    summary { cursor: pointer; font-weight: 600; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Workflow D — Content Publishing</h1>
+  <p><strong>Steps:</strong> 6 core (01, 01b, D1, D2, D3, D4) + checklist, template, validation, edit, error-handling, test-plan</p>
+  <p><strong>Status:</strong> Active | <strong>Code:</strong> D | <strong>Scope:</strong> LinkedIn only (v1) — Max 1 post/day</p>
+  <p><strong>Goal:</strong> Take posts that have passed review (status = <code>Ready_ToPublish</code>), publish them to LinkedIn with safety guardrails (duplicate guard, random delay, one-shot rule), update their status to <code>Published</code>, and notify the team via Telegram.</p>
+</header>
+
+<section data-type="workflow" data-code="D">
+
+  <!-- ============================================================ -->
+  <!-- workflow.yaml -->
+  <!-- ============================================================ -->
+  <article data-part="config">
+    <h2>Workflow Config (workflow.yaml)</h2>
+    <table>
+      <tr><th>Field</th><th>Value</th></tr>
+      <tr><td>name</td><td><code>content-publishing</code></td></tr>
+      <tr><td>description</td><td>Fetch ready posts, publish to LinkedIn with delay + duplicate guard, update status, notify via Telegram</td></tr>
+      <tr><td>code</td><td>D</td></tr>
+      <tr><td>config_source</td><td><code>{project-root}/_lr/_config/manifest.yaml</code></td></tr>
+      <tr><td>installed_path</td><td><code>{project-root}/_lr/flex/workflows/content-publishing</code></td></tr>
+      <tr><td>instructions</td><td><code>{installed_path}/instructions.md</code></td></tr>
+      <tr><td>validation</td><td><code>{installed_path}/checklist.md</code></td></tr>
+      <tr><td>template</td><td><code>{installed_path}/templates/publish-report.template.md</code></td></tr>
+      <tr><td>input_file_patterns</td><td><code>data/ready-posts.json</code> (strategy: FULL_LOAD)</td></tr>
+    </table>
+  </article>
+
+  <!-- ============================================================ -->
+  <!-- workflow.md -->
+  <!-- ============================================================ -->
+  <article data-part="overview">
+    <h2>Workflow Overview</h2>
+    <p><strong>System:</strong> This is a BMAD workflow — semi-automated. The agent executes each step, but the user confirms before the actual LinkedIn publish. ALL data reads and writes go through n8n webhooks. The agent has ZERO direct DB/API access.</p>
+
+    <h3>Steps</h3>
+    <table>
+      <tr><th>Step</th><th>File</th><th>Description</th><th>Key Webhooks</th></tr>
+      <tr><td>D.1</td><td><code>step-D1-fetch-ready-posts.md</code></td><td>Fetch posts with status Ready_ToPublish</td><td><code>sma-fetch-post</code></td></tr>
+      <tr><td>D.2</td><td><code>step-D2-publish-to-linkedin.md</code></td><td>Duplicate guard, random delay, publish (one shot)</td><td><code>sma-publish-linkedin</code></td></tr>
+      <tr><td>D.3</td><td><code>step-D3-update-status.md</code></td><td>Update status to Published + save URN + timestamp</td><td><code>sma-update-post</code></td></tr>
+      <tr><td>D.4</td><td><code>step-D4-notify-telegram.md</code></td><td>Send publish notification to SMA control group</td><td>(Telegram via n8n)</td></tr>
+    </table>
+
+    <h3>Flow Summary</h3>
+    <pre>User: "Publish karo" / "Post daal do" / starts publish workflow
+  |
+  D.1 ---&gt; FetchPost (status=Ready_ToPublish)
+  |          |-- Present list to user
+  |          |-- User confirms which post to publish
+  |          |-- If none found -&gt; exit
+  |
+  D.2 ---&gt; Duplicate Guard: linkedin_post_urn exists? -&gt; SKIP
+  |          |-- Generate random delay (0-60 min)
+  |          |-- User can override delay
+  |          |-- POST sma-publish-linkedin
+  |          |-- ONE SHOT: error? -&gt; Publish_Failed, do NOT retry
+  |          |-- Success? -&gt; capture linkedin_post_urn
+  |
+  D.3 ---&gt; UpdatePost (status=Published, linkedin_post_urn, published_at)
+  |          |-- Verify update succeeded
+  |          |-- If fails -&gt; warn user, do NOT rollback LinkedIn post
+  |
+  D.4 ---&gt; Telegram notification to SMA control group
+             |-- Post title, LinkedIn URL, published_at
+             |-- If fails -&gt; log warning, don't fail workflow
+             |-- Done -&gt; E-AnalyticsReview or exit</pre>
+
+    <h3>Webhook Reference</h3>
+    <table>
+      <tr><th>n8n Workflow Name</th><th>Webhook URL</th><th>Used In</th></tr>
+      <tr><td>SMA/Data/Read/FetchPost</td><td><code>https://n8n.linkright.in/webhook/sma-fetch-post</code></td><td>D.1</td></tr>
+      <tr><td>SMA/Publish/LinkedIn</td><td><code>https://n8n.linkright.in/webhook/sma-publish-linkedin</code></td><td>D.2</td></tr>
+      <tr><td>SMA/Data/Write/UpdatePost</td><td><code>https://n8n.linkright.in/webhook/sma-update-post</code></td><td>D.3</td></tr>
+    </table>
+
+    <h3>Inputs</h3>
+    <ul>
+      <li>MongoDB: <code>linkedin_posts</code> collection (status = <code>Ready_ToPublish</code>)</li>
+      <li>User confirmation before publish</li>
+      <li>Pipeline predecessor: C (Content Review) must have approved the post</li>
+    </ul>
+
+    <h3>Outputs</h3>
+    <ul>
+      <li>LinkedIn post published (live on LinkedIn)</li>
+      <li>Post status updated to <code>Published</code> in MongoDB</li>
+      <li><code>linkedin_post_urn</code> and <code>published_at</code> saved to post record</li>
+      <li>Telegram notification sent to SMA control group</li>
+    </ul>
+  </article>
+
+  <!-- ============================================================ -->
+  <!-- instructions.md -->
+  <!-- ============================================================ -->
+  <article data-part="instructions">
+    <h2>Execution Instructions</h2>
+    <p>This workflow handles the final mile — getting approved posts onto LinkedIn. By the time a post reaches this workflow, it has already been through Ideation (A), Drafting (B), Formatting (F), and Review (C). The post status is <code>Ready_ToPublish</code>. Your job: publish it safely, update the records, and notify the team.</p>
+
+    <h3>Pre-requisites</h3>
+    <ol>
+      <li><strong>Post status is <code>Ready_ToPublish</code></strong> — if it's anything else, do NOT publish. Send it back to the appropriate workflow.</li>
+      <li><strong>The post came through C (Content Review)</strong> — it must have been explicitly approved.</li>
+      <li><strong>No post has already been published today</strong> — max 1 post/day rule (v1).</li>
+      <li><strong>You have ZERO direct DB/API access</strong> — every read and write goes through n8n webhooks.</li>
+    </ol>
+
+    <h3>Error Handling Summary</h3>
+    <table>
+      <tr><th>Step</th><th>Error</th><th>Action</th></tr>
+      <tr><td>D.1</td><td>Webhook fails</td><td>Retry once, then ask user to check n8n</td></tr>
+      <tr><td>D.1</td><td>No posts found</td><td>Inform user, exit gracefully</td></tr>
+      <tr><td>D.2</td><td>Duplicate URN found</td><td>SKIP post, inform user</td></tr>
+      <tr><td>D.2</td><td>LinkedIn API error</td><td>Do NOT retry. Mark Publish_Failed. Inform user.</td></tr>
+      <tr><td>D.2</td><td>Timeout</td><td>Treat as failure. One-shot rule applies.</td></tr>
+      <tr><td>D.3</td><td>Update webhook fails</td><td>Warn user. Post is still live. Do not rollback.</td></tr>
+      <tr><td>D.4</td><td>Telegram fails</td><td>Log warning. Workflow still succeeds.</td></tr>
+    </table>
+
+    <h3>What NOT to Do</h3>
+    <ul>
+      <li>Do NOT retry a failed LinkedIn publish — one-shot rule is absolute.</li>
+      <li>Do NOT publish a post that doesn't have <code>Ready_ToPublish</code> status.</li>
+      <li>Do NOT publish more than 1 post per day.</li>
+      <li>Do NOT auto-select which post to publish — always let the user choose.</li>
+      <li>Do NOT fabricate a <code>linkedin_post_urn</code> if the API didn't return one.</li>
+      <li>Do NOT attempt to delete or rollback a LinkedIn post if a later step fails.</li>
+      <li>Do NOT skip the duplicate guard check.</li>
+      <li>Do NOT skip the random delay without user explicitly requesting it.</li>
+      <li>Do NOT access any database or API directly — everything goes through webhooks.</li>
+      <li>Do NOT proceed to D.3 if D.2 failed — the post isn't published.</li>
+    </ul>
+  </article>
+
+  <!-- ============================================================ -->
+  <!-- Step 01 — Load Session Context -->
+  <!-- ============================================================ -->
+  <article data-step="01">
+    <h2>Step 01 — Load Session Context</h2>
+    <p><strong>Agent:</strong> Content Publisher | <strong>Trigger:</strong> User initiates the content-publishing workflow (e.g., "Publish karo", "Post daal do", "Let's publish").</p>
+
+    <h3>What You Do</h3>
+    <p>Before executing any publish steps, load the workflow context and check for any in-progress sessions.</p>
+
+    <h3>Actions</h3>
+    <ol>
+      <li><strong>Load workflow config</strong> — Read <code>workflow.yaml</code> to confirm you're in the content-publishing (D) workflow.</li>
+      <li><strong>Check for in-progress sessions</strong> — Look for any publish session that was started but not completed:
+        <ul>
+          <li>A post was fetched (D.1 done) but not yet published (D.2 pending)</li>
+          <li>A post was published (D.2 done) but status not updated (D.3 pending)</li>
+          <li>If an in-progress session is found, proceed to <code>step-01b-resume-if-interrupted.md</code></li>
+        </ul>
+      </li>
+      <li><strong>Confirm environment</strong> — Verify:
+        <ul>
+          <li>The base webhook URL is reachable: <code>https://n8n.linkright.in/webhook/</code></li>
+          <li>No other publish workflow is currently running</li>
+        </ul>
+      </li>
+      <li><strong>Set session variables:</strong>
+        <ul>
+          <li><code>workflow_code</code>: D</li>
+          <li><code>workflow_name</code>: content-publishing</li>
+          <li><code>session_start</code>: current ISO 8601 timestamp</li>
+          <li><code>posts_published_today</code>: count of posts already published today</li>
+        </ul>
+      </li>
+    </ol>
+
+    <h3>After Loading</h3>
+    <p>If no in-progress session exists, proceed to <strong>D.1</strong>. If an in-progress session is found, proceed to <strong>Step 01b</strong>.</p>
+
+    <div class="warning">Do NOT skip session context loading — it prevents duplicate publishes. Do NOT proceed if <code>posts_published_today &gt;= 1</code> — max 1 post/day rule.</div>
+  </article>
+
+  <!-- ============================================================ -->
+  <!-- Step 01b — Resume If Interrupted -->
+  <!-- ============================================================ -->
+  <article data-step="01b">
+    <h2>Step 01b — Resume If Interrupted</h2>
+    <p><strong>Agent:</strong> Content Publisher | <strong>Trigger:</strong> Step 01 detected an in-progress publish session that was interrupted.</p>
+
+    <h3>What You Do</h3>
+    <p>Recover from an interrupted publish session. Determine where the workflow stopped and resume from the last known good state.</p>
+
+    <h3>Recovery Logic</h3>
+
+    <h4>Case 1: Post fetched, not yet published (D.1 done, D.2 pending)</h4>
+    <p>The post was selected for publishing but the publish call was never made (or outcome unknown).</p>
+    <p><strong>Action:</strong> Check if the post has a <code>linkedin_post_urn</code>.</p>
+    <ul>
+      <li>If URN exists &rarr; post was actually published. Skip to D.3 (update status).</li>
+      <li>If no URN &rarr; post was not published. Resume from D.2 (publish).</li>
+    </ul>
+
+    <h4>Case 2: Post published, status not updated (D.2 done, D.3 pending)</h4>
+    <p>LinkedIn publish succeeded (URN captured) but the status update failed or was never made.</p>
+    <p><strong>Action:</strong> Resume from D.3. Use the captured <code>linkedin_post_urn</code> and <code>published_at</code> from the session.</p>
+
+    <h4>Case 3: Status updated, Telegram not sent (D.3 done, D.4 pending)</h4>
+    <p>Everything succeeded except the Telegram notification.</p>
+    <p><strong>Action:</strong> Resume from D.4. Send the notification.</p>
+
+    <h4>Case 4: Unknown state</h4>
+    <p>Cannot determine where the workflow stopped.</p>
+    <p><strong>Action:</strong> Fetch the post by ID and check its current status and fields:</p>
+    <ul>
+      <li><code>Ready_ToPublish</code> + no URN &rarr; start from D.1</li>
+      <li><code>Published</code> + URN + <code>published_at</code> &rarr; workflow is complete, just send Telegram if missing</li>
+      <li><code>Publish_Failed</code> &rarr; inform user, do NOT retry (one-shot rule)</li>
+    </ul>
+
+    <div class="warning">Do NOT re-publish a post that already has a <code>linkedin_post_urn</code> — duplicate guard applies. Do NOT retry a <code>Publish_Failed</code> post — one-shot rule is absolute. Do NOT guess the state — always verify by checking the post record.</div>
+  </article>
+
+  <!-- ============================================================ -->
+  <!-- Step D.1 — Fetch Ready Posts -->
+  <!-- ============================================================ -->
+  <article data-step="D1">
+    <h2>Step D.1 — Fetch Ready Posts</h2>
+    <p><strong>Agent:</strong> Content Publisher (Relay) | <strong>Trigger:</strong> User says "Publish karo", "Post daal do", or starts the publishing workflow.</p>
+
+    <h3>What You Do</h3>
+    <p>Fetch all posts with status <code>Ready_ToPublish</code> from the database. These posts have completed the full pipeline: Ideation (A) &rarr; Drafting (B) &rarr; Formatting (F) &rarr; Review (C). Present them to the user and let them confirm which one to publish.</p>
+
+    <h3>Action: Call n8n Webhook</h3>
+    <p><strong>POST</strong> <code>https://n8n.linkright.in/webhook/sma-fetch-post</code></p>
+    <pre>{
+  "status": "Ready_ToPublish"
+}</pre>
+
+    <h3>Expected Response (HTTP 200)</h3>
+    <pre>{
+  "posts": [
+    {
+      "post_id": "65f1a2b3c4d5e6f7a8b9c0d1",
+      "title": "Why Most DevTools Fail at Developer Experience",
+      "content": "Full post content here...",
+      "hashtags": ["#DevTools", "#DX", "#SaaS"],
+      "topic": "developer-experience",
+      "scheduled_date": "2026-03-14",
+      "linkedin_post_urn": null,
+      "linkedin_post_url": null,
+      "status": "Ready_ToPublish",
+      "created_at": "2026-03-10T08:00:00Z",
+      "reviewed_at": "2026-03-13T14:30:00Z",
+      "published_at": null
+    }
+  ]
+}</pre>
+
+    <h3>After the Call</h3>
+    <p><strong>If posts are found:</strong> Present the posts to the user in a clean summary table. Wait for user to confirm their selection. Do NOT auto-select.</p>
+    <p><strong>Pre-publish safety check:</strong> After user selects a post, check if any post was already published today. If so, warn about the 1/day limit. If user explicitly overrides, proceed. Otherwise exit.</p>
+    <p><strong>If no posts found:</strong> Inform the user and exit the workflow gracefully.</p>
+
+    <h3>Error Handling</h3>
+    <p>If the webhook call fails (network error / non-200 response): retry once after 5 seconds. If it fails again, ask the user to check the n8n workflow <code>SMA/Data/Read/FetchPost</code>.</p>
+
+    <h3>Output for Next Step</h3>
+    <p>Pass to <strong>D.2</strong>: the full post object chosen by the user (<code>post_id</code>, <code>title</code>, <code>content</code>, <code>hashtags[]</code>, <code>topic</code>, <code>scheduled_date</code>, <code>linkedin_post_urn</code>, <code>status</code>).</p>
+
+    <div class="warning">Do NOT proceed without user confirmation. Do NOT select multiple posts — max 1 per run. Do NOT auto-select even if there's only 1 post. Do NOT skip the "already published today" check.</div>
+  </article>
+
+  <!-- ============================================================ -->
+  <!-- Step D.2 — Publish to LinkedIn -->
+  <!-- ============================================================ -->
+  <article data-step="D2">
+    <h2>Step D.2 — Publish to LinkedIn</h2>
+    <p><strong>Agent:</strong> Content Publisher (Relay) | <strong>Trigger:</strong> User confirmed a post selection in D.1.</p>
+    <p>This is the most critical step in the entire SMA pipeline. A bad publish cannot be undone programmatically. Follow every guardrail exactly — no exceptions.</p>
+
+    <h3>Guardrail 1: Duplicate Guard (THREE checks)</h3>
+
+    <h4>Check 1 — Post Status Not Already Published</h4>
+    <p>Verify the selected post's <code>status</code> field is still <code>Ready_ToPublish</code>. If status is <code>Published</code>, <code>Publish_Failed</code>, or anything else: STOP. Exit the workflow.</p>
+
+    <h4>Check 2 — No Post Published Today</h4>
+    <p>Fetch today's published posts to verify no post has already been published today:</p>
+    <pre>{
+  "status": "Published",
+  "published_date": "2026-03-14"
+}</pre>
+    <p>If response returns any post with <code>published_at</code> matching today: STOP. User can explicitly override by saying "publish anyway" — log the override.</p>
+
+    <h4>Check 3 — LinkedIn URN Not Already Set</h4>
+    <p>Check the selected post's <code>linkedin_post_urn</code> field. If it already has a value: STOP. Ask user to select a different post or exit.</p>
+
+    <h3>Guardrail 2: Random Delay</h3>
+    <p>Generate a random delay to make posting times appear natural and non-robotic.</p>
+    <pre>delay_minutes = Math.floor(Math.random() * 61)  // 0-60 inclusive</pre>
+    <p>If the user says "publish now" or similar, skip the delay. Otherwise, wait the full delay period. During the wait, do NOT make any other webhook calls.</p>
+
+    <h3>Action: Call n8n Webhook</h3>
+    <p><strong>POST</strong> <code>https://n8n.linkright.in/webhook/sma-publish-linkedin</code></p>
+    <pre>{
+  "post_id": "&lt;post_id from selected_post&gt;",
+  "content": "&lt;full post content -- exactly as approved in Review (C), no modifications&gt;",
+  "hashtags": ["#DevTools", "#DX", "#SaaS"],
+  "title": "&lt;post title&gt;",
+  "topic": "&lt;post topic&gt;",
+  "scheduled_date": "&lt;scheduled_date from post&gt;"
+}</pre>
+    <p><strong>CRITICAL:</strong> Send the content exactly as it was approved in Review (C). Do NOT reformat, trim, or modify any part of the content or hashtags.</p>
+
+    <h3>Expected Success Response (HTTP 200)</h3>
+    <pre>{
+  "success": true,
+  "linkedin_post_urn": "urn:li:share:7307123456789012345",
+  "linkedin_post_url": "https://www.linkedin.com/feed/update/urn:li:share:7307123456789012345",
+  "published_at": "2026-03-14T10:30:00Z"
+}</pre>
+
+    <h3>One-Shot Rule — ABSOLUTE, NON-NEGOTIABLE</h3>
+    <div class="error">If the publish webhook returns <strong>ANY error</strong> (HTTP non-200, network timeout, connection refused, <code>success: false</code>, missing <code>linkedin_post_urn</code>, any exception):
+    <ol>
+      <li><strong>Do NOT Retry.</strong> Not once. Not ever. Not even if the user asks.</li>
+      <li><strong>Capture the Error</strong> — HTTP status code, error message, timestamp.</li>
+      <li><strong>Mark Post as <code>Publish_Failed</code></strong> via <code>sma-update-post</code>.</li>
+      <li><strong>Inform the User</strong> with exact error details.</li>
+      <li><strong>Exit.</strong> Do NOT proceed to D.3 or D.4.</li>
+    </ol></div>
+
+    <h3>On Success</h3>
+    <p>Store in working memory: <code>linkedin_post_urn</code>, <code>linkedin_post_url</code>, <code>published_at</code>, <code>delay_applied</code>. Tell the user the post is live. Proceed to <strong>D.3</strong>.</p>
+
+    <h3>Output for Next Step</h3>
+    <p>Pass to <strong>D.3</strong>: <code>post_id</code>, <code>title</code>, <code>linkedin_post_urn</code>, <code>linkedin_post_url</code>, <code>published_at</code>, <code>delay_applied</code>.</p>
+  </article>
+
+  <!-- ============================================================ -->
+  <!-- Step D.3 — Update Post Status -->
+  <!-- ============================================================ -->
+  <article data-step="D3">
+    <h2>Step D.3 — Update Post Status</h2>
+    <p><strong>Agent:</strong> Content Publisher (Relay) | <strong>Trigger:</strong> D.2 completed successfully — post is live on LinkedIn.</p>
+
+    <h3>What You Do</h3>
+    <p>Update the post record in MongoDB to reflect its published state. This ensures the rest of the pipeline (E-Analytics, dashboards, duplicate guards) knows the post is live. Four fields are updated: <code>status</code>, <code>published_at</code>, <code>linkedin_post_urn</code>, and <code>linkedin_post_url</code>.</p>
+
+    <h3>Action: Call n8n Webhook</h3>
+    <p><strong>POST</strong> <code>https://n8n.linkright.in/webhook/sma-update-post</code></p>
+    <pre>{
+  "post_id": "&lt;post_id from D.2&gt;",
+  "status": "Published",
+  "published_at": "&lt;ISO 8601 timestamp from D.2&gt;",
+  "linkedin_post_urn": "&lt;URN from D.2&gt;",
+  "linkedin_post_url": "&lt;URL from D.2&gt;"
+}</pre>
+
+    <h3>Expected Success Response (HTTP 200)</h3>
+    <pre>{
+  "success": true,
+  "updated": true
+}</pre>
+
+    <h3>After the Call</h3>
+    <p><strong>If update succeeds:</strong> Confirm to the user. Proceed to <strong>D.4</strong>.</p>
+    <p><strong>If update fails:</strong> This is a <strong>non-critical failure</strong>. The post is already live on LinkedIn — the publish cannot be undone. Warn the user, provide the <code>linkedin_post_urn</code> for manual recovery, retry once after 5 seconds. If retry also fails, log the error and proceed to D.4 anyway.</p>
+
+    <h3>Verification (Optional)</h3>
+    <p>After a successful update, optionally verify by re-fetching the post and confirming that <code>status</code>, <code>linkedin_post_urn</code>, <code>linkedin_post_url</code>, and <code>published_at</code> are all set correctly.</p>
+
+    <h3>Output for Next Step</h3>
+    <p>Pass to <strong>D.4</strong>: <code>post_id</code>, <code>title</code>, <code>linkedin_post_urn</code>, <code>linkedin_post_url</code>, <code>published_at</code>, <code>delay_applied</code>, <code>update_status</code> ("success" or "failed").</p>
+
+    <div class="warning">Do NOT rollback or delete the LinkedIn post if the update fails. Do NOT skip this step — downstream workflows depend on it. Do NOT block the entire workflow if the update fails — proceed to D.4.</div>
+  </article>
+
+  <!-- ============================================================ -->
+  <!-- Step D.4 — Notify via Telegram -->
+  <!-- ============================================================ -->
+  <article data-step="D4">
+    <h2>Step D.4 — Notify via Telegram</h2>
+    <p><strong>Agent:</strong> Content Publisher (Relay) | <strong>Trigger:</strong> D.3 completed (regardless of whether the database update succeeded or failed).</p>
+
+    <h3>What You Do</h3>
+    <p>Send a publish confirmation to the SMA control group on Telegram. This keeps the team informed about published content in real time.</p>
+
+    <h3>Telegram Target</h3>
+    <p><strong>Chat ID:</strong> <code>-1003399716516</code> (SMA control group)</p>
+
+    <h3>Action: Call n8n Webhook</h3>
+    <p><strong>POST</strong> <code>https://n8n.linkright.in/webhook/sma-notify-telegram</code></p>
+    <pre>{
+  "chat_id": "-1003399716516",
+  "message": "=== Post Published ===\nTitle: &lt;post title&gt;\nLinkedIn: &lt;linkedin_post_url&gt;\nPublished At: &lt;published_at&gt;\nDelay Applied: &lt;delay_applied&gt; minutes\nStatus: Published\nDB Update: &lt;success/failed&gt;\n==="
+}</pre>
+
+    <p><strong>If D.3 update failed</strong>, append a warning line before the closing <code>===</code>:</p>
+    <pre>=== Post Published ===
+Title: Why Most DevTools Fail at Developer Experience
+LinkedIn: https://www.linkedin.com/feed/update/urn:li:share:7307123456789012345
+Published At: 2026-03-14T10:30:00Z
+Delay Applied: 37 minutes
+Status: Published
+DB Update: failed
+WARNING: Database update failed -- post is live but record not updated. Manual fix needed. URN: urn:li:share:7307123456789012345
+===</pre>
+
+    <h3>After Sending</h3>
+    <p><strong>If notification sent successfully:</strong> Confirm to the user.</p>
+    <p><strong>If notification fails:</strong> Log the error. Do NOT retry. Do NOT fail the workflow. Telegram is informational only.</p>
+
+    <h3>Workflow Complete — Final Summary</h3>
+    <p>After D.4, present the full publish summary to the user:</p>
+    <table>
+      <tr><th>Field</th><th>Value</th></tr>
+      <tr><td>Post</td><td>[title]</td></tr>
+      <tr><td>LinkedIn</td><td>[linkedin_post_url]</td></tr>
+      <tr><td>URN</td><td>[linkedin_post_urn]</td></tr>
+      <tr><td>Published At</td><td>[published_at]</td></tr>
+      <tr><td>Delay Applied</td><td>[delay_applied] minutes</td></tr>
+      <tr><td>Status</td><td>Published</td></tr>
+      <tr><td>DB Update</td><td>[success/failed]</td></tr>
+      <tr><td>Telegram</td><td>[sent/failed]</td></tr>
+    </table>
+    <p><strong>Next workflow:</strong> E — Analytics Review (tracks performance metrics of published posts).</p>
+
+    <div class="warning">Do NOT fail the workflow if Telegram notification fails. Do NOT include sensitive data in the Telegram message. Do NOT send to any chat other than <code>-1003399716516</code>.</div>
+  </article>
+
+  <!-- ============================================================ -->
+  <!-- Checklist -->
+  <!-- ============================================================ -->
+  <article data-part="checklist">
+    <h2>Quality Checklist</h2>
+    <p>Use this checklist to validate every publish run. All items must PASS before the workflow is considered complete.</p>
+
+    <h3>Pre-Publish Checks</h3>
+    <table>
+      <tr><th>#</th><th>Check</th><th>Expected</th></tr>
+      <tr><td>1</td><td>Post status is <code>Ready_ToPublish</code></td><td>Yes</td></tr>
+      <tr><td>2</td><td>Post content length is 800-1600 characters</td><td>Within range</td></tr>
+      <tr><td>3</td><td>Post does NOT already have a <code>linkedin_post_urn</code> (duplicate guard)</td><td>No existing URN</td></tr>
+      <tr><td>4</td><td>Hashtags present (3-6 hashtags)</td><td>3-6 hashtags found</td></tr>
+      <tr><td>5</td><td>CTA (Call to Action) present in post content</td><td>CTA found</td></tr>
+      <tr><td>6</td><td>No other post published today (max 1/day rule)</td><td>No same-day publish</td></tr>
+      <tr><td>7</td><td>Post came through C (Review) pipeline</td><td>Review-approved</td></tr>
+    </table>
+
+    <h3>Publish Checks</h3>
+    <table>
+      <tr><th>#</th><th>Check</th><th>Expected</th></tr>
+      <tr><td>8</td><td>Publish webhook returned HTTP 200</td><td>200 OK</td></tr>
+      <tr><td>9</td><td>Response contains <code>linkedin_post_urn</code></td><td>URN present</td></tr>
+      <tr><td>10</td><td>Random delay was applied (or user explicitly overrode)</td><td>Delay applied or overridden</td></tr>
+      <tr><td>11</td><td>One-shot rule respected (no retries on failure)</td><td>No retries attempted</td></tr>
+    </table>
+
+    <h3>Post-Publish Checks</h3>
+    <table>
+      <tr><th>#</th><th>Check</th><th>Expected</th></tr>
+      <tr><td>12</td><td>Post status updated to <code>Published</code></td><td>Status = Published</td></tr>
+      <tr><td>13</td><td><code>published_at</code> timestamp saved (ISO 8601)</td><td>Timestamp present</td></tr>
+      <tr><td>14</td><td><code>linkedin_post_urn</code> saved to post record</td><td>URN saved</td></tr>
+      <tr><td>15</td><td>Telegram notification sent to SMA control group</td><td>Notification sent</td></tr>
+      <tr><td>16</td><td>Telegram message contains correct LinkedIn URL</td><td>URL matches URN</td></tr>
+    </table>
+
+    <h3>Weekly Review Checks</h3>
+    <table>
+      <tr><th>#</th><th>Check</th><th>Expected</th></tr>
+      <tr><td>17</td><td>All published posts have valid <code>linkedin_post_urn</code> values</td><td>No blanks</td></tr>
+      <tr><td>18</td><td>No duplicate URNs across posts</td><td>All unique</td></tr>
+      <tr><td>19</td><td>Published count aligns with max 1/day rule</td><td>&lt;= 7 per week</td></tr>
+      <tr><td>20</td><td>No posts stuck in <code>Ready_ToPublish</code> for &gt; 3 days</td><td>All processed</td></tr>
+      <tr><td>21</td><td>Any <code>Publish_Failed</code> posts have been triaged</td><td>Failures reviewed</td></tr>
+    </table>
+  </article>
+
+  <!-- ============================================================ -->
+  <!-- Template -->
+  <!-- ============================================================ -->
+  <article data-part="template">
+    <h2>Publish Report Template</h2>
+
+    <h3>Post Details</h3>
+    <table>
+      <tr><th>Field</th><th>Value</th></tr>
+      <tr><td>Post ID</td><td><code>{{post_id}}</code></td></tr>
+      <tr><td>Title</td><td><code>{{title}}</code></td></tr>
+      <tr><td>Published At</td><td><code>{{published_at}}</code></td></tr>
+      <tr><td>LinkedIn Post URN</td><td><code>{{linkedin_post_urn}}</code></td></tr>
+      <tr><td>LinkedIn URL</td><td><code>https://www.linkedin.com/feed/update/{{linkedin_post_urn}}</code></td></tr>
+      <tr><td>Delay Applied (minutes)</td><td><code>{{delay_applied_minutes}}</code></td></tr>
+      <tr><td>Status</td><td><code>{{status}}</code></td></tr>
+    </table>
+
+    <h3>Execution Summary</h3>
+    <table>
+      <tr><th>Step</th><th>Result</th><th>Notes</th></tr>
+      <tr><td>D.1 Fetch Ready Posts</td><td><code>{{d1_result}}</code></td><td><code>{{d1_notes}}</code></td></tr>
+      <tr><td>D.2 Publish to LinkedIn</td><td><code>{{d2_result}}</code></td><td><code>{{d2_notes}}</code></td></tr>
+      <tr><td>D.3 Update Status</td><td><code>{{d3_result}}</code></td><td><code>{{d3_notes}}</code></td></tr>
+      <tr><td>D.4 Telegram Notification</td><td><code>{{d4_result}}</code></td><td><code>{{d4_notes}}</code></td></tr>
+    </table>
+
+    <h3>Checklist Summary</h3>
+    <ul>
+      <li>Pre-Publish: <code>{{pre_publish_pass_count}}</code>/7 passed</li>
+      <li>Publish: <code>{{publish_pass_count}}</code>/4 passed</li>
+      <li>Post-Publish: <code>{{post_publish_pass_count}}</code>/5 passed</li>
+      <li><strong>Overall: <code>{{overall_status}}</code></strong></li>
+    </ul>
+  </article>
+
+  <!-- ============================================================ -->
+  <!-- Validation — step-v/step-01-validate.md -->
+  <!-- ============================================================ -->
+  <article data-part="validation">
+    <h2>Validation — V.01 Validate Publish</h2>
+    <p><strong>Agent:</strong> Content Publisher (Validation Mode) | <strong>Trigger:</strong> After a publish workflow run, or on-demand to verify a specific post.</p>
+
+    <h3>Step 1: Read All Workflow Artifacts</h3>
+    <p>Fetch the post by ID to get its current state:</p>
+    <pre>POST https://n8n.linkright.in/webhook/sma-fetch-post
+{ "post_id": "&lt;post_id&gt;" }</pre>
+
+    <h3>Step 2: Verify Each Criterion</h3>
+    <table>
+      <tr><th>#</th><th>Criterion</th><th>Check</th></tr>
+      <tr><td>1</td><td>Post status is <code>Published</code></td><td><code>status === "Published"</code></td></tr>
+      <tr><td>2</td><td><code>linkedin_post_urn</code> exists and is non-empty</td><td><code>linkedin_post_urn !== null &amp;&amp; linkedin_post_urn !== ""</code></td></tr>
+      <tr><td>3</td><td><code>linkedin_post_urn</code> follows URN format</td><td>Starts with <code>urn:li:</code></td></tr>
+      <tr><td>4</td><td><code>published_at</code> is set</td><td><code>published_at !== null</code></td></tr>
+      <tr><td>5</td><td><code>published_at</code> is valid ISO 8601</td><td>Parseable as ISO date</td></tr>
+      <tr><td>6</td><td><code>published_at</code> is within the last 24 hours</td><td>Not stale</td></tr>
+      <tr><td>7</td><td>No duplicate URN across posts</td><td>URN is unique in the collection</td></tr>
+      <tr><td>8</td><td>Telegram notification was sent</td><td>Check session log</td></tr>
+      <tr><td>9</td><td>Content length is 800-1600 chars</td><td><code>content.length &gt;= 800 &amp;&amp; content.length &lt;= 1600</code></td></tr>
+      <tr><td>10</td><td>Hashtags present (3-6)</td><td><code>hashtags.length &gt;= 3 &amp;&amp; hashtags.length &lt;= 6</code></td></tr>
+    </table>
+
+    <h3>Step 3: Report</h3>
+    <pre>=== Publish Validation Report ===
+Post ID: [post_id]
+Title: [title]
+Validated At: [current timestamp]
+
+Results:
+  [PASS] Post status is Published
+  [PASS] linkedin_post_urn exists
+  [FAIL] published_at is within 24 hours -- timestamp is 3 days old
+  ...
+
+Summary: 9/10 PASSED, 1/10 FAILED
+Overall: FAIL (all must pass for PASS)
+===</pre>
+
+    <div class="warning">Do NOT auto-fix issues found during validation — report them for the user to decide. Do NOT skip any criterion — all 10 must be checked. Do NOT mark the validation as PASS if any criterion fails.</div>
+  </article>
+
+  <!-- ============================================================ -->
+  <!-- Edit — step-e/step-01-assess.md -->
+  <!-- ============================================================ -->
+  <article data-part="edit-assess">
+    <h2>Edit — E.01 Assess Published Post</h2>
+    <p><strong>Agent:</strong> Content Publisher (Edit Mode) | <strong>Trigger:</strong> User wants to correct or update a published post's record.</p>
+
+    <h3>What You Do</h3>
+    <p>Load the published post data and identify what needs correction. This step is for fixing metadata issues (status, URN, timestamps) — NOT for editing the live LinkedIn post content.</p>
+
+    <h3>Action: Fetch Post Data</h3>
+    <pre>POST https://n8n.linkright.in/webhook/sma-fetch-post
+{ "post_id": "&lt;post_id&gt;" }</pre>
+
+    <h3>Assessment Checklist</h3>
+    <table>
+      <tr><th>Field</th><th>Current Value</th><th>Expected</th><th>Needs Fix?</th></tr>
+      <tr><td><code>status</code></td><td>[value]</td><td><code>Published</code></td><td></td></tr>
+      <tr><td><code>linkedin_post_urn</code></td><td>[value]</td><td>Valid URN (<code>urn:li:...</code>)</td><td></td></tr>
+      <tr><td><code>published_at</code></td><td>[value]</td><td>Valid ISO 8601 timestamp</td><td></td></tr>
+      <tr><td><code>publish_error</code></td><td>[value]</td><td>null (if published successfully)</td><td></td></tr>
+    </table>
+
+    <h3>Common Scenarios</h3>
+    <ol>
+      <li><strong>D.3 failed but post is live:</strong> Status is still <code>Ready_ToPublish</code> but the post is on LinkedIn. User needs to provide the URN manually.</li>
+      <li><strong>Wrong timestamp:</strong> <code>published_at</code> is incorrect or missing.</li>
+      <li><strong>Status stuck in <code>Publish_Failed</code>:</strong> Post was actually published but the success response was lost. User confirms it's live and provides URN.</li>
+    </ol>
+
+    <div class="warning">Do NOT auto-apply corrections — always get user confirmation first. Do NOT attempt to edit the live LinkedIn post — this workflow only fixes database records.</div>
+  </article>
+
+  <!-- ============================================================ -->
+  <!-- Edit — step-e/step-02-apply-edit.md -->
+  <!-- ============================================================ -->
+  <article data-part="edit-apply">
+    <h2>Edit — E.02 Apply Edit to Published Post Record</h2>
+    <p><strong>Agent:</strong> Content Publisher (Edit Mode) | <strong>Trigger:</strong> Step E.01 completed — user confirmed which fields to correct.</p>
+
+    <h3>What You Do</h3>
+    <p>Execute the corrections identified in E.01 by calling the update webhook, then verify the changes were applied.</p>
+
+    <h3>Action: Apply Corrections</h3>
+    <p><strong>POST</strong> <code>https://n8n.linkright.in/webhook/sma-update-post</code></p>
+    <p>Send only the fields that need correction:</p>
+    <pre>{
+  "post_id": "&lt;post_id&gt;",
+  "status": "Published",
+  "linkedin_post_urn": "&lt;corrected URN if applicable&gt;",
+  "published_at": "&lt;corrected timestamp if applicable&gt;"
+}</pre>
+    <p>Only include fields the user approved for correction. Do NOT send unchanged fields.</p>
+
+    <h3>After the Call</h3>
+    <p><strong>If update succeeds:</strong> Verify by fetching the post again. Confirm each corrected field now has the expected value. Present old &rarr; new values to user.</p>
+    <p><strong>If update fails:</strong> Retry once after 5 seconds. If it fails again, provide the user with the exact payload so they can apply it manually.</p>
+
+    <div class="warning">Do NOT apply changes the user didn't approve. Do NOT modify the live LinkedIn post — only database records. Do NOT skip verification after applying changes.</div>
+  </article>
+
+  <!-- ============================================================ -->
+  <!-- Error Handling -->
+  <!-- ============================================================ -->
+  <article data-part="error-handling">
+    <h2>Error Handling</h2>
+    <p><strong>Workflow:</strong> D — Content Publishing | <strong>Scope:</strong> All error scenarios across D.1-D.4 steps</p>
+
+    <h3>Error Classification</h3>
+    <table>
+      <tr><th>Severity</th><th>Description</th><th>Workflow Impact</th></tr>
+      <tr><td><strong>FATAL</strong></td><td>Publish cannot proceed — workflow exits</td><td>D.1 webhook down, D.2 LinkedIn API failure</td></tr>
+      <tr><td><strong>CRITICAL</strong></td><td>Post is live but records are inconsistent</td><td>D.3 MongoDB update failure</td></tr>
+      <tr><td><strong>WARNING</strong></td><td>Informational failure — no data impact</td><td>D.4 Telegram notification failure</td></tr>
+    </table>
+
+    <h3>D.1 — Fetch Ready Posts Errors</h3>
+
+    <details>
+      <summary>ERR-D1-01: Webhook Network Failure</summary>
+      <p><strong>Detection:</strong> HTTP connection error, DNS resolution failure, or connection refused when calling <code>sma-fetch-post</code>.</p>
+      <p><strong>Response:</strong> Wait 5 seconds, retry once.</p>
+      <p><strong>Recovery:</strong> If retry succeeds, continue normally. If retry fails, inform user, exit workflow.</p>
+      <p><strong>Severity:</strong> FATAL</p>
+    </details>
+
+    <details>
+      <summary>ERR-D1-02: Webhook Non-200 Response</summary>
+      <p><strong>Detection:</strong> HTTP status code is not 200 (e.g., 502 Bad Gateway, 500 Internal Server Error).</p>
+      <p><strong>Response:</strong> Same as ERR-D1-01 — retry once after 5 seconds.</p>
+      <p><strong>Severity:</strong> FATAL</p>
+    </details>
+
+    <details>
+      <summary>ERR-D1-03: Empty Post List</summary>
+      <p><strong>Detection:</strong> Webhook returns HTTP 200 but <code>posts</code> array is empty.</p>
+      <p><strong>Response:</strong> Inform user. Exit workflow gracefully. No retry needed — this is a valid state.</p>
+      <p><strong>Severity:</strong> N/A — expected state, not an error.</p>
+    </details>
+
+    <details>
+      <summary>ERR-D1-04: Malformed Response</summary>
+      <p><strong>Detection:</strong> Response is not valid JSON, or <code>posts</code> field is missing/not an array.</p>
+      <p><strong>Response:</strong> Treat as webhook failure (ERR-D1-01 path). Retry once.</p>
+      <p><strong>Severity:</strong> FATAL</p>
+    </details>
+
+    <h3>D.2 — Publish to LinkedIn Errors</h3>
+
+    <details>
+      <summary>ERR-D2-01: LinkedIn API 401 Unauthorized</summary>
+      <p><strong>Detection:</strong> Publish webhook returns HTTP 401.</p>
+      <p><strong>Response:</strong> Do NOT retry (one-shot rule). Mark post as <code>Publish_Failed</code>. Capture error.</p>
+      <p><strong>Root Cause Checklist:</strong> LinkedIn OAuth token expired (60-day cycle), n8n LinkedIn credential node misconfigured, LinkedIn app permissions revoked.</p>
+      <p><strong>Severity:</strong> FATAL — requires credential fix.</p>
+    </details>
+
+    <details>
+      <summary>ERR-D2-02: LinkedIn API 403 Forbidden</summary>
+      <p><strong>Detection:</strong> Publish webhook returns HTTP 403.</p>
+      <p><strong>Response:</strong> Do NOT retry. Mark <code>Publish_Failed</code>.</p>
+      <p><strong>Root Cause Checklist:</strong> Missing <code>w_member_social</code> permission, account restricted by LinkedIn, posting to a page without admin rights.</p>
+      <p><strong>Severity:</strong> FATAL</p>
+    </details>
+
+    <details>
+      <summary>ERR-D2-03: LinkedIn API 429 Rate Limited</summary>
+      <p><strong>Detection:</strong> Publish webhook returns HTTP 429.</p>
+      <p><strong>Response:</strong> Do NOT retry (one-shot rule — retrying risks duplicate posts). Mark <code>Publish_Failed</code>.</p>
+      <p><strong>Root Cause Checklist:</strong> LinkedIn API daily rate limit hit, multiple tools posting from same account, rapid successive publish attempts.</p>
+      <p><strong>Severity:</strong> FATAL — transient, resolves after rate limit window resets.</p>
+    </details>
+
+    <details>
+      <summary>ERR-D2-04: LinkedIn API 500 Internal Server Error</summary>
+      <p><strong>Detection:</strong> Publish webhook returns HTTP 500, 502, 503, or 504.</p>
+      <p><strong>Response:</strong> Do NOT retry. Mark <code>Publish_Failed</code>. Log full error response.</p>
+      <div class="warning"><strong>Important:</strong> On 5xx errors, it is ambiguous whether the post was actually created on LinkedIn. Before re-queuing: check the LinkedIn profile manually. If post IS live, manually set status to <code>Published</code>. If not live, safe to re-queue.</div>
+      <p><strong>Severity:</strong> FATAL — may require manual verification.</p>
+    </details>
+
+    <details>
+      <summary>ERR-D2-05: Network Timeout</summary>
+      <p><strong>Detection:</strong> Webhook call exceeds timeout threshold (30s) without response.</p>
+      <p><strong>Response:</strong> Do NOT retry. Mark <code>Publish_Failed</code>.</p>
+      <div class="error"><strong>CRITICAL WARNING:</strong> Timeouts are the most dangerous error because the post may have been successfully created on LinkedIn before the timeout occurred. ALWAYS verify manually before re-queuing.</div>
+      <p><strong>Severity:</strong> FATAL — ambiguous state.</p>
+    </details>
+
+    <details>
+      <summary>ERR-D2-06: Duplicate Publish Prevention — URN Already Exists</summary>
+      <p><strong>Detection:</strong> Selected post has a non-null, non-empty <code>linkedin_post_urn</code> field.</p>
+      <p><strong>Response:</strong> STOP immediately. Do NOT call the publish webhook.</p>
+      <p><strong>Recovery:</strong> Ask user to select a different post or exit workflow.</p>
+      <p><strong>Severity:</strong> Prevented error — guardrail working correctly.</p>
+    </details>
+
+    <details>
+      <summary>ERR-D2-07: Duplicate Publish Prevention — Already Published Today</summary>
+      <p><strong>Detection:</strong> Today's published posts returns results with <code>published_at</code> matching today (UTC).</p>
+      <p><strong>Response:</strong> STOP. Inform user of 1/day limit. User can explicitly override — log the override.</p>
+      <p><strong>Severity:</strong> Prevented error — guardrail working correctly.</p>
+    </details>
+
+    <details>
+      <summary>ERR-D2-08: Response Missing linkedin_post_urn</summary>
+      <p><strong>Detection:</strong> Webhook returns HTTP 200 and <code>success: true</code>, but <code>linkedin_post_urn</code> is null, empty, or missing.</p>
+      <p><strong>Response:</strong> Treat as publish failure (one-shot rule). Mark <code>Publish_Failed</code>.</p>
+      <p><strong>Severity:</strong> FATAL — ambiguous state.</p>
+    </details>
+
+    <details>
+      <summary>ERR-D2-09: success: false in Response Body</summary>
+      <p><strong>Detection:</strong> Webhook returns HTTP 200 but response body contains <code>"success": false</code>.</p>
+      <p><strong>Response:</strong> Do NOT retry. Mark <code>Publish_Failed</code>. Extract and log error message.</p>
+      <p><strong>Severity:</strong> FATAL</p>
+    </details>
+
+    <h3>D.3 — Status Update Errors</h3>
+
+    <details>
+      <summary>ERR-D3-01: MongoDB Write Failure (via n8n)</summary>
+      <p><strong>Detection:</strong> Update webhook returns non-200, timeout, or <code>success: false</code>.</p>
+      <p><strong>Response:</strong> Warn user (post IS live on LinkedIn, but DB record is stale). Retry once after 5 seconds.</p>
+      <p><strong>Recovery:</strong> If retry succeeds, continue to D.4. If retry fails, proceed to D.4 anyway with warning in Telegram notification.</p>
+      <p><strong>Impact if not fixed:</strong> E-Analytics workflow won't pick up the post, duplicate guard may fail, post may appear as <code>Ready_ToPublish</code> in future D.1 fetch.</p>
+      <p><strong>Manual Fix:</strong></p>
+      <pre>db.linkedin_posts.updateOne(
+  { _id: ObjectId("&lt;post_id&gt;") },
+  {
+    $set: {
+      status: "Published",
+      linkedin_post_urn: "&lt;urn&gt;",
+      linkedin_post_url: "&lt;url&gt;",
+      published_at: ISODate("&lt;timestamp&gt;")
+    }
+  }
+)</pre>
+      <p><strong>Severity:</strong> CRITICAL</p>
+    </details>
+
+    <details>
+      <summary>ERR-D3-02: Webhook Network Failure</summary>
+      <p><strong>Detection:</strong> Connection error, DNS failure, or connection refused to <code>sma-update-post</code>.</p>
+      <p><strong>Response:</strong> Same as ERR-D3-01 — retry once, then proceed to D.4 with warning.</p>
+      <p><strong>Severity:</strong> CRITICAL</p>
+    </details>
+
+    <details>
+      <summary>ERR-D3-03: Partial Update (Fields Missing After Update)</summary>
+      <p><strong>Detection:</strong> Verification fetch shows some fields updated but others missing.</p>
+      <p><strong>Response:</strong> Warn user about inconsistency. Provide the full set of values that should be present.</p>
+      <p><strong>Recovery:</strong> Manual correction via MongoDB or re-running the update webhook with all four fields.</p>
+      <p><strong>Severity:</strong> CRITICAL</p>
+    </details>
+
+    <h3>D.4 — Telegram Notification Errors</h3>
+
+    <details>
+      <summary>ERR-D4-01: Telegram Bot API Error</summary>
+      <p><strong>Detection:</strong> <code>sma-notify-telegram</code> webhook returns non-200 or <code>success: false</code>.</p>
+      <p><strong>Response:</strong> Log the error. Do NOT retry. Do NOT fail the workflow.</p>
+      <p><strong>Escalation:</strong> Only escalate if Telegram failures happen repeatedly (3+ consecutive publishes). Check: Telegram Bot token validity, Chat ID <code>-1003399716516</code>, bot group membership, n8n Telegram node config.</p>
+      <p><strong>Severity:</strong> WARNING</p>
+    </details>
+
+    <details>
+      <summary>ERR-D4-02: Telegram Network Timeout</summary>
+      <p><strong>Detection:</strong> Webhook call times out.</p>
+      <p><strong>Response:</strong> Same as ERR-D4-01 — log and continue.</p>
+      <p><strong>Severity:</strong> WARNING</p>
+    </details>
+
+    <details>
+      <summary>ERR-D4-03: Malformed Message</summary>
+      <p><strong>Detection:</strong> Telegram rejects the message due to formatting issues.</p>
+      <p><strong>Response:</strong> Log the error. Attempt a simplified fallback message. If fallback also fails, log and move on.</p>
+      <p><strong>Severity:</strong> WARNING</p>
+    </details>
+
+    <h3>Error Recovery Procedures</h3>
+
+    <details>
+      <summary>Recovering from Publish_Failed</summary>
+      <ol>
+        <li><strong>Investigate the error</strong> — check <code>publish_error</code> and <code>failed_at</code> fields on the post record</li>
+        <li><strong>Check LinkedIn manually</strong> — verify the post did NOT appear on the LinkedIn profile (especially for timeout/5xx errors)</li>
+        <li><strong>Fix root cause</strong> — resolve the underlying issue (token refresh, rate limit wait, etc.)</li>
+        <li><strong>Re-queue the post</strong> — set status back to <code>Ready_ToPublish</code>, clear <code>publish_error</code> and <code>failed_at</code></li>
+        <li><strong>Re-run the D workflow</strong> — start from D.1</li>
+      </ol>
+      <div class="error"><strong>NEVER re-queue without manual LinkedIn verification</strong> — this prevents duplicate posts.</div>
+    </details>
+
+    <details>
+      <summary>Recovering from D.3 Failure (Post Live, DB Stale)</summary>
+      <ol>
+        <li><strong>Immediately save the URN</strong> — copy from agent conversation or Telegram notification</li>
+        <li><strong>Fix n8n</strong> — check <code>SMA/Data/Write/UpdatePost</code> workflow is active</li>
+        <li><strong>Manual update</strong> — use MongoDB shell or re-trigger the update webhook</li>
+        <li><strong>Verify</strong> — fetch the post and confirm all four fields are set correctly</li>
+      </ol>
+    </details>
+
+    <details>
+      <summary>Recovering from Interrupted Workflow</summary>
+      <table>
+        <tr><th>Interrupted After</th><th>State</th><th>Recovery</th></tr>
+        <tr><td>D.1</td><td>No damage — nothing published</td><td>Re-start from D.1</td></tr>
+        <tr><td>D.2 (success)</td><td>Post is LIVE but DB not updated</td><td>Check LinkedIn, manually update DB, then run D.4</td></tr>
+        <tr><td>D.2 (failure)</td><td>Post marked Publish_Failed</td><td>Follow Publish_Failed recovery</td></tr>
+        <tr><td>D.3</td><td>Post live, DB may/may not be updated</td><td>Verify DB state, run D.4 if not sent</td></tr>
+        <tr><td>D.4</td><td>Everything done except notification</td><td>Send Telegram manually or ignore</td></tr>
+      </table>
+    </details>
+
+    <h3>Error Monitoring Checklist (Weekly)</h3>
+    <table>
+      <tr><th>#</th><th>Check</th><th>Action if Failed</th></tr>
+      <tr><td>1</td><td>Any posts in <code>Publish_Failed</code> status for &gt; 24 hours?</td><td>Triage and re-queue or archive</td></tr>
+      <tr><td>2</td><td>Any posts in <code>Ready_ToPublish</code> for &gt; 3 days?</td><td>Check if pipeline is stuck</td></tr>
+      <tr><td>3</td><td>Any duplicate <code>linkedin_post_urn</code> values?</td><td>Investigate — one is likely wrong</td></tr>
+      <tr><td>4</td><td>Any <code>Published</code> posts missing <code>linkedin_post_urn</code>?</td><td>Manual fix required</td></tr>
+      <tr><td>5</td><td>Telegram notifications failing consistently?</td><td>Check bot token and group membership</td></tr>
+      <tr><td>6</td><td>n8n webhook response times &gt; 10 seconds?</td><td>Check n8n server health</td></tr>
+    </table>
+  </article>
+
+  <!-- ============================================================ -->
+  <!-- Test Plan -->
+  <!-- ============================================================ -->
+  <article data-part="test-plan">
+    <h2>Test Plan</h2>
+    <p><strong>Workflow:</strong> D — Content Publishing | <strong>Scope:</strong> Test cases for all steps D.1-D.4 plus integration flows | <strong>Total: 37 test cases</strong> (7 D.1 + 13 D.2 + 5 D.3 + 5 D.4 + 7 Integration)</p>
+    <p><strong>Approach:</strong> Webhook-level testing — mock n8n webhook responses to validate agent behavior.</p>
+
+    <h3>Test Environment Setup</h3>
+    <p><strong>Prerequisites:</strong></p>
+    <ul>
+      <li>Mock server intercepting webhook calls to <code>https://n8n.linkright.in/webhook/sma-*</code></li>
+      <li>Ability to control mock responses (status codes, response bodies, delays)</li>
+      <li>Clean test post data in known states</li>
+      <li>Telegram mock (capture messages without sending to real group)</li>
+    </ul>
+    <p><strong>Test Post Fixture:</strong></p>
+    <pre>{
+  "post_id": "test-post-001",
+  "title": "Test Post -- DevTools DX",
+  "content": "Full test content (800-1600 chars)...",
+  "hashtags": ["#DevTools", "#DX", "#Testing"],
+  "topic": "developer-experience",
+  "scheduled_date": "2026-03-15",
+  "linkedin_post_urn": null,
+  "linkedin_post_url": null,
+  "status": "Ready_ToPublish",
+  "created_at": "2026-03-10T08:00:00Z",
+  "reviewed_at": "2026-03-14T14:30:00Z",
+  "published_at": null
+}</pre>
+
+    <h3>D.1 — Fetch Ready Posts Tests</h3>
+
+    <details>
+      <summary>TC-D1-01: Zero Posts Found</summary>
+      <p><strong>Mock:</strong> <code>{ "posts": [] }</code></p>
+      <ul>
+        <li>Agent displays message: no Ready_ToPublish posts available</li>
+        <li>Agent suggests running Review (C) workflow first</li>
+        <li>Workflow exits gracefully — D.2 is NOT entered</li>
+      </ul>
+    </details>
+
+    <details>
+      <summary>TC-D1-02: Single Post Found</summary>
+      <p><strong>Mock:</strong> Array of 1 post with status <code>Ready_ToPublish</code>.</p>
+      <ul>
+        <li>Agent presents post in summary table</li>
+        <li>Agent asks user to confirm — does NOT auto-select</li>
+        <li>On confirmation, stores post and proceeds to D.2</li>
+      </ul>
+    </details>
+
+    <details>
+      <summary>TC-D1-03: Multiple Posts Found</summary>
+      <p><strong>Mock:</strong> Array of 3 posts.</p>
+      <ul>
+        <li>Agent presents all posts in numbered table</li>
+        <li>Agent asks user to pick one — max 1 per run</li>
+        <li>Only the selected post is passed to D.2</li>
+      </ul>
+    </details>
+
+    <details>
+      <summary>TC-D1-04: Already Published Today</summary>
+      <ul>
+        <li>Agent detects today's publish and warns about 1/day limit</li>
+        <li>Does NOT proceed unless user explicitly overrides</li>
+      </ul>
+    </details>
+
+    <details>
+      <summary>TC-D1-05: Webhook Failure — First Attempt</summary>
+      <p><strong>Mock:</strong> First call 500, second call 200 with posts.</p>
+      <ul>
+        <li>Agent waits 5 seconds, retries once</li>
+        <li>On retry success, normal flow continues</li>
+      </ul>
+    </details>
+
+    <details>
+      <summary>TC-D1-06: Webhook Failure — Both Attempts</summary>
+      <p><strong>Mock:</strong> Both calls 500 or timeout.</p>
+      <ul>
+        <li>Agent retries once after 5 seconds</li>
+        <li>After second failure, asks user to check n8n workflow <code>SMA/Data/Read/FetchPost</code></li>
+        <li>Workflow exits</li>
+      </ul>
+    </details>
+
+    <details>
+      <summary>TC-D1-07: Malformed Response</summary>
+      <ul>
+        <li>Agent treats as webhook failure — follows retry logic</li>
+        <li>Does NOT crash or parse invalid data as posts</li>
+      </ul>
+    </details>
+
+    <h3>D.2 — Publish to LinkedIn Tests</h3>
+
+    <details>
+      <summary>TC-D2-01: Successful Publish</summary>
+      <p><strong>Mock:</strong> HTTP 200 with <code>success: true</code>, URN, URL, timestamp.</p>
+      <ul>
+        <li>Agent captures URN, URL, timestamp</li>
+        <li>Content sent matches exactly what was approved</li>
+        <li>Agent proceeds to D.3</li>
+      </ul>
+    </details>
+
+    <details>
+      <summary>TC-D2-02: LinkedIn API 401 Unauthorized</summary>
+      <ul>
+        <li>No retry (one-shot rule)</li>
+        <li>Mark <code>Publish_Failed</code></li>
+        <li>D.3 and D.4 NOT executed</li>
+      </ul>
+    </details>
+
+    <details>
+      <summary>TC-D2-03: LinkedIn API 403 Forbidden</summary>
+      <ul><li>Same as TC-D2-02 — no retry, mark Publish_Failed, mention <code>w_member_social</code> scope</li></ul>
+    </details>
+
+    <details>
+      <summary>TC-D2-04: LinkedIn API 429 Rate Limited</summary>
+      <ul><li>No retry. Mark <code>Publish_Failed</code>. Suggest waiting 24 hours.</li></ul>
+    </details>
+
+    <details>
+      <summary>TC-D2-05: LinkedIn API 500 Server Error</summary>
+      <ul><li>No retry. Mark <code>Publish_Failed</code>. Warn about ambiguous state — manual LinkedIn check needed.</li></ul>
+    </details>
+
+    <details>
+      <summary>TC-D2-06: Network Timeout</summary>
+      <ul><li>Treat as failure. Mark <code>Publish_Failed</code>. Warn about ambiguous state.</li></ul>
+    </details>
+
+    <details>
+      <summary>TC-D2-07: Duplicate Guard — URN Already Exists</summary>
+      <ul>
+        <li>Agent detects existing URN before calling publish webhook</li>
+        <li>Publish webhook is NOT called</li>
+        <li>Agent offers to go back to D.1 or exit</li>
+      </ul>
+    </details>
+
+    <details>
+      <summary>TC-D2-08: Duplicate Guard — Already Published Today</summary>
+      <ul>
+        <li>Agent blocks publish, informs user of 1/day rule</li>
+        <li>Override: proceeds but logs it. No override: exits.</li>
+      </ul>
+    </details>
+
+    <details>
+      <summary>TC-D2-09: Random Delay Verification</summary>
+      <ul>
+        <li>Delay between 0-60 minutes (inclusive)</li>
+        <li>User can say "publish now" to skip</li>
+        <li><code>delay_applied</code> propagated to D.3/D.4</li>
+      </ul>
+    </details>
+
+    <details>
+      <summary>TC-D2-10: Response Missing URN (success: true but no URN)</summary>
+      <ul><li>Treat as failure. Mark <code>Publish_Failed</code>. Recommend manual LinkedIn check.</li></ul>
+    </details>
+
+    <details>
+      <summary>TC-D2-11: Response success: false</summary>
+      <ul><li>No retry. Mark <code>Publish_Failed</code> with error message from response.</li></ul>
+    </details>
+
+    <details>
+      <summary>TC-D2-12: User Asks to Retry After Failure</summary>
+      <ul>
+        <li>Agent refuses to retry</li>
+        <li>Explains one-shot rule</li>
+        <li>Suggests investigating and manually re-queuing</li>
+      </ul>
+    </details>
+
+    <details>
+      <summary>TC-D2-13: Content Integrity Check</summary>
+      <ul><li>Content sent is byte-for-byte identical to what was stored. No reformatting.</li></ul>
+    </details>
+
+    <h3>D.3 — Update Post Status Tests</h3>
+
+    <details>
+      <summary>TC-D3-01: Successful Status Update</summary>
+      <ul><li>All four fields sent. Agent confirms and proceeds to D.4.</li></ul>
+    </details>
+
+    <details>
+      <summary>TC-D3-02: MongoDB Write Failure — Retry Succeeds</summary>
+      <ul><li>First call 500, retry succeeds. Normal flow to D.4.</li></ul>
+    </details>
+
+    <details>
+      <summary>TC-D3-03: MongoDB Write Failure — Both Attempts Fail</summary>
+      <ul>
+        <li>Agent warns: post LIVE but DB not updated</li>
+        <li>Provides URN for manual recovery</li>
+        <li>Proceeds to D.4 anyway</li>
+        <li>Does NOT rollback LinkedIn post</li>
+      </ul>
+    </details>
+
+    <details>
+      <summary>TC-D3-04: Verify Updated Fields</summary>
+      <ul><li>All four fields match expected values after update.</li></ul>
+    </details>
+
+    <details>
+      <summary>TC-D3-05: No Rollback Attempt</summary>
+      <ul><li>Agent does NOT attempt to delete or modify the LinkedIn post on D.3 failure.</li></ul>
+    </details>
+
+    <h3>D.4 — Telegram Notification Tests</h3>
+
+    <details>
+      <summary>TC-D4-01: Successful Notification</summary>
+      <ul><li>Notification sent to <code>-1003399716516</code>. Final summary presented. Workflow completes.</li></ul>
+    </details>
+
+    <details>
+      <summary>TC-D4-02: Telegram Bot Error</summary>
+      <ul><li>Error logged. No retry. Workflow does NOT fail. Final summary still presented.</li></ul>
+    </details>
+
+    <details>
+      <summary>TC-D4-03: Telegram Network Timeout</summary>
+      <ul><li>Treated as failure. Logs and moves on. Workflow completes.</li></ul>
+    </details>
+
+    <details>
+      <summary>TC-D4-04: Message Format — D.3 Success</summary>
+      <ul><li>Title matches, URL is full URL, ISO 8601 timestamp, delay value shown, DB Update = "success", no sensitive data.</li></ul>
+    </details>
+
+    <details>
+      <summary>TC-D4-05: Message Format — D.3 Failed</summary>
+      <ul><li>DB Update = "failed", WARNING line present with URN for manual recovery.</li></ul>
+    </details>
+
+    <h3>Integration Tests</h3>
+
+    <details>
+      <summary>TC-INT-01: Full Happy Path (D.1 &rarr; D.2 &rarr; D.3 &rarr; D.4)</summary>
+      <ul>
+        <li>All four steps execute in sequence</li>
+        <li>Post transitions: <code>Ready_ToPublish</code> &rarr; <code>Published</code></li>
+        <li>URN, URL, timestamp all saved</li>
+        <li>Telegram message contains correct data</li>
+        <li>Total webhook calls: 5 (fetch + guardrail fetch + publish + update + telegram)</li>
+      </ul>
+    </details>
+
+    <details>
+      <summary>TC-INT-02: Publish Failure — Early Exit</summary>
+      <ul>
+        <li>D.3 and D.4 NOT executed</li>
+        <li>Post status = <code>Publish_Failed</code></li>
+        <li>No Telegram notification sent</li>
+      </ul>
+    </details>
+
+    <details>
+      <summary>TC-INT-03: Interrupted Flow — Agent Crash After D.2 Success</summary>
+      <ul>
+        <li>Post IS live on LinkedIn, DB not updated</li>
+        <li>Resume-if-interrupted step should detect incomplete state</li>
+        <li>RISK: duplicate publish if user re-selects same post (URN not saved to DB)</li>
+      </ul>
+    </details>
+
+    <details>
+      <summary>TC-INT-04: Interrupted Flow — Agent Crash After D.3 Failure</summary>
+      <ul>
+        <li>Recovery procedure from error-handling.md is followable</li>
+        <li>Manual DB update template provided</li>
+        <li>No automated retry of publish step</li>
+      </ul>
+    </details>
+
+    <details>
+      <summary>TC-INT-05: Multiple Posts — Correct Selection Propagation</summary>
+      <ul>
+        <li>Only selected post's data sent to publish webhook</li>
+        <li>Only selected post's record updated</li>
+        <li>Other posts remain untouched in <code>Ready_ToPublish</code></li>
+      </ul>
+    </details>
+
+    <details>
+      <summary>TC-INT-06: D.3 Failure Does Not Block D.4</summary>
+      <ul>
+        <li>D.4 still executed with DB Update = "failed" and WARNING line</li>
+        <li>Workflow completes — not stuck</li>
+      </ul>
+    </details>
+
+    <details>
+      <summary>TC-INT-07: Full Flow with Random Delay</summary>
+      <ul>
+        <li>Delay 0-60 minutes, publish webhook not called until delay expires</li>
+        <li>No other webhook calls during delay</li>
+        <li><code>delay_applied</code> correctly propagated to D.3 and D.4</li>
+      </ul>
+    </details>
+
+    <h3>Test Result Summary</h3>
+    <table>
+      <tr><th>Test Case</th><th>Status</th><th>Notes</th></tr>
+      <tr><td>TC-D1-01</td><td></td><td></td></tr>
+      <tr><td>TC-D1-02</td><td></td><td></td></tr>
+      <tr><td>TC-D1-03</td><td></td><td></td></tr>
+      <tr><td>TC-D1-04</td><td></td><td></td></tr>
+      <tr><td>TC-D1-05</td><td></td><td></td></tr>
+      <tr><td>TC-D1-06</td><td></td><td></td></tr>
+      <tr><td>TC-D1-07</td><td></td><td></td></tr>
+      <tr><td>TC-D2-01</td><td></td><td></td></tr>
+      <tr><td>TC-D2-02</td><td></td><td></td></tr>
+      <tr><td>TC-D2-03</td><td></td><td></td></tr>
+      <tr><td>TC-D2-04</td><td></td><td></td></tr>
+      <tr><td>TC-D2-05</td><td></td><td></td></tr>
+      <tr><td>TC-D2-06</td><td></td><td></td></tr>
+      <tr><td>TC-D2-07</td><td></td><td></td></tr>
+      <tr><td>TC-D2-08</td><td></td><td></td></tr>
+      <tr><td>TC-D2-09</td><td></td><td></td></tr>
+      <tr><td>TC-D2-10</td><td></td><td></td></tr>
+      <tr><td>TC-D2-11</td><td></td><td></td></tr>
+      <tr><td>TC-D2-12</td><td></td><td></td></tr>
+      <tr><td>TC-D2-13</td><td></td><td></td></tr>
+      <tr><td>TC-D3-01</td><td></td><td></td></tr>
+      <tr><td>TC-D3-02</td><td></td><td></td></tr>
+      <tr><td>TC-D3-03</td><td></td><td></td></tr>
+      <tr><td>TC-D3-04</td><td></td><td></td></tr>
+      <tr><td>TC-D3-05</td><td></td><td></td></tr>
+      <tr><td>TC-D4-01</td><td></td><td></td></tr>
+      <tr><td>TC-D4-02</td><td></td><td></td></tr>
+      <tr><td>TC-D4-03</td><td></td><td></td></tr>
+      <tr><td>TC-D4-04</td><td></td><td></td></tr>
+      <tr><td>TC-D4-05</td><td></td><td></td></tr>
+      <tr><td>TC-INT-01</td><td></td><td></td></tr>
+      <tr><td>TC-INT-02</td><td></td><td></td></tr>
+      <tr><td>TC-INT-03</td><td></td><td></td></tr>
+      <tr><td>TC-INT-04</td><td></td><td></td></tr>
+      <tr><td>TC-INT-05</td><td></td><td></td></tr>
+      <tr><td>TC-INT-06</td><td></td><td></td></tr>
+      <tr><td>TC-INT-07</td><td></td><td></td></tr>
+    </table>
+  </article>
+
+</section>
+
+<footer>
+  <hr>
+  <small>Generated from Flex SMA module source files. Bundle v1.0.0</small>
+</footer>
+
+</body>
+</html>

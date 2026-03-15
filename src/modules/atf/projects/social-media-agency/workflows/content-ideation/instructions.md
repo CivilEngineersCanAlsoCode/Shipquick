@@ -30,7 +30,6 @@ This workflow transforms raw topic briefs (sourced from ChatGPT via Google Sheet
 ### Phase 4: Persistence (Step A.8)
 8. **Save (A.8):** For each post:
    - Save to MongoDB via `sma-save-post` (status: `Scheduled_NoDraft`) — BLOCKING
-   - Save to Notion via `sma-save-to-notion` (status: `Scheduled - No Draft`) — non-blocking on failure
    - Mark source briefs as "Used" in Google Sheet via `sma-update-sheet-status` — non-blocking on failure
    - Present final summary and offer next actions (draft now, more ideas, exit)
 
@@ -45,7 +44,6 @@ This workflow transforms raw topic briefs (sourced from ChatGPT via Google Sheet
 | sma-update-sheet-status | POST | A.6, A.8 |
 | sma-save-experience | POST | A.6 |
 | sma-save-post | POST | A.8 |
-| sma-save-to-notion | POST | A.8 |
 
 ## Key Constraints
 - LinkedIn only (v1), max 3 posts planned per session

@@ -2,11 +2,43 @@
 
 ## The 7 Pillars
 
-Every post must align to exactly one pillar. Pillars define the thematic category and influence framework selection, tone, and audience targeting.
+Every post must align to exactly one pillar. Pillars define the thematic category and influence framework selection, tone, and audience targeting. Canonical weights are from `docs/content-strategy.md`.
 
 ---
 
-### 1. Product Management
+### 1. AI & Automation (`ai_automation`) — 25%
+**Description:** AI tools, automation workflows, LLM applications, agent architectures, AI in product management.
+
+**Best Frameworks:**
+- Formats: CF02 Data-to-Opinion, CF05 Hot-Take, CF23 Prediction, CF30 News-Commentary
+- Hooks: HK04 Data-Shock, HK03 Counter-Intuitive, HK12 Future-Prediction
+- Narratives: NF08 Inverted-Pyramid, NF10 Compare-Contrast, NF11 Cause-Effect
+- Tones: TN04 Data-Nerd, TN06 Provocateur, TN26 Futurist
+- CTAs: CT10 Agree-Disagree, CT17 Predict, CT21 Hot-Take-Reply
+- Positioning: PT01, PT04, PT09
+
+**Audience:** VCs, MAANG engineers, founders, AI enthusiasts, CTOs
+**Tone override:** `curious-builder`
+
+---
+
+### 2. Startup / Building (`startup`) — 20%
+**Description:** Entrepreneurship, side projects, building in public, product launches, founder lessons, pivot stories, market validation, fundraising.
+
+**Best Frameworks:**
+- Formats: CF20 Behind-the-Scenes, CF12 Micro-Case-Study, CF01 Story-to-Insight, CF04 Before-After
+- Hooks: HK02 Bold-Statement, HK06 Cliffhanger, HK09 Time-Stamp
+- Narratives: NF05 Hero-Journey-Mini, NF04 Star-Story-Solution, NF14 In-Medias-Res
+- Tones: TN08 Raw-Honest, TN01 Casual-Witty, TN21 Passionate
+- CTAs: CT07 Challenge-CTA, CT03 Share-Your-Story, CT01 Open-Question
+- Positioning: PT02, PT04, PT06
+
+**Audience:** Founders, VCs, YC alumni, aspiring entrepreneurs, builders
+**Tone override:** `reflective-ambitious`
+
+---
+
+### 3. Product Management (`pm`) — 20%
 **Description:** PM craft, stakeholder management, prioritization, roadmaps, user research, product strategy, feature decisions.
 
 **Best Frameworks:**
@@ -17,12 +49,12 @@ Every post must align to exactly one pillar. Pillars define the thematic categor
 - CTAs: CT01 Open-Question, CT06 Reflection-Prompt, CT16 Try-This
 - Positioning: PT01, PT03, PT05, PT07
 
-**Audience:** PMs, aspiring PMs, product leaders, tech professionals
+**Audience:** MAANG PMs, founders, aspiring PMs, product leaders
 
 ---
 
-### 2. Career Growth
-**Description:** Job transitions, interview prep, career pivots, promotions, professional development, corporate lessons, salary negotiation.
+### 4. Career (`career`) — 15%
+**Description:** Career pivots, unconventional paths, senior IC/leadership transitions, interview prep, promotions, salary negotiation.
 
 **Best Frameworks:**
 - Formats: CF01 Story-to-Insight, CF04 Before-After, CF09 Lessons-Learned, CF32 Failure-Resume
@@ -32,42 +64,30 @@ Every post must align to exactly one pillar. Pillars define the thematic categor
 - CTAs: CT03 Share-Your-Story, CT05 Agreement-Check, CT01 Open-Question
 - Positioning: PT03, PT06, PT08
 
-**Audience:** Early to mid-career professionals, job seekers, career changers
+**Audience:** Recruiters, MAANG leaders, career changers
+**Tone override:** `reflective-ambitious`
 
 ---
 
-### 3. Startup / Building
-**Description:** Entrepreneurship, side projects, building in public, product launches, founder lessons, pivot stories, market validation.
+### 5. Hot Take (`hottake`) — 10%
+**Description:** Contrarian opinions on tech, industry, culture. Strong positions, defensible arguments. Engagement driver across all target segments.
 
 **Best Frameworks:**
-- Formats: CF20 Behind-the-Scenes, CF12 Micro-Case-Study, CF01 Story-to-Insight, CF04 Before-After
-- Hooks: HK02 Bold-Statement, HK06 Cliffhanger, HK09 Time-Stamp
-- Narratives: NF05 Hero-Journey-Mini, NF04 Star-Story-Solution, NF14 In-Medias-Res
-- Tones: TN08 Raw-Honest, TN01 Casual-Witty, TN21 Passionate
-- CTAs: CT07 Challenge-CTA, CT03 Share-Your-Story, CT01 Open-Question
-- Positioning: PT02, PT04, PT06
-
-**Audience:** Founders, aspiring entrepreneurs, builders, indie hackers
-
----
-
-### 4. Tech & AI
-**Description:** Technology trends, AI applications, engineering insights, tool reviews, tech industry commentary, future predictions.
-
-**Best Frameworks:**
-- Formats: CF02 Data-to-Opinion, CF05 Hot-Take, CF23 Prediction, CF30 News-Commentary
-- Hooks: HK04 Data-Shock, HK03 Counter-Intuitive, HK12 Future-Prediction
-- Narratives: NF08 Inverted-Pyramid, NF10 Compare-Contrast, NF11 Cause-Effect
-- Tones: TN04 Data-Nerd, TN06 Provocateur, TN26 Futurist
-- CTAs: CT10 Agree-Disagree, CT17 Predict, CT21 Hot-Take-Reply
+- Formats: CF05 Hot-Take, CF02 Data-to-Opinion, CF07 Myth-Busting, CF30 News-Commentary
+- Hooks: HK02 Bold-Statement, HK03 Counter-Intuitive, HK19 Absurd-Truth
+- Narratives: NF08 Inverted-Pyramid, NF11 Cause-Effect, NF22 Rule-of-Three
+- Tones: TN06 Provocateur, TN08 Raw-Honest, TN31 Pragmatic
+- CTAs: CT10 Agree-Disagree, CT21 Hot-Take-Reply, CT01 Open-Question
 - Positioning: PT01, PT04, PT09
 
-**Audience:** Tech professionals, AI enthusiasts, developers, CTOs
+**Audience:** All targets (engagement driver)
+**Tone override:** `bold-contrarian`
+**Constraint:** Max once per week. Must be defensible, not rage-bait.
 
 ---
 
-### 5. Personal Growth
-**Description:** Mindset, habits, self-improvement, life lessons, emotional intelligence, work-life balance, mental health.
+### 6. Personal (`personal`) — 5%
+**Description:** Vulnerability, life lessons, identity — ALWAYS paired with a technical/strategic takeaway. Gateway to follow.
 
 **Best Frameworks:**
 - Formats: CF01 Story-to-Insight, CF09 Lessons-Learned, CF07 Myth-Busting, CF11 Letter-Format
@@ -77,59 +97,48 @@ Every post must align to exactly one pillar. Pillars define the thematic categor
 - CTAs: CT06 Reflection-Prompt, CT03 Share-Your-Story, CT05 Agreement-Check
 - Positioning: PT06, PT10, PT01
 
-**Audience:** Anyone seeking personal development, young professionals, students
+**Audience:** Broad (gateway to follow)
+**Constraint:** Max once per 2 weeks. MUST include a technical/strategic takeaway.
 
 ---
 
-### 6. Leadership
-**Description:** Team management, mentorship, decision-making, conflict resolution, organizational culture, hiring, delegation.
+### 7. How-To (`howto`) — 5%
+**Description:** Tactical tutorials, tool walkthroughs, step-by-step guides. Practical, actionable content.
 
 **Best Frameworks:**
-- Formats: CF10 Framework-Share, CF12 Micro-Case-Study, CF06 How-To-Guide, CF09 Lessons-Learned
-- Hooks: HK02 Bold-Statement, HK05 Direct-Address, HK20 Authority-Flex
-- Narratives: NF06 SCR, NF27 Mentor-Student, NF07 Three-Act
-- Tones: TN05 Mentor, TN12 Authoritative, TN02 Professional-Warm
-- CTAs: CT01 Open-Question, CT31 Teach-Me, CT06 Reflection-Prompt
-- Positioning: PT03, PT07, PT01
+- Formats: CF06 How-To-Guide, CF03 Listicle, CF10 Framework-Share, CF12 Micro-Case-Study
+- Hooks: HK01 Question-Hook, HK05 Direct-Address, HK04 Data-Shock
+- Narratives: NF02 PAS, NF06 SCR, NF08 Inverted-Pyramid
+- Tones: TN05 Mentor, TN02 Professional-Warm, TN04 Data-Nerd
+- CTAs: CT16 Try-This, CT01 Open-Question, CT07 Challenge-CTA
+- Positioning: PT01, PT05, PT07
 
-**Audience:** Managers, team leads, aspiring leaders, senior professionals
-
----
-
-### 7. Finance / Investing
-**Description:** Personal finance, investing lessons, money mindset, financial independence, market observations, wealth building.
-
-**Best Frameworks:**
-- Formats: CF02 Data-to-Opinion, CF03 Listicle, CF09 Lessons-Learned, CF07 Myth-Busting
-- Hooks: HK04 Data-Shock, HK03 Counter-Intuitive, HK19 Absurd-Truth
-- Narratives: NF02 PAS, NF11 Cause-Effect, NF22 Rule-of-Three
-- Tones: TN31 Pragmatic, TN08 Raw-Honest, TN10 Analytical
-- CTAs: CT10 Agree-Disagree, CT05 Agreement-Check, CT01 Open-Question
-- Positioning: PT10, PT01, PT04
-
-**Audience:** Young professionals, aspiring investors, finance enthusiasts
+**Audience:** MAANG engineers, founders, builders
+**Tone override:** `mentor-practical`
 
 ---
 
 ## Posting Frequency Guidelines
 
-**Target:** 5-7 posts per week (1 per day, with rest days)
+**Target:** 3 posts per week (Mon/Wed/Fri, 6-7 PM IST)
 
-**Recommended Distribution (per 2-week cycle):**
+**Recommended Distribution (per 2-week cycle = 6 posts):**
 
-| Pillar | Posts | % | Notes |
-|--------|-------|---|-------|
-| Product Management | 3 | ~25% | Core expertise, consistent engagement |
-| Career Growth | 2 | ~17% | High relatability, broad audience |
-| Startup / Building | 2 | ~17% | Authentic, building-in-public content |
-| Tech & AI | 2 | ~17% | Trending, high impression potential |
-| Personal Growth | 2 | ~17% | Emotional, high save/share rate |
-| Leadership | 1 | ~8% | Authority building |
-| Finance / Investing | 1-2 | ~8% | Niche but engaged audience |
+| Pillar | Weight | Posts/6 | Notes |
+|--------|--------|---------|-------|
+| `ai_automation` | 25% | 1-2 | Top pillar — VCs, MAANG, founders |
+| `startup` | 20% | 1-2 | Authentic, building-in-public content |
+| `pm` | 20% | 1-2 | Core expertise, consistent engagement |
+| `career` | 15% | 1 | Recruiters, MAANG leaders |
+| `hottake` | 10% | 1 | Engagement driver — max 1/week |
+| `personal` | 5% | 0-1 | Gateway to follow — max 1/2 weeks |
+| `howto` | 5% | 0-1 | Tactical, actionable |
 
 **Rules:**
 - Never post same pillar 2 days in a row
-- Every pillar should appear at least once every 2 weeks
+- `ai_automation` and `startup` should each appear at least once per week
+- `personal` max once per 2 weeks — MUST include a technical/strategic takeaway
+- `hottake` max once per week — must be defensible, not rage-bait
 - Adjust based on E.5 analytics feedback (high-performing pillars get more slots)
 - Holiday/trending events can override normal rotation
 

@@ -246,6 +246,22 @@ Create an underperformer watchlist:
 
 ---
 
+## Action 5: Follower Quality Score (Planned — Future Metric)
+
+**Status:** PLANNED — requires LinkedIn API access not currently available.
+
+When LinkedIn API follower demographics become available, E.5 should add:
+
+- **follower_quality_score**: Percentage of new followers matching target audience (VCs, founders, MAANG PMs, international recruiters) based on title/company matching
+- **comment_quality_score**: Percentage of comments from target audience profiles
+
+**Integration points:**
+- A/B testing framework uses `follower_quality_score` (35% weight) and `comment_quality_score` (25% weight) as primary metrics — see `docs/ab-testing-framework.md`
+- Until LinkedIn API access is available, these metrics require manual evaluation outside the automated workflow
+- Track as `planned_metrics` in `sma_config.analytics_recommendations`
+
+---
+
 ## Final Summary
 
 After all updates are saved, present the complete feedback loop summary:

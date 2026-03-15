@@ -143,56 +143,61 @@ Line five.
 
 ---
 
-## FR12: CTA Placement (P1)
-**Rule:** Call-to-action must be in the last 3 lines of the main content (before positioning and hashtags).
+## FR12: Footer Line 1 — Positioning (P1)
+**Rule:** After the CTA, the first footer line should be a positioning statement — who you are and the value you provide. Use positioning templates (PT01-PT31).
 
-**Correct:**
-```
-What's your take? Drop a comment below.
-
----
-PM by day. Builder by night.
-Follow for more.
-
-#ProductManagement #LinkedIn #Career
-```
-
----
-
-## FR13: Positioning Line (P1)
-**Rule:** A one-liner from positioning templates (PT01-PT31) placed after the CTA separator.
+**Correct:** `PM by day. Builder by night. Writing about what I learn.`
+**Wrong:** `Follow me for more content!`
 
 **Validation:** Must contain a positioning line between CTA and hashtags.
 
 ---
 
-## FR14: Follow CTA (P1)
-**Rule:** "Follow for more" or equivalent after positioning line.
+## FR13: Footer Line 2 — Follow (P2)
+**Rule:** After the positioning line, add a follow invitation line.
+
+**Correct:** `Follow for weekly PM insights and career stories.`
+**Wrong:** `Please like share and subscribe to my newsletter and also check out my website.`
 
 ---
 
-## FR15: Hashtags (P2)
-**Rule:** 3-6 relevant hashtags on the last line. Use # prefix, PascalCase or lowercase.
+## FR14: Hashtags at End Only (P1)
+**Rule:** 3-6 generic hashtags placed only at the very end of the post. Never in the body text.
 
-**Correct:** `#ProductManagement #StartupLife #CareerGrowth`
-**Wrong:** 10+ hashtags, hashtags scattered through post, hashtags in sentences.
-
----
-
-## FR16: Code Block Preview (P1)
-**Rule:** Always show the final formatted post inside a code block with stats underneath.
-
-**Format:**
+**Correct:**
 ```
-[POST PREVIEW]
----
-Characters: 1,234 / 1,600
-Lines: 18
-Emojis: 2/3
-Hindi: 1/3
-Hashtags: 4
-Rules: 16/16 passed
+[full post]
+
+#ProductManagement #Career #Startup
 ```
+
+**Wrong:** `I love #ProductManagement because it lets me work on #Startup ideas in my #Career`
+
+**Validation:** All hashtags must appear only after the footer lines, never inline in the body.
+
+---
+
+## FR15: One Idea Per Post (P2)
+**Rule:** Each post should focus on exactly one core idea or takeaway.
+
+**Correct:** `One post about one lesson from one experience with one clear takeaway.`
+**Wrong:** `A post that covers 5 different topics jumping from career advice to tool reviews to personal stories.`
+
+---
+
+## FR16: Whitespace Breathing Room (P2)
+**Rule:** Use generous whitespace between blocks to create visual breathing room on mobile.
+
+**Correct:**
+```
+Short line.
+
+Another thought.
+
+Key point here.
+```
+
+**Wrong:** `Short line. Another thought. Key point here. All cramped together in a single block.`
 
 ---
 
@@ -211,10 +216,10 @@ Rules: 16/16 passed
 | FR09 | Max 3 Hindi sentences | P1 | |
 | FR10 | FK Grade 7 | P1 | |
 | FR11 | 800-1600 characters | P1 | |
-| FR12 | CTA in last 3 lines | P1 | |
-| FR13 | Positioning line present | P1 | |
-| FR14 | Follow CTA present | P1 | |
-| FR15 | 3-6 hashtags at end | P2 | |
-| FR16 | Code block preview shown | P1 | |
+| FR12 | Footer positioning line | P1 | |
+| FR13 | Footer follow line | P2 | |
+| FR14 | Hashtags at end only | P1 | |
+| FR15 | One idea per post | P2 | |
+| FR16 | Whitespace breathing room | P2 | |
 
 All P1 rules MUST pass. P2 rules SHOULD pass (warn if not).

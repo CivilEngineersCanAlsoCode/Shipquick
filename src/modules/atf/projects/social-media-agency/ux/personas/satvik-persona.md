@@ -11,11 +11,11 @@
 | Tech comfort | High — builds n8n automations, uses ChatGPT daily, comfortable with MongoDB, JS snippets |
 
 ## Goals
-1. **Build a consistent LinkedIn presence** — 1 post/day, professionally crafted, data-driven topic selection
+1. **Build a consistent LinkedIn presence** — 3 posts/week (Mon/Wed/Fri), professionally crafted, data-driven topic selection
 2. **Minimize content creation time** — automate everything except creative decisions (topic selection, tone approval, final review)
 3. **Improve engagement over time** — use analytics feedback loops to refine scoring weights, content pillars, and frameworks
 4. **Maintain authenticity** — posts must draw from real life experiences and personal stories, not generic AI slop
-5. **Establish thought leadership** — career, personal growth, skill-building content pillars aligned with PM brand
+5. **Establish thought leadership** — 7 content pillars (ai_automation, startup, pm, career, hottake, personal, howto) targeting VCs, founders, and MAANG leaders
 
 ## Frustrations
 - Spending 45–60 min per post manually is unsustainable alongside a full-time PM job
@@ -70,8 +70,8 @@
 - **Mood:** Creative, less time pressure
 
 ## Content Creation Habits
-- **Frequency:** 1 post/day, 5–7 posts/week target
-- **Content pillars:** Career growth, personal stories, skill-building, leadership, tech insights
+- **Frequency:** 3 posts/week (Mon/Wed/Fri, 6–7 PM IST)
+- **Content pillars:** ai_automation (25%), startup (20%), pm (20%), career (15%), hottake (10%), personal (5%), howto (5%) — see `docs/content-strategy.md`
 - **Writing style:** Conversational, includes Romanised Hindi (15–25% of content), personal anecdotes
 - **Hook preference:** Strong opening hooks (≤210 chars), often contrarian or story-based
 - **CTA style:** Always includes positioning statement + follow prompt

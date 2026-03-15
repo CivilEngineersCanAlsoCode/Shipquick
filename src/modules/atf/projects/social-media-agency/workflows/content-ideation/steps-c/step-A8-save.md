@@ -7,15 +7,15 @@
 
 ## What You Do
 
-Save each confirmed scheduled post to MongoDB, then to Notion, then mark the source briefs as "Used" in the Google Sheet. Then give the user a final summary and next-step options.
+Save each confirmed scheduled post to MongoDB, then mark the source briefs as "Used" in the Google Sheet. Then give the user a final summary and next-step options.
 
 ---
 
 ## Process ALL Posts in Sequence
 
-For each post in `scheduled_posts[]`, execute A.8.a, A.8.b in order. Then do A.8.c for ALL posts together at the end.
+For each post in `scheduled_posts[]`, execute A.8.a. Then do A.8.b for ALL posts together at the end.
 
-Do NOT skip any save step — all three must complete for a successful run.
+Do NOT skip any save step — both must complete for a successful run.
 
 ---
 
@@ -54,42 +54,11 @@ Store the returned `_id` as `mongo_id` for this post.
 Retry once. If still failing:
 > "MongoDB save fail ho raha hai — `SMA/Data/Write/SavePost` n8n workflow check karo. Is post ko skip karein aur baaki save karein? (haan/nahi)"
 
-Do NOT proceed to Notion save for a post that failed MongoDB save (the IDs won't be consistent).
+Do NOT skip failed posts — continue to next post.
 
 ---
 
-## ACTION A.8.b — Save to Notion (per post)
-
-**POST** `https://n8n.linkright.in/webhook/sma-save-to-notion`
-
-```json
-{
-  "database_id": "cc01482c-cd34-83ac-81a8-013e4d767924",
-  "title": "[post.topic]",
-  "channel": "LinkedIn",
-  "go_live_date": "[post.scheduled_date]",
-  "status": "Scheduled - No Draft",
-  "content_pillar": "[post.content_pillar as Title Case]"
-}
-```
-
-Note: `content_pillar` must be Title Case for Notion select field — e.g., "career" → "Career", "pm" → "PM", "hottake" → "Hot Take", "howto" → "How To".
-
-**Expected Response:** `{ "success": true, "page_id": "..." }`
-
-Store the returned `page_id`.
-
-**On failure:**
-> "Notion mein save nahi hua: [topic]"
-
-Retry once. If still failing:
-> "Notion save fail — content calendar mein manually add karna padega: [topic] on [date]"
-
-Do NOT block the overall workflow on a Notion failure — MongoDB is the source of truth. Log the failure and continue.
-
----
-
-## ACTION A.8.c — Mark Briefs as Used in Google Sheet (all posts together)
+## ACTION A.8.b — Mark Briefs as Used in Google Sheet (all posts together)
 
 After ALL posts are saved (or attempted), update the Google Sheet in one batch call:
 
@@ -109,7 +78,7 @@ After ALL posts are saved (or attempted), update the Google Sheet in one batch c
 }
 ```
 
-Include all successfully saved posts in this batch (even if Notion failed — MongoDB save is sufficient).
+Include all successfully saved posts in this batch.
 
 **Expected Response:** `{ "success": true, "updated": N }`
 
@@ -131,7 +100,7 @@ After all saves complete, show a clean summary:
 > 📌 [Day, Date] — [topic] ([content_pillar])
 > 📌 [Day, Date] — [topic] ([content_pillar])
 > 
-> MongoDB: ✅ | Notion: ✅ | Sheet: ✅
+> MongoDB: ✅ | Sheet: ✅
 > 
 > [If any failures, list them here]
 > 
@@ -146,19 +115,16 @@ After all saves complete, show a clean summary:
 
 | Action | On Failure | Blocking? |
 |--------|-----------|-----------|
-| sma-save-post (MongoDB) | Retry once, then ask user | YES — don't save to Notion for this post |
-| sma-save-to-notion | Retry once, warn & continue | NO — MongoDB is source of truth |
+| sma-save-post (MongoDB) | Retry once, then ask user | YES |
 | sma-update-sheet-status (mark_used) | Warn user, continue | NO |
 
 ---
 
 ## What NOT to Do
 
-- ❌ Do NOT save to Notion before MongoDB — MongoDB is the source of truth
 - ❌ Do NOT mark briefs as "Used" in the Sheet if their MongoDB save failed
 - ❌ Do NOT invent or modify content at this stage — save exactly what was confirmed in A.7
 - ❌ Do NOT set status to anything other than `"Scheduled_NoDraft"` in MongoDB
-- ❌ Do NOT set status to anything other than `"Scheduled - No Draft"` in Notion
 - ❌ Do NOT combine all posts into a single SavePost call — save each post individually
 
 ---

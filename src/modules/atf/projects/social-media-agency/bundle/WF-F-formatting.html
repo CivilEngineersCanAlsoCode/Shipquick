@@ -1,0 +1,1795 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Workflow F — Content Formatting | Flex SMA Bundle</title>
+  <meta name="bundle-version" content="1.0.0">
+  <meta name="source-module" content="flex-sma">
+  <meta name="workflow-code" content="F">
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 960px; margin: 0 auto; padding: 2rem; color: #1a1a1a; }
+    section { margin: 2rem 0; border-left: 4px solid #2563eb; padding-left: 1.5rem; }
+    article { margin: 1.5rem 0; padding: 1rem; background: #f8fafc; border-radius: 8px; }
+    h1 { color: #1e40af; } h2 { color: #2563eb; } h3 { color: #3b82f6; }
+    code { background: #f1f5f9; padding: 0.2em 0.4em; border-radius: 4px; font-size: 0.9em; }
+    pre { background: #1e293b; color: #e2e8f0; padding: 1rem; border-radius: 8px; overflow-x: auto; }
+    table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+    th, td { border: 1px solid #e2e8f0; padding: 0.5rem 0.75rem; text-align: left; }
+    th { background: #f1f5f9; }
+    .warning { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 0.75rem; margin: 0.5rem 0; }
+    .error { background: #fee2e2; border-left: 4px solid #ef4444; padding: 0.75rem; margin: 0.5rem 0; }
+    details { margin: 0.5rem 0; }
+    summary { cursor: pointer; font-weight: 600; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Workflow F &mdash; Content Formatting</h1>
+  <p><strong>Steps:</strong> 01 &rarr; 01b &rarr; F1 &rarr; F2 &rarr; F3 &rarr; F4 &nbsp;|&nbsp; <strong>Status:</strong> Active &nbsp;|&nbsp; <strong>Code:</strong> F</p>
+  <p>Apply LinkedIn-specific formatting rules to drafted posts &mdash; staircase layout, UPPERCASE headers, emoji placement, Hindi rules, code-block preview, user approval.</p>
+</header>
+
+<section data-type="workflow" data-code="F">
+
+  <!-- ════════════════════════════════════════════════════════════ -->
+  <!-- WORKFLOW DEFINITION (workflow.yaml + workflow.md)           -->
+  <!-- ════════════════════════════════════════════════════════════ -->
+
+  <article data-part="workflow-definition">
+    <h2>Workflow Definition</h2>
+
+    <table>
+      <tr><th>Field</th><th>Value</th></tr>
+      <tr><td>Name</td><td><code>content-formatting</code></td></tr>
+      <tr><td>Code</td><td><code>F</code></td></tr>
+      <tr><td>Description</td><td>Apply LinkedIn-specific formatting rules to drafted posts &mdash; staircase layout, UPPERCASE headers, emoji placement, Hindi rules, code-block preview</td></tr>
+      <tr><td>Config Source</td><td><code>{project-root}/_lr/_config/manifest.yaml</code></td></tr>
+      <tr><td>Installed Path</td><td><code>{project-root}/_lr/flex/workflows/content-formatting</code></td></tr>
+      <tr><td>Instructions</td><td><code>{installed_path}/instructions.md</code></td></tr>
+      <tr><td>Validation</td><td><code>{installed_path}/checklist.md</code></td></tr>
+      <tr><td>Template</td><td><code>{installed_path}/templates/formatted-post.template.md</code></td></tr>
+    </table>
+
+    <h3>Input File Patterns</h3>
+    <table>
+      <tr><th>Input</th><th>Pattern</th><th>Strategy</th></tr>
+      <tr><td>Drafted Posts</td><td><code>data/drafted-posts.json</code></td><td>FULL_LOAD</td></tr>
+      <tr><td>Formatting Rules</td><td><code>data/reference/formatting-rules.csv</code></td><td>FULL_LOAD</td></tr>
+    </table>
+
+    <h3>Goal</h3>
+    <p>Take drafted posts (status = <code>Drafted</code>), apply LinkedIn-specific formatting rules (staircase layout, 3-line blocks, UPPERCASE headers, emoji placement, Hindi sentences, character count, readability), generate a code-block preview, and get user approval to advance the post to <code>Previewed</code> status.</p>
+    <p><strong>System:</strong> This is a BMAD workflow &mdash; interactive, human-in-the-loop. The agent applies formatting rules, the user previews and approves (or requests changes). ALL data reads and writes go through n8n webhooks. The agent has ZERO direct DB/API access.</p>
+    <p><strong>Scope:</strong> LinkedIn only (v1). Formatting rules are platform-specific &mdash; this workflow implements the LinkedIn v1 ruleset.</p>
+
+    <h3>Steps</h3>
+    <table>
+      <tr><th>Step</th><th>File</th><th>Description</th><th>Key Webhooks</th></tr>
+      <tr><td>F.1</td><td><code>step-F1-pick-drafted-post.md</code></td><td>Fetch posts with status Drafted, user picks one</td><td><code>sma-fetch-post</code></td></tr>
+      <tr><td>F.2</td><td><code>step-F2-apply-formatting.md</code></td><td>Apply all LinkedIn formatting rules to raw draft</td><td>(local processing)</td></tr>
+      <tr><td>F.3</td><td><code>step-F3-generate-preview.md</code></td><td>Render formatted post in code block with stats</td><td>(local processing)</td></tr>
+      <tr><td>F.4</td><td><code>step-F4-user-approval.md</code></td><td>User approves, requests changes, or rejects</td><td><code>sma-update-post</code></td></tr>
+    </table>
+
+    <h3>Flow Summary</h3>
+    <pre>User: "Format karo" / "Post format do" / starts formatting workflow
+  |
+  F.1 ---&gt; FetchPost (status=Drafted)
+  |          |-- Present list to user (title, topic, date)
+  |          |-- User picks one to format
+  |          |-- If none found -&gt; exit
+  |          |-- On selection -&gt; update status to Formatting
+  |
+  F.2 ---&gt; Apply ALL formatting rules locally:
+  |          |-- Staircase layout
+  |          |-- Max 3-line blocks
+  |          |-- UPPERCASE headers (sparingly)
+  |          |-- Max 3 emojis at tension points
+  |          |-- Replace dashes with punctuation
+  |          |-- Bullets: " - ", Flows: "A —&gt; B —&gt; C"
+  |          |-- Max 3 Hindi sentences at emotional peaks
+  |          |-- 800-1600 ASCII characters
+  |          |-- FK Grade 7 readability
+  |          |-- CTA with positioning + follow
+  |          |-- 3-6 hashtags at end
+  |          |-- Present formatted version for initial feedback
+  |
+  F.3 ---&gt; Generate code-block preview
+  |          |-- Show exact character count
+  |          |-- Show emoji count, Hindi count, hashtag count
+  |          |-- Ask user: "Preview theek hai?"
+  |
+  F.4 ---&gt; User decision:
+             |-- Approve -&gt; UpdatePost (status=Previewed), save formatted content
+             |-- Changes -&gt; loop back to F.2/F.3
+             |-- Reject -&gt; revert status to Drafted, exit
+             |-- On approval -&gt; suggest C-Review workflow</pre>
+
+    <h3>Webhook Reference</h3>
+    <table>
+      <tr><th>n8n Workflow Name</th><th>Webhook URL</th><th>Used In</th></tr>
+      <tr><td>SMA/Data/Read/FetchPost</td><td><code>https://n8n.linkright.in/webhook/sma-fetch-post</code></td><td>F.1</td></tr>
+      <tr><td>SMA/Data/Write/UpdatePost</td><td><code>https://n8n.linkright.in/webhook/sma-update-post</code></td><td>F.1 (status=Formatting), F.4 (status=Previewed or revert)</td></tr>
+    </table>
+
+    <h3>Inputs</h3>
+    <ul>
+      <li>MongoDB: <code>linkedin_posts</code> collection (status = <code>Drafted</code>)</li>
+      <li>Formatting rules: <code>formatting-rules.csv</code> (LinkedIn v1 ruleset)</li>
+      <li>User decisions at F.2 (initial feedback), F.4 (approve/change/reject)</li>
+      <li>Pipeline predecessor: B (Content Drafting) must have finalized the draft</li>
+    </ul>
+
+    <h3>Outputs</h3>
+    <ul>
+      <li>Formatted LinkedIn post with all rules applied</li>
+      <li>Code-block preview shown to user</li>
+      <li>Post status updated to <code>Previewed</code> in MongoDB</li>
+      <li>Formatted content saved to post record</li>
+      <li>Ready for C (Content Review) workflow</li>
+    </ul>
+  </article>
+
+  <!-- ════════════════════════════════════════════════════════════ -->
+  <!-- INSTRUCTIONS                                                -->
+  <!-- ════════════════════════════════════════════════════════════ -->
+
+  <article data-part="instructions">
+    <h2>Agent Instructions</h2>
+
+    <h3>Overview</h3>
+    <p>This workflow transforms raw drafted posts into LinkedIn-ready formatted content. The agent takes a post that has passed through B-Drafting (status = <code>Drafted</code>), applies the full LinkedIn v1 formatting ruleset, generates a code-block preview, and gets user approval to advance the post to <code>Previewed</code> status. ALL data reads and writes go through n8n webhooks &mdash; the agent has ZERO direct DB/API access.</p>
+
+    <h3>Agents Involved</h3>
+    <p><strong>Pixel (flex-crafter):</strong> Drives the entire formatting flow &mdash; fetches drafted posts, applies formatting rules, generates previews, and manages the approval cycle.</p>
+
+    <h3>Pre-requisites</h3>
+    <ul>
+      <li>The post MUST be in <code>Drafted</code> status (came through the B-Drafting workflow)</li>
+      <li>The post must have raw content (body text) available in the post record</li>
+      <li>The <code>formatting-rules.csv</code> reference file should be loaded for rule verification</li>
+    </ul>
+
+    <h3>Execution Flow</h3>
+
+    <h4>Phase 1: Post Selection (Step F.1)</h4>
+    <ol>
+      <li><strong>Fetch Drafted Posts:</strong> POST to <code>sma-fetch-post</code> with <code>{ "status": "Drafted" }</code>. Retrieve all posts waiting for formatting.</li>
+      <li><strong>Present Options:</strong> Show the user a numbered list with each post's title, brief topic summary, and scheduled date.</li>
+      <li><strong>User Picks:</strong> User selects one post to format.</li>
+      <li><strong>Update Status:</strong> POST to <code>sma-update-post</code> to set the selected post's status to <code>Formatting</code>. This prevents another session from picking the same post.</li>
+      <li><strong>If no drafted posts exist:</strong> Inform the user and exit. Do NOT proceed with an empty selection.</li>
+    </ol>
+
+    <h4>Phase 2: Apply Formatting Rules (Step F.2)</h4>
+    <p>This is the core of the workflow. Apply ALL of the following rules to the raw draft content:</p>
+
+    <details>
+      <summary>Rule 1: Staircase Formatting</summary>
+      <p>Structure the post using a "staircase" layout. Each visual section should have progressive indentation or line breaks that create a descending visual flow. Start with a punchy hook line (standalone), follow with short blocks separated by blank lines. Each block is a distinct thought. Never dump a wall of text.</p>
+    </details>
+
+    <details>
+      <summary>Rule 2: Maximum 3-Line Blocks</summary>
+      <p>Never write more than 3 consecutive lines of text without a blank line separator. This is a HARD rule. If a paragraph has 4+ lines, split it. Aim for 1-3 lines per block. Ensures readability on mobile devices.</p>
+    </details>
+
+    <details>
+      <summary>Rule 3: UPPERCASE Headers</summary>
+      <p>Use UPPERCASE only for section headers, and use them sparingly (2-3 per post maximum). Do NOT use UPPERCASE for emphasis within body text.</p>
+    </details>
+
+    <details>
+      <summary>Rule 4: Emoji Placement</summary>
+      <p>Maximum 3 emojis per post. Place them ONLY at tension or transition points. Never use emojis as decoration, bullet markers, or line starters.</p>
+    </details>
+
+    <details>
+      <summary>Rule 5: Dash Replacement</summary>
+      <p>Replace ALL dashes with proper punctuation (period, comma, colon, parentheses). Exception: <code> - </code> for bullets and <code> —&gt; </code> for flow arrows are allowed.</p>
+    </details>
+
+    <details>
+      <summary>Rule 6: Bullet Formatting</summary>
+      <p>All bullets must use the format <code> - </code> (space, hyphen, space). Not &bull;, not *, not &ndash;.</p>
+    </details>
+
+    <details>
+      <summary>Rule 7: Flow Arrow Formatting</summary>
+      <p>When showing a process or progression, use the format: <code>A —&gt; B —&gt; C</code> (em-dash + greater-than sign).</p>
+    </details>
+
+    <details>
+      <summary>Rule 8: Hindi Sentences</summary>
+      <p>Maximum 3 Romanised Hindi sentences per post. Use them ONLY at emotional peaks. Hindi sentences must NOT contain content that needs to be vector-searchable (causes 15-25% lower accuracy in semantic search).</p>
+    </details>
+
+    <details>
+      <summary>Rule 9: Character Count</summary>
+      <p>The formatted post must be between 800 and 1600 ASCII characters (inclusive). This is a STRICT range. Count characters AFTER all formatting is applied.</p>
+    </details>
+
+    <details>
+      <summary>Rule 10: Readability &mdash; FK Grade 7</summary>
+      <p>Target Flesch-Kincaid Grade Level 7 or below. Short sentences (15 words average), simple words (2 syllables average), active voice, no jargon without explanation.</p>
+    </details>
+
+    <details>
+      <summary>Rule 11: CTA with Positioning + Follow</summary>
+      <p>Every post must end with a CTA that includes: (1) a positioning statement (who you are / what you do) and (2) a follow prompt (telling the reader to follow for more).</p>
+    </details>
+
+    <details>
+      <summary>Rule 12: Hashtags</summary>
+      <p>Add 3-6 hashtags at the very end of the post (after the CTA, separated by a blank line). No more than 6, no fewer than 3.</p>
+    </details>
+
+    <h4>Phase 3: Preview Generation (Step F.3)</h4>
+    <ol>
+      <li><strong>Code Block Preview:</strong> Render the fully formatted post inside a markdown code block.</li>
+      <li><strong>Stats Summary:</strong> Show character count (800-1600), emoji count (0-3), Hindi sentence count (0-3), hashtag count (3-6), approximate FK Grade Level.</li>
+      <li><strong>Ask User:</strong> "Preview theek hai? Koi changes chahiye?"</li>
+    </ol>
+
+    <h4>Phase 4: User Approval (Step F.4)</h4>
+    <ol>
+      <li><strong>Approve:</strong> POST to <code>sma-update-post</code> with status = <code>Previewed</code> and the formatted content. Suggest C-Review workflow.</li>
+      <li><strong>Request Changes:</strong> Loop back to F.2 (apply specific changes) then F.3 (regenerate preview). Do NOT re-apply all rules from scratch.</li>
+      <li><strong>Reject:</strong> Revert status to <code>Drafted</code>. Exit workflow.</li>
+    </ol>
+
+    <h3>Key Constraints</h3>
+    <ul>
+      <li>LinkedIn only (v1), one post formatted at a time</li>
+      <li>Agent has ZERO direct DB/API access &mdash; everything through n8n webhooks</li>
+      <li>ALL 16 formatting rules (FR01-FR16) must be applied &mdash; none are optional</li>
+      <li>Character count (800-1600) is a HARD limit, not a suggestion</li>
+      <li>Code-block preview is MANDATORY before approval</li>
+      <li>Never invent post content &mdash; only format what exists in the draft</li>
+      <li>All user communication in Hinglish (Hindi-English mix)</li>
+      <li>If webhook fails, retry once, then report to user with n8n workflow name</li>
+    </ul>
+
+    <h3>What NOT to Do</h3>
+    <ul>
+      <li>Do NOT rewrite the post content &mdash; only FORMAT it</li>
+      <li>Do NOT add new ideas, examples, or stories not in the original draft</li>
+      <li>Do NOT use bold, italic, or underline formatting (LinkedIn plain text only)</li>
+      <li>Do NOT exceed 3 emojis, 3 Hindi sentences, or 6 hashtags</li>
+      <li>Do NOT skip the staircase layout</li>
+      <li>Do NOT approve a post that violates any formatting rule</li>
+      <li>Do NOT proceed without user confirmation at F.4</li>
+      <li>Do NOT show raw JSON to the user</li>
+    </ul>
+
+    <h3>Error Handling</h3>
+    <ul>
+      <li><strong>Webhook failure (fetch):</strong> Retry once after 5 seconds. If it fails again, report n8n workflow name and halt.</li>
+      <li><strong>Webhook failure (update):</strong> Retry once. If it fails again, warn user but provide formatted content locally.</li>
+      <li><strong>Character count out of range:</strong> Automatically adjust (trim or expand) and show the user what changed.</li>
+      <li><strong>Post has no raw content:</strong> Do not attempt to format. Suggest B-Drafting.</li>
+    </ul>
+
+    <h3>Success Criteria</h3>
+    <ul>
+      <li>Post formatted with ALL 16 LinkedIn v1 rules (FR01-FR16) applied</li>
+      <li>Character count within 800-1600 range</li>
+      <li>Code-block preview shown to user</li>
+      <li>User explicitly approved the formatted version</li>
+      <li>Status updated to <code>Previewed</code> in MongoDB</li>
+      <li>Formatted content saved to post record</li>
+      <li>No formatting rules violated in final output</li>
+    </ul>
+  </article>
+
+  <!-- ════════════════════════════════════════════════════════════ -->
+  <!-- STEP 01 — Load Session Context                             -->
+  <!-- ════════════════════════════════════════════════════════════ -->
+
+  <article data-step="01">
+    <h2>Step 01 &mdash; Load Session Context</h2>
+    <p><strong>Agent:</strong> Pixel (flex-crafter) &nbsp;|&nbsp; <strong>Trigger:</strong> User starts the formatting workflow.</p>
+
+    <h3>What You Do</h3>
+    <p>Before any formatting work begins, load the session context. This ensures the agent has all necessary configuration and can detect interrupted sessions.</p>
+
+    <h3>Actions</h3>
+
+    <h4>1. Load Formatting Configuration</h4>
+    <p>Load the formatting rules reference file (<code>formatting-rules.csv</code>) from the workflow's data directory. Key rules to hold in working memory:</p>
+    <ul>
+      <li>Character count range: 800-1600</li>
+      <li>Max emojis: 3</li>
+      <li>Max Hindi sentences: 3</li>
+      <li>Max consecutive lines before break: 3</li>
+      <li>Hashtag range: 3-6</li>
+      <li>FK readability target: Grade 7</li>
+    </ul>
+
+    <h4>2. Check for In-Progress Sessions</h4>
+    <p>Before fetching new posts, check if there is a post with status <code>Formatting</code> &mdash; this indicates a previously interrupted session.</p>
+    <p><strong>POST</strong> <code>https://n8n.linkright.in/webhook/sma-fetch-post</code></p>
+    <pre>{ "status": "Formatting" }</pre>
+    <p><strong>If a post with status <code>Formatting</code> is found:</strong> Proceed to step-01b (Resume If Interrupted).</p>
+    <p><strong>If no <code>Formatting</code> posts found:</strong> Proceed to step-F1 (Pick Drafted Post).</p>
+
+    <h3>After the Step</h3>
+    <p>Tell the user: <em>"Formatting workflow shuru karte hain! Pehle check karta hoon koi pending session toh nahi hai..."</em></p>
+
+    <h3>Error Handling</h3>
+    <p><strong>If the formatting-rules reference file is missing:</strong> Proceed with hardcoded defaults (the rules are documented in instructions.md).</p>
+    <p><strong>If the webhook call fails:</strong> Retry once. If it fails again, assume no in-progress session and proceed to F.1.</p>
+
+    <h3>What NOT to Do</h3>
+    <ul>
+      <li>Do NOT skip the session check &mdash; interrupted sessions must be detected</li>
+      <li>Do NOT start formatting without loading the rules reference</li>
+      <li>Do NOT show raw configuration data to the user</li>
+    </ul>
+  </article>
+
+  <!-- ════════════════════════════════════════════════════════════ -->
+  <!-- STEP 01b — Resume If Interrupted                           -->
+  <!-- ════════════════════════════════════════════════════════════ -->
+
+  <article data-step="01b">
+    <h2>Step 01b &mdash; Resume If Interrupted</h2>
+    <p><strong>Agent:</strong> Pixel (flex-crafter) &nbsp;|&nbsp; <strong>Trigger:</strong> Step 01 detected a post with status <code>Formatting</code>.</p>
+
+    <h3>What You Do</h3>
+    <p>A previous formatting session was interrupted. The agent must recover gracefully and let the user decide how to proceed.</p>
+
+    <h3>Actions</h3>
+
+    <h4>1. Present the Interrupted Post</h4>
+    <p>Show the user the post found with <code>Formatting</code> status: title, topic/brief summary, date it was scheduled for, whether any formatted content was partially saved.</p>
+    <p><em>"Ek post mila jo pehle se formatting mein tha &mdash; lagta hai last session beech mein ruk gaya tha."</em></p>
+
+    <h4>2. Ask User How to Proceed</h4>
+    <ol>
+      <li><strong>Resume formatting this post</strong> &mdash; Continue from where it was left off.</li>
+      <li><strong>Abandon and pick a different post</strong> &mdash; Revert status to <code>Drafted</code>, proceed to F.1.</li>
+      <li><strong>Abandon and exit</strong> &mdash; Revert status to <code>Drafted</code>, exit workflow.</li>
+    </ol>
+
+    <h4>3. Execute the User's Choice</h4>
+    <p><strong>Option 1 &mdash; Resume:</strong> If partial formatted content exists, proceed to F.3. If not, proceed to F.2 with the raw draft.</p>
+    <p><strong>Option 2 &mdash; Abandon + Pick New:</strong> POST to <code>sma-update-post</code> to revert to <code>Drafted</code>, then proceed to F.1.</p>
+    <p><strong>Option 3 &mdash; Abandon + Exit:</strong> Revert, then exit.</p>
+
+    <h3>Error Handling</h3>
+    <p><strong>If the revert webhook fails:</strong> Still proceed with the user's choice. The post may need manual status correction later.</p>
+
+    <h3>What NOT to Do</h3>
+    <ul>
+      <li>Do NOT auto-resume without asking the user</li>
+      <li>Do NOT leave the post stuck in <code>Formatting</code> status if user wants to abandon</li>
+      <li>Do NOT discard any partially formatted content without user consent</li>
+    </ul>
+  </article>
+
+  <!-- ════════════════════════════════════════════════════════════ -->
+  <!-- STEP F1 — Pick Drafted Post                                -->
+  <!-- ════════════════════════════════════════════════════════════ -->
+
+  <article data-step="F1">
+    <h2>Step F.1 &mdash; Pick Drafted Post</h2>
+    <p><strong>Agent:</strong> Pixel (flex-crafter) &nbsp;|&nbsp; <strong>Trigger:</strong> Session context loaded (Step 01), no interrupted sessions (or user chose to pick a new post).</p>
+
+    <h3>What You Do</h3>
+    <p>Fetch all posts with status <code>Drafted</code> from MongoDB via the <code>sma-fetch-post</code> webhook. Present them to the user as a numbered list. The user picks one post to format. You lock it by updating its status to <code>Formatting</code>, then hand off the full post object to F.2.</p>
+
+    <h3>Action 1: Fetch Drafted Posts</h3>
+    <p><strong>POST</strong> <code>https://n8n.linkright.in/webhook/sma-fetch-post</code></p>
+    <pre>{
+  "status": "Drafted"
+}</pre>
+
+    <h4>Expected Response</h4>
+    <pre>{
+  "posts": [
+    {
+      "_id": "67a1b2c3d4e5f6...",
+      "title": "Why Most PMs Build Features Nobody Wants",
+      "topic": "product-market-fit",
+      "brief_summary": "Lesson from launching 3 failed features in 6 months",
+      "scheduled_date": "2026-03-18",
+      "raw_content": "I shipped 3 features last year...",
+      "content_format": "storytelling",
+      "hook_framework": "pattern-interrupt",
+      "narrative_framework": "hero-journey",
+      "cta_framework": "value-follow",
+      "tone": "reflective-honest",
+      "created_at": "2026-03-14T10:30:00Z",
+      "status": "Drafted"
+    }
+  ]
+}</pre>
+
+    <h3>Action 2: Present Posts to User</h3>
+    <p><strong>If <code>posts.length &gt; 0</code>:</strong> Display numbered list with title, brief summary, scheduled date. Ask user to pick by number.</p>
+    <p><strong>If <code>posts.length === 0</code>:</strong> <em>"Abhi koi drafted post nahi hai format karne ke liye."</em> Exit workflow.</p>
+    <p><strong>If <code>posts.length === 1</code>:</strong> Still present the single post and ask for confirmation. Do NOT auto-select.</p>
+
+    <h3>Action 3: Lock the Post (Status &rarr; Formatting)</h3>
+    <p><strong>POST</strong> <code>https://n8n.linkright.in/webhook/sma-update-post</code></p>
+    <pre>{
+  "post_id": "67a1b2c3d4e5f6...",
+  "status": "Formatting"
+}</pre>
+
+    <h3>Validation Before Proceeding</h3>
+    <ol>
+      <li><strong><code>raw_content</code> exists and is non-empty:</strong> If empty, halt, revert status, and exit.</li>
+      <li><strong><code>raw_content</code> length is at least 200 characters:</strong> If too short, warn, revert status, and exit.</li>
+    </ol>
+
+    <h3>Error Handling</h3>
+    <ul>
+      <li><strong>Fetch webhook fails:</strong> Retry once after 5 seconds. On second failure, report <code>SMA/Data/Read/FetchPost</code> and halt.</li>
+      <li><strong>Status update webhook fails:</strong> Proceed to F.2 anyway (status lock is safety, not hard blocker).</li>
+      <li><strong>Invalid selection:</strong> Re-prompt with valid range.</li>
+    </ul>
+
+    <h3>What NOT to Do</h3>
+    <ul>
+      <li>Do NOT invent or hallucinate posts if webhook returns empty</li>
+      <li>Do NOT auto-select a post without user input (even if only 1)</li>
+      <li>Do NOT show raw JSON to the user</li>
+      <li>Do NOT proceed to F.2 without a valid post stored in memory</li>
+      <li>Do NOT proceed if <code>raw_content</code> is empty</li>
+    </ul>
+
+    <h3>Success Criteria</h3>
+    <ul>
+      <li>Webhook called successfully and returned posts list</li>
+      <li>User presented with readable numbered list</li>
+      <li>User explicitly selected a post by number</li>
+      <li>Selected post's status updated to <code>Formatting</code></li>
+      <li>Selected post's <code>raw_content</code> verified as non-empty (&ge;200 chars)</li>
+      <li>Full post object stored in working memory for F.2</li>
+    </ul>
+
+    <h3>Output for Next Step</h3>
+    <p>Pass to F.2: <code>selected_post</code> &mdash; full post object (<code>_id</code>, <code>title</code>, <code>topic</code>, <code>brief_summary</code>, <code>raw_content</code>, <code>scheduled_date</code>, <code>content_format</code>, <code>hook_framework</code>, <code>narrative_framework</code>, <code>cta_framework</code>, <code>tone</code>, <code>created_at</code>)</p>
+  </article>
+
+  <!-- ════════════════════════════════════════════════════════════ -->
+  <!-- STEP F2 — Apply Formatting Rules                           -->
+  <!-- ════════════════════════════════════════════════════════════ -->
+
+  <article data-step="F2">
+    <h2>Step F.2 &mdash; Apply Formatting Rules</h2>
+    <p><strong>Agent:</strong> Pixel (flex-crafter) &nbsp;|&nbsp; <strong>Trigger:</strong> User selected a post in F.1 (or resumed from 01b with raw draft in memory).</p>
+
+    <h3>What You Do</h3>
+    <p>This is the CORE step. Take the raw drafted content from B-Drafting and apply ALL 16 LinkedIn v1 formatting rules. You are FORMATTING, not rewriting. The substance, arguments, voice, and core message MUST be preserved.</p>
+
+    <h3>Input</h3>
+    <ul>
+      <li><code>selected_post.raw_content</code> &mdash; the raw draft text</li>
+      <li><code>selected_post.title</code>, <code>topic</code>, <code>content_format</code>, <code>hook_framework</code>, <code>cta_framework</code>, <code>tone</code></li>
+    </ul>
+
+    <h3>Formatting Rules &mdash; All 16 in Order</h3>
+
+    <h4>PHASE 1: STRUCTURE (FR01, FR02, FR11, FR15, FR16)</h4>
+
+    <details>
+      <summary>Rule 1 &mdash; Staircase Formatting (FR01, P2)</summary>
+      <p>Restructure the post into a "staircase" visual flow. Start with a punchy hook line (standalone, 1 line max). Follow with short blocks separated by blank lines. Each block is a distinct thought. Lines within a block can vary in length.</p>
+      <pre>CORRECT:
+I shipped 3 features last year.
+All three flopped.
+
+Not a single user asked for them.
+Not one.
+
+WRONG:
+I shipped 3 features last year. All three flopped. Not a single user asked for them...</pre>
+    </details>
+
+    <details>
+      <summary>Rule 2 &mdash; Maximum 3-Line Blocks (FR02, P1)</summary>
+      <p>HARD rule, non-negotiable. Scan every paragraph. If any has 4+ consecutive lines, split it. Aim for 1-2 line blocks as default, 3-line for emphasis.</p>
+    </details>
+
+    <details>
+      <summary>Rule 3 &mdash; One Idea Per Post (FR15, P2)</summary>
+      <p>Verify the draft focuses on ONE core idea. If the draft covers multiple topics, identify the strongest one and trim the rest. Do NOT rewrite to merge ideas.</p>
+    </details>
+
+    <details>
+      <summary>Rule 4 &mdash; Whitespace Breathing Room (FR16, P2)</summary>
+      <p>Generous whitespace between blocks. Every block separated by at least one blank line. The post should feel "airy", not dense.</p>
+    </details>
+
+    <details>
+      <summary>Rule 5 &mdash; Character Limit: 800-1600 (FR11, P1)</summary>
+      <p>Enforced last. Target: 800-1600 ASCII characters inclusive.</p>
+    </details>
+
+    <h4>PHASE 2: TYPOGRAPHY (FR03, FR04, FR05, FR06, FR07)</h4>
+
+    <details>
+      <summary>Rule 6 &mdash; No Bold/Italic/Underline (FR03, P1)</summary>
+      <p>Remove ALL <code>**bold**</code>, <code>*italic*</code>, <code>__underline__</code> markers. Convert important headers to UPPERCASE (max 2-3 per post). UPPERCASE is for section headers ONLY.</p>
+    </details>
+
+    <details>
+      <summary>Rule 7 &mdash; Replace Dashes with Punctuation (FR04, P1)</summary>
+      <p>Replace ALL dashes used as em-dashes/en-dashes with proper punctuation. Exceptions: <code> - </code> for bullets and <code> —&gt; </code> for flow arrows.</p>
+    </details>
+
+    <details>
+      <summary>Rule 8 &mdash; Bullet Format: <code> - </code> (FR05, P1)</summary>
+      <p>ALL bullets must use <code> - </code> (space, hyphen, space). Replace &bull;, *, &ndash;, &rarr;, &gt; etc.</p>
+    </details>
+
+    <details>
+      <summary>Rule 9 &mdash; Numbered Lists: <code>1. </code> (FR06, P2)</summary>
+      <p>Numbered lists use <code>digit.space</code> format. Not <code>1)</code> or <code>(1)</code>.</p>
+    </details>
+
+    <details>
+      <summary>Rule 10 &mdash; Flow Arrows: <code>A —&gt; B —&gt; C</code> (FR07, P2)</summary>
+      <p>Replace <code>-&gt;</code>, <code>&rarr;</code>, <code>--&gt;</code>, <code>=&gt;</code> with <code> —&gt; </code> (space, em-dash, greater-than, space).</p>
+    </details>
+
+    <h4>PHASE 3: LANGUAGE &amp; READABILITY (FR08, FR09, FR10)</h4>
+
+    <details>
+      <summary>Rule 11 &mdash; Maximum 3 Emojis (FR08, P1)</summary>
+      <p>Maximum 3 emojis. Place ONLY at points of maximum emotional tension, transition, or buildup. Strategic placement: hook line, tension/pivot point, CTA. Never as bullet markers or decoration.</p>
+    </details>
+
+    <details>
+      <summary>Rule 12 &mdash; Maximum 3 Hindi Sentences (FR09, P1)</summary>
+      <p>Maximum 3 Romanised Hindi sentences at emotional peaks only. Hindi must NOT contain vector-searchable content. Each Hindi sentence under 15 words.</p>
+    </details>
+
+    <details>
+      <summary>Rule 13 &mdash; FK Grade 7 Readability (FR10, P1)</summary>
+      <p>Average 15 words per sentence. Average 2 syllables per word. Active voice. No jargon without explanation. FK Grade &asymp; 0.39 &times; (words/sentences) + 11.8 &times; (syllables/words) &minus; 15.59</p>
+    </details>
+
+    <h4>PHASE 4: FOOTER (FR12, FR13, FR14)</h4>
+
+    <details>
+      <summary>Rule 14 &mdash; CTA Line 1: Positioning Statement (FR12, P1)</summary>
+      <p>1-sentence positioning statement answering: "Who is this person and why should I follow them?"</p>
+    </details>
+
+    <details>
+      <summary>Rule 15 &mdash; CTA Line 2: Follow Invitation (FR13, P2)</summary>
+      <p>1-sentence follow prompt specific about what the reader gets by following.</p>
+    </details>
+
+    <details>
+      <summary>Rule 16 &mdash; Hashtags at End Only (FR14, P1)</summary>
+      <p>3-6 generic hashtags at the very end. <code>#CamelCase</code> format. Mix broad + niche. Never in body text.</p>
+    </details>
+
+    <h3>Final Check: Character Count Enforcement (FR11)</h3>
+    <p>After ALL 16 rules applied, count total ASCII characters. Target: 800-1600.</p>
+    <ul>
+      <li><strong>Under 800:</strong> Expand key points with concrete examples. Do NOT pad with filler.</li>
+      <li><strong>Over 1600:</strong> Tighten sentences, cut redundant words, remove weakest body block. Do NOT cut hook/CTA/footer.</li>
+      <li><strong>Still out of range after 2 attempts:</strong> Flag to user with current count.</li>
+    </ul>
+
+    <h3>Formatting Execution Order</h3>
+    <pre>Raw Draft
+  |
+  +-- 1. Identify single core idea (FR15)
+  +-- 2. Apply staircase layout (FR01)
+  +-- 3. Enforce 3-line blocks (FR02)
+  +-- 4. Add whitespace breathing room (FR16)
+  |
+  +-- 5. Strip bold/italic/underline, add UPPERCASE headers (FR03)
+  +-- 6. Replace dashes with punctuation (FR04)
+  +-- 7. Fix bullet format to ' - ' (FR05)
+  +-- 8. Fix numbered lists to '1. ' (FR06)
+  +-- 9. Fix flow arrows to 'A —&gt; B —&gt; C' (FR07)
+  |
+  +-- 10. Place emojis at tension points (FR08, max 3)
+  +-- 11. Add Hindi sentences at emotional peaks (FR09, max 3)
+  +-- 12. Simplify to FK Grade 7 (FR10)
+  |
+  +-- 13. Add positioning statement (FR12)
+  +-- 14. Add follow line (FR13)
+  +-- 15. Add 3-6 hashtags at end (FR14)
+  |
+  +-- 16. Check character count 800-1600 (FR11)
+        |
+        Formatted Post</pre>
+
+    <h3>After Formatting</h3>
+    <p>Present the formatted version as regular text (NOT in a code block &mdash; that is F.3's job). If user is satisfied, proceed to F.3. If user wants changes, apply ONLY the specific changes requested.</p>
+
+    <h3>Iteration Tracking</h3>
+    <ul>
+      <li><strong>Iteration 1:</strong> Initial full formatting (all 16 rules)</li>
+      <li><strong>Iteration 2+:</strong> Targeted changes based on user feedback</li>
+      <li><strong>Iteration 4+:</strong> Suggest returning to B-Drafting</li>
+    </ul>
+
+    <h3>Error Handling</h3>
+    <ul>
+      <li><strong>Empty <code>raw_content</code>:</strong> Exit, revert status to <code>Drafted</code>.</li>
+      <li><strong>Character count out of range after 2 attempts:</strong> Proceed to F.3 with a warning flag.</li>
+      <li><strong>Fully Hindi draft:</strong> Exit, suggest B-Drafting rewrite in English.</li>
+    </ul>
+
+    <h3>What NOT to Do</h3>
+    <ul>
+      <li>Do NOT rewrite post content, arguments, or voice &mdash; only FORMAT</li>
+      <li>Do NOT add new ideas, stories, or examples not in the draft</li>
+      <li>Do NOT use bold, italic, or underline</li>
+      <li>Do NOT exceed any formatting limit</li>
+      <li>Do NOT skip any of the 16 rules</li>
+      <li>Do NOT show the formatted post in a code block (that is F.3's job)</li>
+      <li>Do NOT use rich text Unicode characters as a workaround</li>
+    </ul>
+
+    <h3>Success Criteria</h3>
+    <ul>
+      <li>All 16 formatting rules (FR01-FR16) applied and verified</li>
+      <li>Staircase layout, max 3-line blocks, zero rich text</li>
+      <li>Max 2-3 UPPERCASE headers, dashes replaced, bullets and numbered lists formatted</li>
+      <li>Emoji 0-3, Hindi 0-3, FK Grade &le;7</li>
+      <li>Positioning + follow present, 3-6 hashtags at end</li>
+      <li>Character count 800-1600, single idea, generous whitespace</li>
+      <li>Original voice preserved, user shown and gave feedback</li>
+    </ul>
+
+    <h3>Output for Next Step</h3>
+    <p>Pass to F.3: <code>formatted_content</code>, <code>selected_post</code>, <code>formatting_stats</code> (character_count, emoji_count, hindi_sentence_count, hashtag_count, uppercase_header_count, max_block_lines, approx_fk_grade, has_positioning, has_follow_line, has_rich_text, iteration_count)</p>
+  </article>
+
+  <!-- ════════════════════════════════════════════════════════════ -->
+  <!-- STEP F3 — Generate Preview                                 -->
+  <!-- ════════════════════════════════════════════════════════════ -->
+
+  <article data-step="F3">
+    <h2>Step F.3 &mdash; Generate Preview</h2>
+    <p><strong>Agent:</strong> Pixel (flex-crafter) &nbsp;|&nbsp; <strong>Trigger:</strong> Formatting complete in F.2, user approved the initial formatted version.</p>
+
+    <h3>What You Do</h3>
+    <p>Render the fully formatted post inside a markdown code block so the user sees EXACTLY what it will look like on LinkedIn. Display a formatting stats table showing all rule compliance metrics. Flag any violations. Ask the user to approve, request changes, or reject.</p>
+    <p>This step is the quality gate &mdash; no post advances to <code>Previewed</code> status unless ALL metrics pass and the user explicitly approves.</p>
+
+    <h3>Action 1: Compute Final Stats</h3>
+    <table>
+      <tr><th>Metric</th><th>How to Compute</th><th>Target</th></tr>
+      <tr><td>Character Count</td><td>All ASCII chars including blank lines, emojis (count each as 1), hashtags</td><td>800-1600</td></tr>
+      <tr><td>Emoji Count</td><td>All Unicode emoji characters</td><td>0-3</td></tr>
+      <tr><td>Hindi Sentence Count</td><td>Sentences where &gt;50% of words are Hindi</td><td>0-3</td></tr>
+      <tr><td>Hashtag Count</td><td><code>#word</code> patterns at end of post</td><td>3-6</td></tr>
+      <tr><td>UPPERCASE Header Count</td><td>Lines entirely UPPERCASE (excl. hashtags, short words)</td><td>0-3</td></tr>
+      <tr><td>Max Block Lines</td><td>Longest sequence of consecutive non-blank lines</td><td>&le;3</td></tr>
+      <tr><td>Rich Text Check</td><td>Scan for <code>**</code>, <code>*</code>, <code>__</code>, <code>_</code> markers or Unicode bold/italic</td><td>None found</td></tr>
+      <tr><td>FK Grade Level</td><td>0.39 &times; (words/sentences) + 11.8 &times; (syllables/words) &minus; 15.59</td><td>&le;7.0</td></tr>
+      <tr><td>Positioning Statement</td><td>Present after CTA</td><td>Present</td></tr>
+      <tr><td>Follow Line</td><td>Present after positioning</td><td>Present</td></tr>
+    </table>
+
+    <h3>Action 2: Render Code Block Preview</h3>
+    <p>Wrap the entire <code>formatted_content</code> in a markdown code block. This is the WYSIWYG preview. No annotations, line numbers, or modifications inside the code block. Blank lines and emojis must be preserved.</p>
+
+    <h3>Action 3: Display Stats Table</h3>
+    <p>Show the full 16-rule compliance table with PASS/FAIL per metric (FR01 through FR16).</p>
+
+    <h3>Action 4: Handle Failures</h3>
+    <p>If any metric shows FAIL, do NOT allow approval. Offer auto-fix:</p>
+    <table>
+      <tr><th>Failed Rule</th><th>Auto-Fix Action</th></tr>
+      <tr><td>FR02 (block &gt;3 lines)</td><td>Insert blank line at nearest thought break</td></tr>
+      <tr><td>FR03 (rich text)</td><td>Strip all markdown formatting markers</td></tr>
+      <tr><td>FR04 (dashes remain)</td><td>Replace with period + new sentence</td></tr>
+      <tr><td>FR05 (wrong bullets)</td><td>Replace with <code> - </code></td></tr>
+      <tr><td>FR06 (wrong numbers)</td><td>Replace with <code>1. </code></td></tr>
+      <tr><td>FR07 (wrong arrows)</td><td>Replace with <code> —&gt; </code></td></tr>
+      <tr><td>FR08 (&gt;3 emojis)</td><td>Remove from least impactful positions</td></tr>
+      <tr><td>FR09 (&gt;3 Hindi)</td><td>Remove from least emotional positions</td></tr>
+      <tr><td>FR10 (FK &gt;7)</td><td>Split longest sentences, simplify biggest words</td></tr>
+      <tr><td>FR11 (chars &lt;800)</td><td>Expand weakest body block with example</td></tr>
+      <tr><td>FR11 (chars &gt;1600)</td><td>Trim redundant words, cut weakest block</td></tr>
+      <tr><td>FR12 (no positioning)</td><td>Add default positioning line</td></tr>
+      <tr><td>FR13 (no follow)</td><td>Add default follow line</td></tr>
+      <tr><td>FR14 (hashtags wrong)</td><td>Add/remove to hit 3-6 range</td></tr>
+    </table>
+    <p>After auto-fix, regenerate the preview (loop within this step). If auto-fix fails after 2 attempts, let user decide.</p>
+
+    <h3>Action 5: Ask User Decision</h3>
+    <p>Once all stats show PASS:</p>
+    <ol>
+      <li><strong>Approve</strong> &mdash; Post saves as <code>Previewed</code></li>
+      <li><strong>Changes</strong> &mdash; Loop back to F.2 for targeted edits</li>
+      <li><strong>Reject</strong> &mdash; Reverts to <code>Drafted</code>, exits workflow</li>
+    </ol>
+
+    <h3>Readability Score Display</h3>
+    <p>Show: average sentence length (target &le;15 words), average word length (target &le;2 syllables), voice (active/mixed/passive), verdict.</p>
+
+    <h3>Error Handling</h3>
+    <ul>
+      <li><strong>Empty formatted_content:</strong> Go back to F.2 with original <code>raw_content</code>.</li>
+      <li><strong>Stats computation fails:</strong> Show preview anyway with approximate count.</li>
+    </ul>
+
+    <h3>What NOT to Do</h3>
+    <ul>
+      <li>Do NOT skip the code block preview or stats table</li>
+      <li>Do NOT allow approval if ANY rule fails</li>
+      <li>Do NOT modify content without user consent (except auto-fixes for failed rules)</li>
+      <li>Do NOT round character count</li>
+    </ul>
+
+    <h3>Success Criteria</h3>
+    <ul>
+      <li>Formatted post rendered inside code block (exact copy)</li>
+      <li>All 16 metrics computed and displayed</li>
+      <li>All metrics show PASS</li>
+      <li>FK Grade with readability breakdown shown</li>
+      <li>User presented with 3 clear options</li>
+      <li>User's explicit decision captured</li>
+    </ul>
+
+    <h3>Output for Next Step</h3>
+    <p>Pass to F.4: <code>formatted_content</code>, <code>selected_post</code>, <code>formatting_stats</code>, <code>user_decision</code>, <code>change_requests</code></p>
+  </article>
+
+  <!-- ════════════════════════════════════════════════════════════ -->
+  <!-- STEP F4 — User Approval                                    -->
+  <!-- ════════════════════════════════════════════════════════════ -->
+
+  <article data-step="F4">
+    <h2>Step F.4 &mdash; User Approval</h2>
+    <p><strong>Agent:</strong> Pixel (flex-crafter) &nbsp;|&nbsp; <strong>Trigger:</strong> User made a decision in F.3.</p>
+
+    <h3>What You Do</h3>
+    <p>Execute the user's decision. On approval, save formatted content and advance to <code>Previewed</code>. On changes, loop back to F.2. On rejection, revert to <code>Drafted</code> and exit.</p>
+
+    <h3>Option 1: User Approves</h3>
+    <p><strong>POST</strong> <code>https://n8n.linkright.in/webhook/sma-update-post</code></p>
+    <pre>{
+  "post_id": "67a1b2c3d4e5f6...",
+  "status": "Previewed",
+  "formatted_content": "...",
+  "formatting_stats": { ... },
+  "formatted_at": "2026-03-14T14:30:00Z"
+}</pre>
+    <p><strong>On success:</strong> Confirm, show Post-Approval Summary, suggest C-Review workflow.</p>
+    <p><strong>On failure:</strong> Retry once. If still fails, display formatted content in code block for manual backup. Provide post_id for manual status update. Do NOT lose formatted content.</p>
+
+    <h3>Post-Approval Summary</h3>
+    <table>
+      <tr><th>Field</th><th>Value</th></tr>
+      <tr><td>Post</td><td>{title}</td></tr>
+      <tr><td>Topic</td><td>{topic}</td></tr>
+      <tr><td>Scheduled</td><td>{scheduled_date}</td></tr>
+      <tr><td>Status Flow</td><td><code>Drafted</code> —&gt; <code>Formatting</code> —&gt; <code>Previewed</code></td></tr>
+      <tr><td>Characters</td><td>{count} / 1600</td></tr>
+      <tr><td>Emojis</td><td>{count} / 3</td></tr>
+      <tr><td>Hindi sentences</td><td>{count} / 3</td></tr>
+      <tr><td>Hashtags</td><td>{count}</td></tr>
+      <tr><td>FK Grade</td><td>~{grade} / 7</td></tr>
+      <tr><td>UPPERCASE headers</td><td>{count}</td></tr>
+      <tr><td>Iterations</td><td>{count}</td></tr>
+    </table>
+    <p><strong>Next:</strong> C-Review workflow (post must be <code>Previewed</code> to enter review)</p>
+
+    <h3>Option 2: User Requests Changes</h3>
+    <ol>
+      <li>Note specific changes requested</li>
+      <li>Increment iteration counter</li>
+      <li>Loop back to F.2 &mdash; apply ONLY the specific changes (not full re-format)</li>
+      <li>After F.2, return to F.3 for new preview</li>
+    </ol>
+
+    <h4>Iteration Limits</h4>
+    <table>
+      <tr><th>Iteration</th><th>Behavior</th></tr>
+      <tr><td>1</td><td>Initial full formatting (all 16 rules)</td></tr>
+      <tr><td>2</td><td>Targeted changes &mdash; normal</td></tr>
+      <tr><td>3</td><td>Mention: "Yeh 3rd iteration hai."</td></tr>
+      <tr><td>4</td><td>Suggest B-Drafting rework</td></tr>
+      <tr><td>5+</td><td>Strongly recommend B-Drafting rework</td></tr>
+    </table>
+
+    <h4>Common Change Types</h4>
+    <table>
+      <tr><th>User Says</th><th>Action</th></tr>
+      <tr><td>"Hook aur strong karo"</td><td>Rewrite hook line only</td></tr>
+      <tr><td>"Emoji hata do"</td><td>Remove emojis, recount stats</td></tr>
+      <tr><td>"Hindi add karo somewhere"</td><td>Add 1 Hindi sentence at best emotional peak</td></tr>
+      <tr><td>"Too long, trim karo"</td><td>Cut weakest body block, recount</td></tr>
+      <tr><td>"CTA change karo"</td><td>Rewrite CTA + positioning only</td></tr>
+      <tr><td>"Hashtags change karo"</td><td>Replace hashtags only</td></tr>
+      <tr><td>"Tone thoda casual karo"</td><td>Adjust word choices, preserve structure</td></tr>
+    </table>
+
+    <h3>Option 3: User Rejects</h3>
+    <p><strong>POST</strong> <code>sma-update-post</code> with <code>{ "post_id": "...", "status": "Drafted" }</code></p>
+    <p>Exit workflow. Suggest B-Drafting rework or retry later.</p>
+
+    <h3>Webhook Reference</h3>
+    <table>
+      <tr><th>Webhook</th><th>URL</th><th>Used For</th></tr>
+      <tr><td>sma-update-post</td><td><code>https://n8n.linkright.in/webhook/sma-update-post</code></td><td>Save formatted content + <code>Previewed</code> (approve)</td></tr>
+      <tr><td>sma-update-post</td><td><code>https://n8n.linkright.in/webhook/sma-update-post</code></td><td>Revert to <code>Drafted</code> (reject)</td></tr>
+      <tr><td>n8n Workflow</td><td><code>SMA/Data/Write/UpdatePost</code></td><td>Troubleshooting</td></tr>
+    </table>
+
+    <h3>Error Handling</h3>
+    <ul>
+      <li><strong>Save failure (approval):</strong> Retry once. On second failure, show formatted content for manual backup.</li>
+      <li><strong>Revert failure (rejection):</strong> Retry once. Warn user with post_id. Exit anyway.</li>
+      <li><strong>Ambiguous response:</strong> Re-prompt with: approve ("haan", "approve", "theek hai"), changes ("change karo" + what), reject ("nahi", "reject", "cancel").</li>
+    </ul>
+
+    <h3>What NOT to Do</h3>
+    <ul>
+      <li>Do NOT auto-approve &mdash; user MUST explicitly approve</li>
+      <li>Do NOT lose formatted content if save webhook fails</li>
+      <li>Do NOT allow more than 5 iterations without strongly recommending B-Drafting</li>
+      <li>Do NOT skip status update</li>
+      <li>Do NOT proceed to C-Review automatically &mdash; only suggest</li>
+      <li>Do NOT re-apply all 16 rules on a change request</li>
+      <li>Do NOT interpret silence as approval</li>
+      <li>Do NOT save a post with any failing metrics</li>
+    </ul>
+
+    <h3>Success Criteria</h3>
+    <h4>If Approved:</h4>
+    <ul>
+      <li>All 16 metrics passed</li>
+      <li><code>sma-update-post</code> called with status <code>Previewed</code> + content + stats</li>
+      <li>Post-approval summary shown</li>
+      <li>C-Review suggested</li>
+    </ul>
+    <h4>If Changes Requested:</h4>
+    <ul>
+      <li>Change requests captured, iteration incremented</li>
+      <li>Looped back to F.2 for targeted edits only</li>
+      <li>Warning shown at 4+ iterations</li>
+    </ul>
+    <h4>If Rejected:</h4>
+    <ul>
+      <li>Status reverted to <code>Drafted</code></li>
+      <li>Workflow exited cleanly</li>
+      <li>Formatted content discarded</li>
+    </ul>
+  </article>
+
+  <!-- ════════════════════════════════════════════════════════════ -->
+  <!-- CHECKLIST                                                   -->
+  <!-- ════════════════════════════════════════════════════════════ -->
+
+  <article data-part="checklist">
+    <h2>Quality Checklist</h2>
+
+    <h3>Pre-Format Checks</h3>
+    <ul>
+      <li>Post exists and has status <code>Drafted</code></li>
+      <li>Raw content (body text) is present and non-empty</li>
+      <li>Post has a title and topic</li>
+      <li>Raw content character count noted (baseline before formatting)</li>
+      <li>Status updated to <code>Formatting</code> before work begins</li>
+    </ul>
+
+    <h3>Format Checks &mdash; LinkedIn v1 Rules</h3>
+    <ul>
+      <li><strong>Character Count:</strong> 800-1600 ASCII characters (inclusive)</li>
+      <li><strong>No Rich Text:</strong> No bold, italic, or underline formatting</li>
+      <li><strong>Staircase Layout:</strong> Progressive visual flow, no wall-of-text</li>
+      <li><strong>3-Line Block Rule:</strong> No more than 3 consecutive lines without blank line</li>
+      <li><strong>UPPERCASE Headers:</strong> Sparingly (2-3 max), section headers only</li>
+      <li><strong>Emoji Count:</strong> Maximum 3 emojis total</li>
+      <li><strong>Emoji Placement:</strong> Tension/transition points only</li>
+      <li><strong>No Dashes:</strong> All informal dashes replaced with proper punctuation</li>
+      <li><strong>Bullet Format:</strong> All bullets use <code> - </code></li>
+      <li><strong>Flow Arrow Format:</strong> All flows use <code>A —&gt; B —&gt; C</code></li>
+      <li><strong>Hindi Sentences:</strong> Maximum 3 Romanised Hindi sentences</li>
+      <li><strong>Hindi Placement:</strong> Emotional peaks only, not for searchable content</li>
+      <li><strong>FK Readability:</strong> Grade Level 7 or below</li>
+      <li><strong>CTA Present:</strong> Clear call-to-action at end</li>
+      <li><strong>CTA Has Positioning:</strong> Includes who you are / what you do</li>
+      <li><strong>CTA Has Follow Prompt:</strong> Includes follow invitation</li>
+      <li><strong>Hashtags Count:</strong> 3-6 present</li>
+      <li><strong>Hashtags Placement:</strong> Very end, after CTA, separated by blank line</li>
+    </ul>
+
+    <h3>Preview Checks</h3>
+    <ul>
+      <li>Code-block preview generated</li>
+      <li>Character count displayed and within range</li>
+      <li>Emoji count displayed and within limit</li>
+      <li>Hindi sentence count displayed and within limit</li>
+      <li>Hashtag count displayed and within range</li>
+      <li>Approximate FK Grade Level displayed</li>
+      <li>User reviewed the preview</li>
+      <li>User explicitly approved OR requested specific changes</li>
+    </ul>
+
+    <h3>Post-Approval Checks</h3>
+    <ul>
+      <li>Status updated to <code>Previewed</code> via webhook</li>
+      <li>Formatted content saved to post record in MongoDB</li>
+      <li>Webhook response confirmed success</li>
+      <li>User informed of successful save</li>
+      <li>Next step suggested (C-Review workflow)</li>
+    </ul>
+
+    <h3>Rejection Handling</h3>
+    <ul>
+      <li>If user rejects: status reverted to <code>Drafted</code></li>
+      <li>If user requests changes: loop back to F.2/F.3 (do not start from scratch)</li>
+      <li>Change loop count tracked (warn after 3+ iterations)</li>
+    </ul>
+  </article>
+
+  <!-- ════════════════════════════════════════════════════════════ -->
+  <!-- TEMPLATE — Formatted Post                                   -->
+  <!-- ════════════════════════════════════════════════════════════ -->
+
+  <article data-part="template">
+    <h2>Formatted Post Template</h2>
+
+    <h3>Template Structure</h3>
+    <pre>{HOOK_LINE}
+
+{BODY_BLOCK_1}
+(max 3 lines)
+
+{BODY_BLOCK_2}
+(max 3 lines)
+
+{BODY_BLOCK_3}
+(max 3 lines, optional Hindi sentence here if emotional peak)
+
+{BODY_BLOCK_4}
+(max 3 lines, continue as needed)
+
+{OPTIONAL_SECTION_HEADER_UPPERCASE}
+
+{BODY_BLOCK_5}
+(max 3 lines)
+
+{CTA_POSITIONING}
+{CTA_FOLLOW_PROMPT}
+
+{HASHTAGS}</pre>
+
+    <h3>Section Guide</h3>
+
+    <h4>Hook Line</h4>
+    <p>First line the reader sees. Must grab attention instantly. Options: UPPERCASE statement, emoji-led opener, provocative question, bold claim. Keep to 1 line (2 max).</p>
+
+    <h4>Body Blocks</h4>
+    <p>Each block: 1-3 lines. Separated by blank lines (staircase layout). Use <code> - </code> for bullets, <code>A —&gt; B —&gt; C</code> for flows. No dashes, simple words (FK Grade 7). Max 3 emojis, max 3 Hindi sentences.</p>
+
+    <h4>UPPERCASE Headers (Optional)</h4>
+    <p>Section breaks within the post. Maximum 2-3 per post. Full caps, standalone line. Never for emphasis within sentences.</p>
+
+    <h4>CTA (Call to Action)</h4>
+    <p>Two parts required: (1) Positioning &mdash; one sentence about who you are, (2) Follow prompt &mdash; tell the reader to follow for more.</p>
+
+    <h4>Hashtags</h4>
+    <p>3-6 hashtags, separated by spaces. Placed after CTA, separated by one blank line. <code>#CamelCase</code> format.</p>
+
+    <h3>Character Count Reference</h3>
+    <table>
+      <tr><th>Section</th><th>Approximate Characters</th></tr>
+      <tr><td>Hook</td><td>50-210</td></tr>
+      <tr><td>Body (all blocks)</td><td>500-1100</td></tr>
+      <tr><td>Key Takeaway</td><td>50-150</td></tr>
+      <tr><td>CTA</td><td>30-100</td></tr>
+      <tr><td>Positioning + Follow</td><td>60-150</td></tr>
+      <tr><td>Hashtags</td><td>30-80</td></tr>
+      <tr><td>Blank lines / whitespace</td><td>~50-80</td></tr>
+      <tr><td><strong>Total</strong></td><td><strong>800-1600</strong></td></tr>
+    </table>
+
+    <h3>Example Formatted Post</h3>
+    <pre>Most founders fail at content. Not because they can't write.
+
+Because they don't know WHO they're writing for.
+
+I spent 6 months posting on LinkedIn.
+Zero traction.
+Zero DMs.
+
+Then I did one thing differently.
+
+I stopped writing for "everyone."
+I picked ONE person.
+My ideal customer.
+
+Every post became a conversation with that person.
+
+HERE'S WHAT CHANGED
+
+ - Engagement went up 3x
+ - DMs started flowing in
+ - Clients found ME instead of the other way around
+
+Yeh sach mein game changer tha.
+
+The formula is simple:
+Pick one person —&gt; Write for them —&gt; Repeat
+
+Stop broadcasting. Start connecting.
+
+I build AI products solo and share what actually works.
+Follow for no-fluff lessons from the trenches.
+
+#SoloFounder #LinkedIn #ContentStrategy #BuildInPublic #AI</pre>
+  </article>
+
+  <!-- ════════════════════════════════════════════════════════════ -->
+  <!-- VALIDATION — Step V.01                                      -->
+  <!-- ════════════════════════════════════════════════════════════ -->
+
+  <article data-part="validation">
+    <h2>Validation &mdash; Step V.01</h2>
+    <p><strong>Agent:</strong> Pixel (Validation Mode) &nbsp;|&nbsp; <strong>Trigger:</strong> After formatting completes, or independently for a <code>Previewed</code> post.</p>
+
+    <h3>What You Do</h3>
+    <p>Read all workflow artifacts and verify the formatted post meets every quality gate. Produce a validation report with PASS/FAIL per criterion.</p>
+
+    <h3>Actions</h3>
+
+    <h4>1. Load Artifacts</h4>
+    <p>Fetch post via <code>sma-fetch-post</code>. Load <code>formatted_content</code>. Load formatting rules reference.</p>
+
+    <h4>2. Run Validation Checks</h4>
+    <table>
+      <tr><th>Check</th><th>Criteria</th></tr>
+      <tr><td>Status</td><td>Post status is <code>Previewed</code>, was previously <code>Formatting</code></td></tr>
+      <tr><td>Content</td><td><code>formatted_content</code> non-empty, <code>formatted_at</code> exists</td></tr>
+      <tr><td>Characters</td><td>800-1600 ASCII characters (inclusive)</td></tr>
+      <tr><td>Rich Text</td><td>No bold/italic/underline markers</td></tr>
+      <tr><td>Staircase</td><td>Multiple blocks, blank lines, visual flow</td></tr>
+      <tr><td>Block Lines</td><td>No block exceeds 3 consecutive lines</td></tr>
+      <tr><td>Emojis</td><td>Count &le;3, placed at tension/transition points</td></tr>
+      <tr><td>Dashes</td><td>No informal dashes (exceptions: bullets, flow arrows)</td></tr>
+      <tr><td>Bullets</td><td>All use <code> - </code> format</td></tr>
+      <tr><td>Flow Arrows</td><td>All use <code>A —&gt; B —&gt; C</code> format</td></tr>
+      <tr><td>Hindi</td><td>Count &le;3, emotional peaks only</td></tr>
+      <tr><td>Readability</td><td>FK Grade &le;7</td></tr>
+      <tr><td>CTA</td><td>Has positioning statement + follow prompt</td></tr>
+      <tr><td>Hashtags</td><td>3-6, at very end, separated by blank line</td></tr>
+      <tr><td>Preview</td><td>Code-block preview was generated, user approved</td></tr>
+    </table>
+
+    <h4>3. Generate Report</h4>
+    <p>Validation summary table with PASS/FAIL per check. Overall: {pass_count}/{total_count}.</p>
+
+    <h4>4. Handle Results</h4>
+    <p><strong>All PASS:</strong> Post validated, ready for C-Review.</p>
+    <p><strong>Any FAIL:</strong> Flag failures, suggest re-running F-Formatting.</p>
+
+    <h3>What NOT to Do</h3>
+    <ul>
+      <li>Do NOT auto-fix during validation &mdash; only report</li>
+      <li>Do NOT change post status during validation</li>
+      <li>Do NOT skip any check</li>
+    </ul>
+  </article>
+
+  <!-- ════════════════════════════════════════════════════════════ -->
+  <!-- EDIT — Step E.01 Assess                                     -->
+  <!-- ════════════════════════════════════════════════════════════ -->
+
+  <article data-part="edit-assess">
+    <h2>Edit &mdash; Step E.01: Assess Formatting Issues</h2>
+    <p><strong>Agent:</strong> Pixel (Edit Mode) &nbsp;|&nbsp; <strong>Trigger:</strong> User wants to edit/correct a previously formatted post, or validation revealed issues.</p>
+
+    <h3>What You Do</h3>
+    <p>Load the formatted post and identify all formatting issues that need correction. This is the diagnostic step before applying edits.</p>
+
+    <h3>Actions</h3>
+    <ol>
+      <li><strong>Load the Post:</strong> Fetch via <code>sma-fetch-post</code> by post_id or status = <code>Previewed</code>.</li>
+      <li><strong>Load Current Formatted Content:</strong> Extract <code>formatted_content</code>. Fall back to <code>raw_content</code> if not present.</li>
+      <li><strong>Run Formatting Audit:</strong> Check all 16 rules &mdash; character count, rich text, staircase, blocks, UPPERCASE, emojis, dashes, bullets, flow arrows, Hindi, readability, CTA, hashtags.</li>
+      <li><strong>Present Assessment:</strong> List all issues found with suggested fixes. If no issues: "Formatting looks clean. Koi specific changes chahiye?"</li>
+      <li><strong>Ask User:</strong> Fix all issues, fix specific issues, custom changes, or exit.</li>
+    </ol>
+
+    <h3>Error Handling</h3>
+    <ul>
+      <li><strong>Post not found:</strong> "Post nahi mila. Post ID check karo."</li>
+      <li><strong>No formatted_content:</strong> "Pehle F-Formatting workflow run karo."</li>
+    </ul>
+
+    <h3>What NOT to Do</h3>
+    <ul>
+      <li>Do NOT apply fixes in this step &mdash; only diagnose</li>
+      <li>Do NOT change the post status</li>
+      <li>Do NOT modify the content &mdash; this step is read-only</li>
+    </ul>
+
+    <h3>Output for Next Step</h3>
+    <p>Pass to E.02: <code>post</code>, <code>formatted_content</code>, <code>issues[]</code>, <code>user_instructions</code></p>
+  </article>
+
+  <!-- ════════════════════════════════════════════════════════════ -->
+  <!-- EDIT — Step E.02 Apply Edit                                 -->
+  <!-- ════════════════════════════════════════════════════════════ -->
+
+  <article data-part="edit-apply">
+    <h2>Edit &mdash; Step E.02: Apply Formatting Edit</h2>
+    <p><strong>Agent:</strong> Pixel (Edit Mode) &nbsp;|&nbsp; <strong>Trigger:</strong> Assessment complete in E.01, user confirmed which edits to apply.</p>
+
+    <h3>What You Do</h3>
+    <p>Apply requested formatting corrections, regenerate preview, and re-validate. Targets specific issues rather than a full format pass.</p>
+
+    <h3>Actions</h3>
+    <ol>
+      <li><strong>Apply Corrections:</strong> For each issue, apply the fix. Track before/after. Ensure fix does not violate other rules.</li>
+      <li><strong>Show Changes:</strong> Present what was changed per rule.</li>
+      <li><strong>Regenerate Preview:</strong> Code block + stats table (same as F.3).</li>
+      <li><strong>Re-validate:</strong> Full validation checklist against updated content.</li>
+      <li><strong>Ask User:</strong> Save, more changes, or discard.</li>
+      <li><strong>Save (if approved):</strong> POST to <code>sma-update-post</code> with updated <code>formatted_content</code>.</li>
+    </ol>
+
+    <h3>Common Corrections</h3>
+    <ul>
+      <li>Character count: trim or expand to 800-1600</li>
+      <li>Block length: split long blocks with blank lines</li>
+      <li>Emoji adjustment: add/remove/reposition</li>
+      <li>Dash cleanup: replace with proper punctuation</li>
+      <li>Bullet format: convert to <code> - </code></li>
+      <li>Hindi adjustment: add/remove/reposition</li>
+      <li>CTA fix: add missing positioning or follow</li>
+      <li>Hashtag fix: adjust count or placement</li>
+    </ul>
+
+    <h3>Error Handling</h3>
+    <ul>
+      <li><strong>Fix introduces new violation:</strong> Auto-resolve if possible. If not, present both issues to user.</li>
+      <li><strong>Save webhook fails:</strong> Retry once. On second failure, provide content for manual save.</li>
+    </ul>
+
+    <h3>What NOT to Do</h3>
+    <ul>
+      <li>Do NOT rewrite substance &mdash; only fix formatting</li>
+      <li>Do NOT apply changes user did not request (unless they break other rules)</li>
+      <li>Do NOT skip preview regeneration or re-validation</li>
+      <li>Do NOT save without user approval</li>
+    </ul>
+  </article>
+
+  <!-- ════════════════════════════════════════════════════════════ -->
+  <!-- REFERENCE — LinkedIn Formatting Rules (YAML)                -->
+  <!-- ════════════════════════════════════════════════════════════ -->
+
+  <article data-part="reference-formatting-rules">
+    <h2>Reference: LinkedIn Formatting Rules (FR01&ndash;FR16)</h2>
+
+    <table>
+      <tr><th>Rule</th><th>Name</th><th>Category</th><th>Priority</th><th>Description</th></tr>
+      <tr><td>FR01</td><td>staircase-formatting</td><td>structure</td><td>P2</td><td>Lines progressively shorter or longer within each block creating a visual staircase effect</td></tr>
+      <tr><td>FR02</td><td>max-three-line-blocks</td><td>structure</td><td>P1</td><td>No more than 3 consecutive lines without a blank line separating blocks</td></tr>
+      <tr><td>FR03</td><td>no-bold-italic-underline</td><td>typography</td><td>P1</td><td>Do not use bold/italic/underline. Use UPPERCASE sparingly for headers only</td></tr>
+      <tr><td>FR04</td><td>replace-dashes-with-punctuation</td><td>typography</td><td>P1</td><td>Replace em dashes and en dashes with full stops and commas</td></tr>
+      <tr><td>FR05</td><td>bullets-format</td><td>typography</td><td>P1</td><td>Bullets use space-hyphen-space format ( - item)</td></tr>
+      <tr><td>FR06</td><td>numbered-lists-format</td><td>typography</td><td>P2</td><td>Numbered lists use digit-period-space format (1. item)</td></tr>
+      <tr><td>FR07</td><td>flows-format</td><td>typography</td><td>P2</td><td>Sequential flows use arrow format (A —&gt; B —&gt; C)</td></tr>
+      <tr><td>FR08</td><td>max-three-emojis</td><td>emoji</td><td>P1</td><td>Maximum 3 emojis per post, placed only at points of maximum emotional tension</td></tr>
+      <tr><td>FR09</td><td>max-three-hindi-sentences</td><td>language</td><td>P1</td><td>Maximum 3 Romanised Hindi sentences per post, used only at emotional peaks</td></tr>
+      <tr><td>FR10</td><td>fk-grade-7-readability</td><td>readability</td><td>P1</td><td>FK Grade 7 readability. Ad copy style, layman language, no jargon</td></tr>
+      <tr><td>FR11</td><td>character-limit</td><td>structure</td><td>P1</td><td>Posts must be 800&ndash;1600 ASCII characters in length</td></tr>
+      <tr><td>FR12</td><td>footer-line-1-positioning</td><td>footer</td><td>P1</td><td>After CTA, first footer line is positioning statement (who you are + value)</td></tr>
+      <tr><td>FR13</td><td>footer-line-2-follow</td><td>footer</td><td>P2</td><td>After positioning line, add a follow invitation line</td></tr>
+      <tr><td>FR14</td><td>hashtags-at-end-only</td><td>footer</td><td>P1</td><td>3&ndash;6 generic hashtags placed only at the very end. Never in body text</td></tr>
+      <tr><td>FR15</td><td>one-idea-per-post</td><td>structure</td><td>P2</td><td>Each post focuses on exactly one core idea or takeaway</td></tr>
+      <tr><td>FR16</td><td>whitespace-breathing-room</td><td>readability</td><td>P2</td><td>Generous whitespace between blocks for visual breathing room on mobile</td></tr>
+    </table>
+
+    <p><strong>Summary:</strong> 16 total rules &mdash; 10 P1 (hard), 6 P2 (soft). Categories: structure, typography, emoji, language, readability, footer.</p>
+  </article>
+
+  <!-- ════════════════════════════════════════════════════════════ -->
+  <!-- REFERENCE — Platform Constraints                            -->
+  <!-- ════════════════════════════════════════════════════════════ -->
+
+  <article data-part="reference-platform-constraints">
+    <h2>Reference: LinkedIn Platform Constraints (v1)</h2>
+
+    <h3>Character Limits</h3>
+    <table>
+      <tr><th>Limit</th><th>Value</th><th>Notes</th></tr>
+      <tr><td>Post max (LinkedIn)</td><td>3000</td><td>LinkedIn hard limit per post</td></tr>
+      <tr><td>Workflow min (SMA)</td><td>800</td><td>FR11</td></tr>
+      <tr><td>Workflow max (SMA)</td><td>1600</td><td>FR11</td></tr>
+      <tr><td>See more threshold</td><td>~210</td><td>Varies by device/font/line breaks</td></tr>
+      <tr><td>Comment max</td><td>1250</td><td></td></tr>
+      <tr><td>Headline max</td><td>220</td><td>Profile headline, not post</td></tr>
+    </table>
+    <div class="warning">The "see more" threshold is approximate (~210 chars). Posts with line breaks may trigger it earlier. The hook MUST fit within this threshold.</div>
+
+    <h3>Text Formatting</h3>
+    <ul>
+      <li><strong>Bold:</strong> NOT supported (LinkedIn does not render markdown bold)</li>
+      <li><strong>Italic:</strong> NOT supported</li>
+      <li><strong>Underline/Strikethrough:</strong> NOT supported</li>
+      <li><strong>Markdown:</strong> NOT rendered at all</li>
+      <li><strong>Rich Unicode (bold/italic chars):</strong> Renders but NOT allowed by SMA policy (accessibility, inconsistent rendering, looks spammy)</li>
+      <li><strong>UPPERCASE:</strong> Allowed for section headers only, max 3 per post</li>
+    </ul>
+
+    <h3>Line Breaks &amp; Whitespace</h3>
+    <ul>
+      <li>Single newline: renders as line break</li>
+      <li>Double newline: renders as blank line (paragraph break)</li>
+      <li>Multiple blank lines: LinkedIn collapses 2+ into 1</li>
+      <li>Leading spaces: preserved (can indent)</li>
+      <li>Trailing spaces: stripped</li>
+      <li>Tab characters: not reliably rendered, avoid</li>
+    </ul>
+
+    <h3>See More Behavior</h3>
+    <p>Trigger: ~210 characters OR ~3 lines (whichever first). Strategy: hook MUST earn the click. Front-load value: curiosity, data, or controversy in first line.</p>
+
+    <h3>Hashtags</h3>
+    <table>
+      <tr><th>Constraint</th><th>Value</th></tr>
+      <tr><td>LinkedIn max</td><td>30</td></tr>
+      <tr><td>SMA min</td><td>3</td></tr>
+      <tr><td>SMA max</td><td>6</td></tr>
+      <tr><td>Placement</td><td>End of post only</td></tr>
+      <tr><td>Format</td><td>#CamelCase</td></tr>
+      <tr><td>In body</td><td>Never</td></tr>
+    </table>
+    <p>3-5 is the sweet spot for LinkedIn algorithm. Mix broad + niche.</p>
+
+    <h3>Emojis</h3>
+    <ul>
+      <li>Supported: all standard Unicode emojis</li>
+      <li>SMA max: 3 per post</li>
+      <li>Placement: tension points only, not as bullets or line starters</li>
+    </ul>
+
+    <h3>Links</h3>
+    <ul>
+      <li>External links get reduced reach (algorithm penalty)</li>
+      <li>SMA policy: avoid links in posts. Put in first comment if needed.</li>
+    </ul>
+
+    <h3>Media (v1 Policy)</h3>
+    <p>Text-only posts for v1. Media support planned for v2.</p>
+
+    <h3>Algorithm Notes (Informal, May Change)</h3>
+    <ul>
+      <li>Dwell time is a strong signal</li>
+      <li>Engagement in first 60-90 minutes heavily influences reach</li>
+      <li>Comments weighted ~5x more than likes</li>
+      <li>1 post/day is optimal; 2+/day cannibalizes reach</li>
+      <li>Editing within 10 min does not affect reach</li>
+    </ul>
+
+    <h3>SMA Hard Rules (P1)</h3>
+    <ul>
+      <li>FR02: Max 3-line blocks</li>
+      <li>FR03: No bold/italic/underline</li>
+      <li>FR04: Replace dashes with punctuation</li>
+      <li>FR05: Bullets use <code> - </code> format</li>
+      <li>FR08: Max 3 emojis</li>
+      <li>FR09: Max 3 Hindi sentences</li>
+      <li>FR10: FK Grade 7 readability</li>
+      <li>FR11: 800-1600 character count</li>
+      <li>FR12: Positioning statement in footer</li>
+      <li>FR14: Hashtags at end only</li>
+    </ul>
+
+    <h3>SMA Soft Rules (P2)</h3>
+    <ul>
+      <li>FR01: Staircase formatting</li>
+      <li>FR06: Numbered lists use <code>1. </code> format</li>
+      <li>FR07: Flow arrows use <code>A —&gt; B —&gt; C</code></li>
+      <li>FR13: Follow invitation in footer</li>
+      <li>FR15: One idea per post</li>
+      <li>FR16: Whitespace breathing room</li>
+    </ul>
+  </article>
+
+  <!-- ════════════════════════════════════════════════════════════ -->
+  <!-- REFERENCE — LinkedIn Post Template                          -->
+  <!-- ════════════════════════════════════════════════════════════ -->
+
+  <article data-part="reference-post-template">
+    <h2>Reference: LinkedIn Post Template &mdash; Format Anatomy</h2>
+
+    <h3>Template Anatomy</h3>
+    <pre>+---------------------------------------------+
+|  HOOK (Line 1)                              |
+|  &lt; 210 chars, above "see more" fold         |
+|  Style: curiosity / data / controversial    |
++---------------------------------------------+
+|                                             |
+|  BODY                                       |
+|  3-line blocks, staircase pattern           |
+|  UPPERCASE headers (2-3 max)                |
+|  Emojis at tension points (0-3 max)         |
+|  Hindi at emotional peaks (0-3 max)         |
+|                                             |
++---------------------------------------------+
+|  KEY TAKEAWAY                               |
+|  1-2 lines, the bold insight                |
++---------------------------------------------+
+|  CTA                                        |
+|  Question or engagement prompt              |
++---------------------------------------------+
+|  POSITIONING LINE                           |
+|  Who you are + value you provide            |
++---------------------------------------------+
+|  FOLLOW LINE                                |
+|  Invitation to follow                       |
++---------------------------------------------+
+|                                             |
+|  HASHTAGS (3-6, generic, at very end)       |
+|                                             |
++---------------------------------------------+</pre>
+
+    <h3>Section Rules</h3>
+
+    <h4>1. Hook (First Line)</h4>
+    <p>The MOST important line. Appears before the "see more" fold (~210 chars). Max 1 line (2 absolute max). Standalone sentence.</p>
+    <table>
+      <tr><th>Style</th><th>Pattern</th><th>Example</th></tr>
+      <tr><td>Curiosity</td><td>Open a loop the reader must close</td><td>"I deleted my best-performing feature. Here's why."</td></tr>
+      <tr><td>Data</td><td>Lead with a number or stat</td><td>"3 features. 6 months. Zero users."</td></tr>
+      <tr><td>Controversial</td><td>Challenge a common belief</td><td>"Most founders fail at content. Not because they can't write."</td></tr>
+      <tr><td>Pattern Interrupt</td><td>Say something unexpected</td><td>"I stopped hiring senior engineers."</td></tr>
+      <tr><td>Direct Address</td><td>Speak to the reader</td><td>"You're probably building the wrong thing right now."</td></tr>
+    </table>
+
+    <h4>2. Body (3-Line Blocks)</h4>
+    <p>Max 3 consecutive lines per block. Each block one distinct thought. Blank line between every block. UPPERCASE headers for section transitions (max 2-3). Bullets: <code> - </code>, flow arrows: <code>A —&gt; B —&gt; C</code>. No bold/italic/underline. All dashes replaced with punctuation.</p>
+
+    <h4>3. Key Takeaway</h4>
+    <p>1-2 lines. Clear, memorable phrasing. Works as standalone insight. Often preceded by UPPERCASE header.</p>
+
+    <h4>4. CTA</h4>
+    <p>1-2 lines. Genuine question or prompt. Relates to post topic.</p>
+
+    <h4>5. Positioning Line</h4>
+    <p>1 sentence. Who you are + value. Consistent across posts. Confident, not salesy.</p>
+
+    <h4>6. Follow Line</h4>
+    <p>1 sentence. Specific about value. Action-oriented.</p>
+
+    <h4>7. Hashtags</h4>
+    <p>3-6, <code>#CamelCase</code>, after follow line, separated by blank line. Mix broad + niche. Never in body.</p>
+
+    <h3>Example Posts</h3>
+
+    <details>
+      <summary>Example 1: Data Hook + Storytelling (~1050 chars)</summary>
+      <pre>3 features. 6 months. Zero users.
+
+I shipped what I thought was brilliant.
+Nobody cared.
+
+Not a single support ticket.
+Not one feature request.
+Just silence.
+
+I was building for myself.
+Not for the people paying me.
+
+HERE'S WHAT CHANGED
+
+I stopped asking "what can I build?"
+I started asking "what hurts the most?"
+
+ - Talked to 20 users in 2 weeks
+ - Found 3 problems they mentioned every single time
+ - Built the simplest fix for the biggest pain
+
+The next feature had 40% adoption in week one.
+
+Yaar, pehle hi ye karna chahiye tha.
+
+THE REAL LESSON
+
+Your best feature idea is hiding in your users' complaints.
+Not in your roadmap.
+
+What's one feature you built that nobody used?
+I bet the lesson was worth more than the code.
+
+I build AI products solo and share what actually works.
+Follow for no-fluff lessons from the trenches.
+
+#ProductManagement #SoloFounder #BuildInPublic #Startup #AI</pre>
+      <p>Stats: 2 emojis | 1 Hindi sentence | 5 hashtags | 2 UPPERCASE headers | FK ~5.5</p>
+    </details>
+
+    <details>
+      <summary>Example 2: Controversial Hook + Lesson (~1020 chars)</summary>
+      <pre>Stop celebrating your launch day.
+
+Nobody cares about your launch.
+They care about their problem.
+
+I launched 4 products last year.
+The one that "flopped" on launch day?
+It's my biggest revenue driver today.
+
+The one with 500 upvotes on day one?
+Dead. Buried. Gone.
+
+HERE'S WHY
+
+Launch day metrics are vanity.
+Week 4 retention is reality.
+
+Upvotes don't pay rent.
+Returning users do.
+
+I used to optimize for launch buzz.
+Now I optimize for quiet consistency.
+
+Ship —&gt; Measure retention —&gt; Iterate —&gt; Repeat
+
+Sach batao, launch day ka excitement fake hai.
+
+One metric matters: are users coming back?
+Everything else is noise.
+
+What do you track after launch day?
+Curious what actually moves the needle for you.
+
+PM by day. Builder by night. Writing about what I learn.
+Follow for weekly insights on building products that last.
+
+#ProductManagement #Startup #BuildInPublic #Growth</pre>
+      <p>Stats: 1 emoji | 1 Hindi sentence | 4 hashtags | 1 UPPERCASE header | FK ~4.8</p>
+    </details>
+
+    <details>
+      <summary>Example 3: Curiosity Hook + Framework (~1150 chars)</summary>
+      <pre>I mass-deleted my entire backlog last Tuesday.
+
+47 tickets.
+Gone.
+
+My team thought I lost it.
+But here's the thing.
+
+We had been "prioritizing" for 3 months.
+Nothing was getting done.
+Every sprint felt like rearranging deck chairs.
+
+So I tried something radical.
+
+THE ZERO BACKLOG METHOD
+
+Step 1. Delete everything.
+Step 2. Ask each team member: "If you could only ship ONE thing this month, what would it be?"
+Step 3. You now have your sprint.
+
+ - No story points
+ - No velocity tracking
+ - No 2-hour grooming sessions
+
+Just one question.
+One answer per person.
+One month to ship it.
+
+Humne try kiya. Results?
+
+First month: 3 features shipped.
+Previous 3 months combined: 2 features shipped.
+
+Simplicity wins. Always.
+
+Have you ever deleted your backlog?
+What happened next?
+
+I write about unconventional PM tactics that actually work.
+Follow for ideas that challenge the playbook.
+
+#ProductManagement #Agile #Leadership #Startup #BuildInPublic</pre>
+      <p>Stats: 2 emojis | 1 Hindi sentence | 5 hashtags | 1 UPPERCASE header | FK ~5.2</p>
+    </details>
+
+    <h3>Anti-Patterns (What NOT to Do)</h3>
+    <ul>
+      <li><strong>Wall of text:</strong> No breaks, multiple sentences crammed together</li>
+      <li><strong>Emoji overload:</strong> Emojis on every line as decoration</li>
+      <li><strong>Bold/italic/underline:</strong> LinkedIn won't render markdown</li>
+      <li><strong>Wrong bullet/arrow formats:</strong> Using &bull;, *, &ndash;, -&gt; instead of <code> - </code> and <code> —&gt; </code></li>
+      <li><strong>Hashtags in body text:</strong> Hashtags must be at the very end only</li>
+    </ul>
+  </article>
+
+  <!-- ════════════════════════════════════════════════════════════ -->
+  <!-- TEST PLAN                                                   -->
+  <!-- ════════════════════════════════════════════════════════════ -->
+
+  <article data-part="test-plan">
+    <h2>Test Plan</h2>
+    <p>Test cases for the Content Formatting workflow (F.1 through F.4), formatting rule validation, and edge cases.</p>
+
+    <h3>Test Case Index</h3>
+    <table>
+      <tr><th>ID</th><th>Step</th><th>Category</th><th>Test Case</th><th>Priority</th></tr>
+      <tr><td>T01</td><td>F.1</td><td>Happy Path</td><td>Pick from multiple drafted posts</td><td>P1</td></tr>
+      <tr><td>T02</td><td>F.1</td><td>Happy Path</td><td>Pick single drafted post</td><td>P1</td></tr>
+      <tr><td>T03</td><td>F.1</td><td>Empty State</td><td>No drafted posts available</td><td>P1</td></tr>
+      <tr><td>T04</td><td>F.1</td><td>Validation</td><td>Post with empty raw_content</td><td>P1</td></tr>
+      <tr><td>T05</td><td>F.1</td><td>Validation</td><td>Post with raw_content &lt; 200 chars</td><td>P2</td></tr>
+      <tr><td>T06</td><td>F.1</td><td>Error</td><td>Fetch webhook failure (first attempt)</td><td>P1</td></tr>
+      <tr><td>T07</td><td>F.1</td><td>Error</td><td>Fetch webhook failure (both attempts)</td><td>P1</td></tr>
+      <tr><td>T08</td><td>F.1</td><td>Error</td><td>Status update webhook failure</td><td>P2</td></tr>
+      <tr><td>T09</td><td>F.1</td><td>Input</td><td>Invalid selection (out of range)</td><td>P2</td></tr>
+      <tr><td>T10</td><td>F.1</td><td>Lock</td><td>Status set to Formatting on selection</td><td>P1</td></tr>
+      <tr><td>T11</td><td>F.2</td><td>Structure</td><td>Staircase layout applied (FR01)</td><td>P1</td></tr>
+      <tr><td>T12</td><td>F.2</td><td>Structure</td><td>3-line block rule enforced (FR02)</td><td>P1</td></tr>
+      <tr><td>T13</td><td>F.2</td><td>Structure</td><td>One idea per post verified (FR15)</td><td>P2</td></tr>
+      <tr><td>T14</td><td>F.2</td><td>Structure</td><td>Whitespace breathing room (FR16)</td><td>P2</td></tr>
+      <tr><td>T15</td><td>F.2</td><td>Typography</td><td>Bold/italic/underline stripped (FR03)</td><td>P1</td></tr>
+      <tr><td>T16</td><td>F.2</td><td>Typography</td><td>UPPERCASE headers added (FR03)</td><td>P1</td></tr>
+      <tr><td>T17</td><td>F.2</td><td>Typography</td><td>Dashes replaced with punctuation (FR04)</td><td>P1</td></tr>
+      <tr><td>T18</td><td>F.2</td><td>Typography</td><td>Bullets use ' - ' format (FR05)</td><td>P1</td></tr>
+      <tr><td>T19</td><td>F.2</td><td>Typography</td><td>Numbered lists use '1. ' format (FR06)</td><td>P2</td></tr>
+      <tr><td>T20</td><td>F.2</td><td>Typography</td><td>Flow arrows use 'A —&gt; B —&gt; C' (FR07)</td><td>P2</td></tr>
+      <tr><td>T21</td><td>F.2</td><td>Language</td><td>Emoji count 0-3 and placement (FR08)</td><td>P1</td></tr>
+      <tr><td>T22</td><td>F.2</td><td>Language</td><td>Hindi sentence count 0-3 and placement (FR09)</td><td>P1</td></tr>
+      <tr><td>T23</td><td>F.2</td><td>Language</td><td>FK Grade 7 readability (FR10)</td><td>P1</td></tr>
+      <tr><td>T24</td><td>F.2</td><td>Footer</td><td>Character count 800-1600 (FR11)</td><td>P1</td></tr>
+      <tr><td>T25</td><td>F.2</td><td>Footer</td><td>Positioning statement present (FR12)</td><td>P1</td></tr>
+      <tr><td>T26</td><td>F.2</td><td>Footer</td><td>Follow invitation present (FR13)</td><td>P2</td></tr>
+      <tr><td>T27</td><td>F.2</td><td>Footer</td><td>Hashtags 3-6 at end only (FR14)</td><td>P1</td></tr>
+      <tr><td>T28</td><td>F.2</td><td>Integrity</td><td>Original content voice preserved</td><td>P1</td></tr>
+      <tr><td>T29</td><td>F.2</td><td>Integrity</td><td>No new ideas/stories added</td><td>P1</td></tr>
+      <tr><td>T30</td><td>F.3</td><td>Preview</td><td>Code block preview rendered</td><td>P1</td></tr>
+      <tr><td>T31</td><td>F.3</td><td>Preview</td><td>Stats summary displayed</td><td>P1</td></tr>
+      <tr><td>T32</td><td>F.3</td><td>Preview</td><td>All metrics show PASS/FAIL</td><td>P1</td></tr>
+      <tr><td>T33</td><td>F.3</td><td>Preview</td><td>Failing metric blocks approval</td><td>P1</td></tr>
+      <tr><td>T34</td><td>F.4</td><td>Approve</td><td>Status updated to Previewed</td><td>P1</td></tr>
+      <tr><td>T35</td><td>F.4</td><td>Approve</td><td>Formatted content saved to MongoDB</td><td>P1</td></tr>
+      <tr><td>T36</td><td>F.4</td><td>Approve</td><td>Post-approval summary shown</td><td>P2</td></tr>
+      <tr><td>T37</td><td>F.4</td><td>Changes</td><td>Targeted changes only (not full re-format)</td><td>P1</td></tr>
+      <tr><td>T38</td><td>F.4</td><td>Changes</td><td>Iteration counter incremented</td><td>P2</td></tr>
+      <tr><td>T39</td><td>F.4</td><td>Changes</td><td>Warning at 4+ iterations</td><td>P2</td></tr>
+      <tr><td>T40</td><td>F.4</td><td>Reject</td><td>Status reverted to Drafted</td><td>P1</td></tr>
+      <tr><td>T41</td><td>F.4</td><td>Error</td><td>Save webhook failure with backup</td><td>P1</td></tr>
+      <tr><td>T42</td><td>F.4</td><td>Input</td><td>Ambiguous user response handled</td><td>P2</td></tr>
+      <tr><td>T43</td><td>Edge</td><td>Char Count</td><td>Draft exactly 800 chars after formatting</td><td>P2</td></tr>
+      <tr><td>T44</td><td>Edge</td><td>Char Count</td><td>Draft exactly 1600 chars after formatting</td><td>P2</td></tr>
+      <tr><td>T45</td><td>Edge</td><td>Char Count</td><td>Draft under 800 &mdash; auto-expansion</td><td>P1</td></tr>
+      <tr><td>T46</td><td>Edge</td><td>Char Count</td><td>Draft over 1600 &mdash; auto-trimming</td><td>P1</td></tr>
+      <tr><td>T47</td><td>Edge</td><td>Language</td><td>Fully Hindi draft rejected</td><td>P1</td></tr>
+      <tr><td>T48</td><td>Edge</td><td>Content</td><td>Rich Unicode chars stripped</td><td>P2</td></tr>
+    </table>
+
+    <details>
+      <summary>Step F.1 &mdash; Pick Drafted Post (T01&ndash;T10)</summary>
+
+      <h4>T01: Pick from multiple drafted posts</h4>
+      <p><strong>Precondition:</strong> 3+ posts with status <code>Drafted</code>.</p>
+      <ul>
+        <li>Numbered list shown with all drafted posts</li>
+        <li>No raw JSON displayed to user</li>
+        <li>Selected post's status updated to <code>Formatting</code></li>
+        <li>Full post object passed to F.2</li>
+      </ul>
+
+      <h4>T02: Pick single drafted post</h4>
+      <p><strong>Precondition:</strong> Exactly 1 post with status <code>Drafted</code>.</p>
+      <ul>
+        <li>Single post displayed with confirmation prompt</li>
+        <li>Agent does NOT auto-select</li>
+      </ul>
+
+      <h4>T03: No drafted posts available</h4>
+      <ul>
+        <li>Message displayed, workflow exits cleanly</li>
+        <li>No phantom posts invented</li>
+      </ul>
+
+      <h4>T04: Post with empty raw_content</h4>
+      <ul>
+        <li>Agent halts with message</li>
+        <li>Status reverted to <code>Drafted</code></li>
+      </ul>
+
+      <h4>T05: Post with raw_content &lt; 200 chars</h4>
+      <ul>
+        <li>Warning shown, status reverted, workflow exits</li>
+      </ul>
+
+      <h4>T06: Fetch webhook failure (first attempt recovers)</h4>
+      <ul>
+        <li>Retry executes, normal flow continues</li>
+      </ul>
+
+      <h4>T07: Fetch webhook failure (both attempts)</h4>
+      <ul>
+        <li>Reports n8n workflow name, halts</li>
+      </ul>
+
+      <h4>T08: Status update webhook failure</h4>
+      <ul>
+        <li>Warning about duplicate risk, proceeds to F.2</li>
+      </ul>
+
+      <h4>T09: Invalid selection</h4>
+      <ul>
+        <li>Re-prompts with valid range, does not default</li>
+      </ul>
+
+      <h4>T10: Status lock on selection</h4>
+      <ul>
+        <li><code>sma-update-post</code> called with <code>Formatting</code></li>
+      </ul>
+    </details>
+
+    <details>
+      <summary>Step F.2 &mdash; Apply Formatting Rules (T11&ndash;T29)</summary>
+
+      <h4>T11: Staircase layout (FR01)</h4>
+      <p>Input: Draft with wall-of-text (10+ lines). Output: progressive visual flow, no block &gt;3 lines, hook standalone.</p>
+
+      <h4>T12: 3-line block rule (FR02)</h4>
+      <p>Input: 6-line paragraph. Output: split into 2+ blocks of max 3 lines.</p>
+
+      <h4>T13: One idea per post (FR15)</h4>
+      <p>Input: Draft with 2 distinct topics. Agent flags and asks user which to keep.</p>
+
+      <h4>T14: Whitespace breathing room (FR16)</h4>
+      <p>Blank line between every block. Post feels "airy".</p>
+
+      <h4>T15: Bold/italic stripped (FR03)</h4>
+      <p>All markdown markers removed. No rich Unicode replacements.</p>
+
+      <h4>T16: UPPERCASE headers (FR03)</h4>
+      <p>Max 2-3 headers. Not used for in-line emphasis.</p>
+
+      <h4>T17: Dashes replaced (FR04)</h4>
+      <p>Dashes replaced with periods/commas. Bullet dashes and flow arrows preserved.</p>
+
+      <h4>T18: Bullet format (FR05)</h4>
+      <p>All converted to <code> - </code>.</p>
+
+      <h4>T19: Numbered list format (FR06)</h4>
+      <p>All converted to <code>1. </code>.</p>
+
+      <h4>T20: Flow arrow format (FR07)</h4>
+      <p>All converted to <code>A —&gt; B —&gt; C</code>.</p>
+
+      <h4>T21: Emoji count and placement (FR08)</h4>
+      <p>Reduced to max 3. Placed at tension/transition points only.</p>
+
+      <h4>T22: Hindi sentence count (FR09)</h4>
+      <p>Reduced to max 3. At emotional peaks. No vector-searchable content in Hindi.</p>
+
+      <h4>T23: FK Grade 7 readability (FR10)</h4>
+      <p>Sentences ~15 words avg. Complex words replaced. Active voice.</p>
+
+      <h4>T24: Character count 800-1600 (FR11)</h4>
+      <p>Count includes all text, blank lines, emojis, hashtags.</p>
+
+      <h4>T25: Positioning statement (FR12)</h4>
+      <p>Added after CTA if missing.</p>
+
+      <h4>T26: Follow invitation (FR13)</h4>
+      <p>Added after positioning if missing.</p>
+
+      <h4>T27: Hashtags at end (FR14)</h4>
+      <p>Removed from body. 3-6 at very end. <code>#CamelCase</code>.</p>
+
+      <h4>T28: Original content voice preserved</h4>
+      <p>Core message, arguments, examples unchanged.</p>
+
+      <h4>T29: No new ideas added</h4>
+      <p>Content only restructured and reformatted.</p>
+    </details>
+
+    <details>
+      <summary>Step F.3 &mdash; Generate Preview (T30&ndash;T33)</summary>
+
+      <h4>T30: Code block preview rendered</h4>
+      <p>Formatted post in triple-backtick code block. No markdown rendering inside.</p>
+
+      <h4>T31: Stats summary displayed</h4>
+      <p>All metrics shown with limits.</p>
+
+      <h4>T32: All metrics show PASS/FAIL</h4>
+      <p>Visual indicators for quick scanning.</p>
+
+      <h4>T33: Failing metric blocks approval</h4>
+      <p>Auto-fix offered. Preview regenerated after adjustment.</p>
+    </details>
+
+    <details>
+      <summary>Step F.4 &mdash; User Approval (T34&ndash;T42)</summary>
+
+      <h4>T34: Approve &mdash; status updated to Previewed</h4>
+      <p>Webhook called with <code>Previewed</code>. Confirmation shown.</p>
+
+      <h4>T35: Formatted content saved</h4>
+      <p><code>formatted_content</code>, <code>formatting_stats</code>, <code>formatted_at</code> all saved.</p>
+
+      <h4>T36: Post-approval summary</h4>
+      <p>Summary table with all stats. C-Review suggested.</p>
+
+      <h4>T37: Targeted changes only</h4>
+      <p>Only user-requested changes applied. Not full re-format.</p>
+
+      <h4>T38: Iteration counter</h4>
+      <p>Counter incremented accurately.</p>
+
+      <h4>T39: Iteration warning at 4+</h4>
+      <p>B-Drafting rework suggested.</p>
+
+      <h4>T40: Reject &mdash; status reverted</h4>
+      <p>Reverted to <code>Drafted</code>. Workflow exits.</p>
+
+      <h4>T41: Save webhook failure with backup</h4>
+      <p>Formatted content in code block. Post ID provided. Content NOT lost.</p>
+
+      <h4>T42: Ambiguous user response</h4>
+      <p>Re-prompts with accepted phrases for each option.</p>
+    </details>
+
+    <details>
+      <summary>Edge Cases (T43&ndash;T48)</summary>
+
+      <h4>T43: Exactly 800 characters</h4>
+      <p>PASS (inclusive). No unnecessary expansion.</p>
+
+      <h4>T44: Exactly 1600 characters</h4>
+      <p>PASS (inclusive). No unnecessary trimming.</p>
+
+      <h4>T45: Under 800 &mdash; auto-expansion</h4>
+      <p>Expands with examples. No filler. No new content not rooted in draft.</p>
+
+      <h4>T46: Over 1600 &mdash; auto-trimming</h4>
+      <p>Tightens sentences, cuts weakest block. Hook/CTA/footer NOT cut.</p>
+
+      <h4>T47: Fully Hindi draft rejected</h4>
+      <p>Agent halts. Suggests English rewrite in B-Drafting. Status reverted.</p>
+
+      <h4>T48: Rich Unicode characters stripped</h4>
+      <p>Converted to plain text.</p>
+    </details>
+
+    <h3>Regression Checklist</h3>
+    <p>Run after any change to the F-ContentFormatting workflow, formatting rules, or related webhooks:</p>
+    <ul>
+      <li>T01: Multi-post selection works</li>
+      <li>T03: Empty state handled gracefully</li>
+      <li>T04: Empty raw_content rejected</li>
+      <li>T12: 3-line block rule enforced (most common regression)</li>
+      <li>T15: Bold/italic stripped</li>
+      <li>T17: Dashes replaced</li>
+      <li>T21: Emoji count &le;3</li>
+      <li>T24: Character count 800-1600</li>
+      <li>T28: Original voice preserved</li>
+      <li>T34: Approval saves to MongoDB</li>
+      <li>T37: Targeted changes (not full re-format)</li>
+      <li>T40: Rejection reverts status</li>
+      <li>T41: Webhook failure backup works</li>
+    </ul>
+  </article>
+
+</section>
+
+<footer>
+  <hr>
+  <small>Generated from Flex SMA module source files. Bundle v1.0.0</small>
+</footer>
+
+</body>
+</html>
