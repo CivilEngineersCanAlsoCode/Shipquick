@@ -3,13 +3,14 @@ const cors = require('cors');
 const config = require('./config');
 const authMiddleware = require('./middleware/auth');
 const errorHandler = require('./middleware/errorHandler');
+const agentBridge = require('./lib/agent-bridge');
 
 const app = express();
 
 // --- Middleware ---
 app.use(cors({
   origin: config.CORS_ORIGIN,
-  methods: ['GET', 'PUT', 'POST'],
+  methods: ['GET', 'PUT', 'POST', 'DELETE'],
   allowedHeaders: ['Content-Type', 'X-API-Key'],
 }));
 app.use(express.json());
@@ -41,13 +42,18 @@ app.use('/api/notify', require('./routes/notify'));
 app.use('/api/analytics', require('./routes/analytics'));
 app.use('/api/experiences', require('./routes/experiences'));
 app.use('/api/pipeline', require('./routes/pipeline'));
+app.use('/api/agent', require('./routes/agent'));
 
 // --- Error handling ---
 app.use(errorHandler);
 
 // --- Start ---
-app.listen(config.PORT, () => {
+const server = app.listen(config.PORT, () => {
   console.log(`SMA Bridge running on port ${config.PORT}`);
   console.log(`n8n target: ${config.N8N_BASE_URL}`);
   console.log(`CORS origin: ${config.CORS_ORIGIN}`);
 });
+
+// --- Agent Bridge WebSocket ---
+agentBridge.attach(server);
+console.log('Agent Bridge WebSocket attached at /ws/agent/:sessionId');
