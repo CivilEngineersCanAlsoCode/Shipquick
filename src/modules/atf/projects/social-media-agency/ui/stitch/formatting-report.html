@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>LinkRight SMA - Formatting Report</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ec5b13",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#221610",
+                    },
+                    fontFamily: {
+                        "display": ["Public Sans"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Public Sans', sans-serif; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display">
+<div class="flex h-screen flex-col overflow-hidden">
+<!-- Top Navigation -->
+<header class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-6 py-3 shrink-0">
+<div class="flex items-center gap-4">
+<div class="bg-primary p-1.5 rounded-lg text-white flex items-center justify-center">
+<span class="material-symbols-outlined text-xl">auto_fix_high</span>
+</div>
+<div>
+<h2 class="text-lg font-bold leading-tight tracking-tight">Formatting Report</h2>
+<p class="text-xs text-slate-500 dark:text-slate-400">LinkRight SMA J3 Formatting Engine</p>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<nav class="hidden md:flex items-center gap-6">
+<a class="text-sm font-medium hover:text-primary transition-colors" href="#">Editor</a>
+<a class="text-sm font-medium text-primary border-b-2 border-primary pb-1" href="#">Review</a>
+<a class="text-sm font-medium hover:text-primary transition-colors" href="#">History</a>
+</nav>
+<div class="flex items-center gap-3">
+<button class="flex items-center justify-center rounded-xl h-10 w-10 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 transition-colors">
+<span class="material-symbols-outlined text-slate-600 dark:text-slate-300">notifications</span>
+</button>
+<button class="flex items-center justify-center rounded-xl h-10 w-10 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 transition-colors">
+<span class="material-symbols-outlined text-slate-600 dark:text-slate-300">close</span>
+</button>
+</div>
+</div>
+</header>
+<main class="flex flex-1 overflow-hidden">
+<!-- Sidebar / Rule Checklist -->
+<aside class="w-80 border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-y-auto no-scrollbar hidden lg:flex flex-col">
+<div class="p-4 border-b border-slate-100 dark:border-slate-800">
+<div class="flex items-center justify-between mb-2">
+<span class="text-xs font-bold uppercase tracking-wider text-slate-400">Score</span>
+<span class="text-xs font-bold text-primary">82/100</span>
+</div>
+<div class="w-full bg-slate-100 dark:bg-slate-800 rounded-full h-2">
+<div class="bg-primary h-2 rounded-full" style="width: 82%"></div>
+</div>
+</div>
+<div class="p-4 flex flex-col gap-1">
+<h3 class="text-sm font-bold mb-3 px-2">Rule Checklist (FR01-FR16)</h3>
+<!-- Rule Item (Failed) -->
+<div class="flex items-center justify-between p-2 rounded-lg bg-red-50 dark:bg-red-950/30 border border-red-100 dark:border-red-900/50">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-red-500 text-lg">error</span>
+<span class="text-sm font-medium text-red-700 dark:text-red-400">FR01: Paragraph Length</span>
+</div>
+<span class="text-[10px] font-bold text-red-600 bg-red-100 dark:bg-red-900 px-1.5 py-0.5 rounded">FAIL</span>
+</div>
+<!-- Rule Items (Passed) -->
+<div class="flex items-center justify-between p-2 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors cursor-default">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-green-500 text-lg">check_circle</span>
+<span class="text-sm font-medium">FR02: Character Count</span>
+</div>
+</div>
+<div class="flex items-center justify-between p-2 rounded-lg bg-red-50 dark:bg-red-950/30 border border-red-100 dark:border-red-900/50">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-red-500 text-lg">error</span>
+<span class="text-sm font-medium text-red-700 dark:text-red-400">FR03: Hashtag Density</span>
+</div>
+<span class="text-[10px] font-bold text-red-600 bg-red-100 dark:bg-red-900 px-1.5 py-0.5 rounded">FAIL</span>
+</div>
+<div class="flex items-center justify-between p-2 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors cursor-default">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-green-500 text-lg">check_circle</span>
+<span class="text-sm font-medium">FR04: Link Placement</span>
+</div>
+</div>
+<div class="flex items-center justify-between p-2 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors cursor-default">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-green-500 text-lg">check_circle</span>
+<span class="text-sm font-medium">FR05: Emoji Strategy</span>
+</div>
+</div>
+<div class="flex items-center justify-between p-2 rounded-lg bg-red-50 dark:bg-red-950/30 border border-red-100 dark:border-red-900/50">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-red-500 text-lg">error</span>
+<span class="text-sm font-medium text-red-700 dark:text-red-400">FR06: Line Spacing</span>
+</div>
+<span class="text-[10px] font-bold text-red-600 bg-red-100 dark:bg-red-900 px-1.5 py-0.5 rounded">FAIL</span>
+</div>
+<!-- More placeholder rules -->
+<div class="flex items-center justify-between p-2 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors cursor-default opacity-60" v-for="i in 10">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-slate-300 text-lg">radio_button_unchecked</span>
+<span class="text-sm font-medium">FR07-FR16: Logic Rules</span>
+</div>
+</div>
+</div>
+</aside>
+<!-- Editor Section -->
+<section class="flex-1 flex flex-col bg-slate-50 dark:bg-slate-950 overflow-y-auto p-6 gap-6">
+<!-- Validation Summary -->
+<div class="bg-white dark:bg-slate-900 rounded-xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm">
+<div class="flex items-center justify-between mb-4">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-red-500">warning</span>
+<h3 class="font-bold">Specific Failures (4)</h3>
+</div>
+<button class="bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-lg text-sm font-bold flex items-center gap-2 transition-all shadow-md shadow-primary/20">
+<span class="material-symbols-outlined text-sm">magic_button</span>
+                            Auto-fix Issues
+                        </button>
+</div>
+<ul class="space-y-3">
+<li class="flex items-start gap-3 text-sm bg-red-50 dark:bg-red-950/20 p-3 rounded-lg border-l-4 border-red-500">
+<span class="font-bold text-red-600 dark:text-red-400 shrink-0">FR01:</span>
+<p class="text-slate-700 dark:text-slate-300">Paragraph 3 is <span class="font-bold text-red-600">312 characters</span>, exceeding the maximum limit of 280 characters for optimal mobile readability.</p>
+</li>
+<li class="flex items-start gap-3 text-sm bg-red-50 dark:bg-red-950/20 p-3 rounded-lg border-l-4 border-red-500">
+<span class="font-bold text-red-600 dark:text-red-400 shrink-0">FR03:</span>
+<p class="text-slate-700 dark:text-slate-300">Hashtag count exceeds <span class="font-bold text-red-600">5 items</span>. Consider reducing to improve reach performance.</p>
+</li>
+</ul>
+</div>
+<!-- Manual Editor -->
+<div class="flex-1 flex flex-col bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+<div class="px-4 py-3 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between bg-slate-50/50 dark:bg-slate-800/50">
+<span class="text-xs font-bold text-slate-500 uppercase">Manual Edit Mode</span>
+<div class="flex gap-2">
+<span class="text-xs text-slate-400">Word Count: 142</span>
+</div>
+</div>
+<div class="p-6 font-mono text-sm leading-relaxed overflow-y-auto flex-1">
+<p class="mb-4">Excited to announce our latest partnership with the global leader in sustainable tech! 🚀</p>
+<p class="mb-4">We've been working behind the scenes for months to make this happen, and the results are finally here. This collaboration marks a new era for LinkRight SMA.</p>
+<div class="bg-red-100 dark:bg-red-900/30 p-1 rounded -mx-1 border border-dashed border-red-300 dark:border-red-700 relative group">
+<p class="mb-4 text-slate-800 dark:text-slate-200">Our team has focused intensely on ensuring that every single aspect of the user journey is optimized for peak performance across all devices, including mobile, desktop, and tablet interfaces, while maintaining the highest possible standards for design and usability that our customers have come to expect from us over the last decade of service in this competitive industry landscape.</p>
+<span class="absolute -top-6 right-0 bg-red-500 text-white text-[10px] px-2 py-0.5 rounded opacity-0 group-hover:opacity-100 transition-opacity">FR01: Paragraph too long</span>
+</div>
+<p class="mb-4">Check it out at the link below and let us know your thoughts! 👇</p>
+<p class="text-primary">#Sustainability #Tech #Partnership #Innovation #Future #Growth #Networking #B2B #SaaS</p>
+</div>
+</div>
+</section>
+<!-- Preview Panel -->
+<aside class="w-[420px] border-l border-slate-200 dark:border-slate-800 bg-background-light dark:bg-background-dark p-6 overflow-y-auto no-scrollbar hidden xl:block">
+<div class="flex items-center justify-between mb-6">
+<h3 class="font-bold">LinkedIn Preview</h3>
+<div class="flex items-center gap-2 bg-white dark:bg-slate-800 p-1 rounded-full border border-slate-200 dark:border-slate-700">
+<button class="px-3 py-1 text-xs font-bold rounded-full transition-colors hover:text-primary">Light</button>
+<button class="px-3 py-1 text-xs font-bold rounded-full bg-slate-900 text-white dark:bg-primary">Dark</button>
+</div>
+</div>
+<!-- LinkedIn Dark Mode Card -->
+<div class="bg-[#1b1f23] text-white rounded-lg border border-[#2d3135] overflow-hidden shadow-xl max-w-sm mx-auto">
+<div class="p-3 flex items-start gap-2">
+<div class="w-12 h-12 rounded bg-slate-700 shrink-0 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Professional headshot of a business executive" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCDZNd_rJWWxmgEzK3p80HUpm58js5vNQxh0oZpDot3PvJGK5uXZQqmM1QLrtcpZHNNkXwjJrRaG3mheBZepRgjI9OaTefxTR2fmlogH8QBAhTdz5BABHGbfVT9MLC4Uryn6DeZQ9nLwkzGj1qqm--dyrkUNFLDCIgdA8LKZNDGstwWT31m4-iY9yuvsupBThWmrXn2_Hrz4fkpqghTF54uKNmrWTSIzX0hl41FnKbzw-T-L07MJvjYnQdDjZvrOhdItkePN51KBcw"/>
+</div>
+<div class="flex-1">
+<div class="flex items-center gap-1">
+<span class="text-sm font-bold">Alex Rivera</span>
+<span class="text-[10px] text-slate-400">• 1st</span>
+</div>
+<p class="text-[11px] text-slate-400 leading-tight">Founder &amp; CEO at LinkRight SMA | Digital Transformation Expert</p>
+<div class="flex items-center gap-1 text-[11px] text-slate-400">
+<span>2h •</span>
+<span class="material-symbols-outlined text-[12px]">public</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-slate-400">more_horiz</span>
+</div>
+<div class="px-3 pb-3 text-sm leading-snug space-y-3">
+<p>Excited to announce our latest partnership with the global leader in sustainable tech! 🚀</p>
+<p>We've been working behind the scenes for months to make this happen, and the results are finally here. This collaboration marks a new era for LinkRight SMA.</p>
+<p>Our team has focused intensely on ensuring that every single aspect of the user journey is optimized for peak performance across all devices...</p>
+<button class="text-slate-400 font-bold text-xs">...see more</button>
+<p class="text-[#71b1ff]">#Sustainability #Tech #Partnership #Innovation #Future #Growth #Networking #B2B #SaaS</p>
+</div>
+<div class="aspect-video bg-slate-800 relative">
+<img class="w-full h-full object-cover opacity-80" data-alt="Team collaborating in a modern office environment" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAuV6XKCm_MMC2P7GUvQdX2LpbLkjnPaJH2wzeh4MCZBI5t5um8NU-XuEWH8OBh7vXutXGeVu66t_FzzV1q6XxHvm6H3ATOA1RNDvzifT9Tzx0JhrbAhK_WWZ4pAbgSLBO8O9UsGh02sqzouXa6uIdXGncGesWn-RaWCm-IshFbjHx7zpfeSXcro7uPgiETbqT6rf1eZUZFy3IiWI7CguMeaB91X44nNCF-tiA61WhhZFV564WB47zCbpVovIHOdJAKEN7F0_09zTk"/>
+</div>
+<div class="p-2 border-t border-[#2d3135] flex items-center justify-between text-xs text-slate-400">
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">thumb_up</span> Like</div>
+<div class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">comment</span> Comment</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">share</span> Share</div>
+<div class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">send</span> Send</div>
+</div>
+</div>
+</div>
+<div class="mt-8 p-4 bg-primary/10 border border-primary/20 rounded-xl">
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary">lightbulb</span>
+<div>
+<p class="text-xs font-bold text-primary uppercase mb-1">Expert Tip</p>
+<p class="text-sm text-slate-600 dark:text-slate-400">Removing 4 hashtags and breaking Paragraph 3 into two smaller sections could increase engagement by up to <span class="font-bold">14.2%</span> based on current LinkedIn algorithms.</p>
+</div>
+</div>
+</div>
+</aside>
+</main>
+<!-- Footer Actions -->
+<footer class="bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 p-4 flex items-center justify-between">
+<div class="flex gap-4">
+<button class="text-sm font-bold px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">Discard Draft</button>
+<button class="text-sm font-bold px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">Save as Template</button>
+</div>
+<div class="flex gap-3">
+<button class="text-sm font-bold px-6 py-2 rounded-lg border border-primary text-primary hover:bg-primary/5 transition-colors">Schedule</button>
+<button class="text-sm font-bold px-8 py-2 rounded-lg bg-primary text-white shadow-lg shadow-primary/20 hover:opacity-90 transition-opacity">Post Now</button>
+</div>
+</footer>
+</div>
+</body></html>
