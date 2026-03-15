@@ -18,31 +18,28 @@ A **Web Bundle** is a self-contained collection of HTML files that consolidates 
 
 ## File Inventory
 
-### Prototype (5 files — this batch)
+### Complete Inventory (16 files)
 
-| # | File | Source Files Consolidated | Description |
-|---|------|--------------------------|-------------|
-| 1 | `system-prompt.md` | `chatgpt/system-prompt.md` | 6849-char system prompt — identity, pipeline, modes, rules |
-| 2 | `WF-A-ideation.html` | `workflows/content-ideation/*` (17 files) | Complete A-workflow: config, instructions, steps 01/01b/A1-A8, checklist, template, validation, edit protocols |
-| 3 | `agents.html` | `agents/*.md` + `agents/*.customize.yaml` + `_memory/*/instructions.md` (21 files) | All 7 agent definitions: persona, activation, capabilities, rules, menus, customization, sidecar content |
-| 4 | `actions-schema.html` | `chatgpt-actions-schema.json` | OpenAPI 3.1.0 schema as embedded JSON + human-readable endpoint reference table with all 14 endpoints |
-| 5 | `README.md` | — | This file. Bundle documentation and deployment guide. |
+| # | File | Size | Source Files | Description |
+|---|------|------|-------------|-------------|
+| 1 | `system-prompt.md` | 7K | `chatgpt/system-prompt.md` | System prompt — identity, pipeline, modes, rules |
+| 2 | `WF-A-ideation.html` | 41K | `workflows/content-ideation/*` (17 files) | A-workflow: config, instructions, steps 01/01b/A1-A8, checklist, template, validation, edit protocols |
+| 3 | `agents.html` | 24K | `agents/*.md` + `agents/*.customize.yaml` + `_memory/*/instructions.md` (21 files) | All 7 agent definitions: persona, activation, capabilities, rules, menus, customization, sidecar |
+| 4 | `actions-schema.html` | 34K | `chatgpt-actions-schema.json` | OpenAPI 3.1.0 schema + endpoint reference table (14 endpoints) |
+| 5 | `WF-B-drafting.html` | 92K | `workflows/content-drafting/*` (20 files) | B-workflow: steps 01/01b/B1-B4, checklist, template, validation, edit protocols, error handling, test plan |
+| 6 | `WF-C-review.html` | 62K | `workflows/content-review/*` (17 files) | C-workflow: steps 01/01b/C1-C4, checklist, template, validation, edit protocols, error handling, test plan |
+| 7 | `WF-D-publishing.html` | 64K | `workflows/content-publishing/*` (17 files) | D-workflow: steps 01/01b/D1-D4, checklist, template, validation, edit protocols, error handling, test plan |
+| 8 | `WF-E-analytics.html` | 86K | `workflows/analytics-review/*` (18 files) | E-workflow: steps 01/01b/E1-E5, checklist, template, validation, edit protocols, error handling, test plan |
+| 9 | `WF-F-formatting.html` | 92K | `workflows/content-formatting/*` (18 files) | F-workflow: steps 01/01b/F1-F4, checklist, template, validation, edit protocols, reference data, test plan |
+| 10 | `frameworks.html` | 98K | `frameworks/*.csv` (9 CSVs) + `content-elicitation-workflow.xml` | All framework data: formats, hooks, narrative, CTA, tone, positioning, methods, formatting rules, elicitation workflow |
+| 11 | `config.html` | 30K | `frameworks/variable-registry.csv`, `config-doc-schemas.md`, `posting-schedule.yaml` | Variable registry (49 vars), 7 config document schemas, posting schedule |
+| 12 | `validation.html` | 205K | `validation/*.md` (8 files) | QA reports: AB, FC, DE, revalidation, docs, UX strategy, P0P1, ChatGPT validation |
+| 13 | `reference.html` | 28K | `workflows/*/data/reference/*.yaml` (11 files) | Reference YAML data across all 6 workflows |
+| 14 | `orchestrator.html` | 64K | `docs/*.md` (5 files) + `docs/adr/ADR-*.md` (5 files) | Pipeline state machine, content strategy, variable storage, AB testing, 5 ADRs |
+| 15 | `module-meta.html` | 27K | `config.yaml`, `CONTEXT.md`, `module-help.csv`, `workflow-manifest.csv`, `agent-manifest.csv` | Module config, context summary, help commands, workflow & agent manifests |
+| 16 | `README.md` | 4K | — | This file. Bundle documentation and deployment guide. |
 
-### Planned (9 more files)
-
-| # | File | Source Files | Description |
-|---|------|-------------|-------------|
-| 6 | `WF-B-drafting.html` | `workflows/content-drafting/*` | B-workflow: steps B1-B4, framework curation, iterative refinement |
-| 7 | `WF-F-formatting.html` | `workflows/content-formatting/*` | F-workflow: steps F1-F4, 16 formatting rules, preview generation |
-| 8 | `WF-C-review.html` | `workflows/content-review/*` | C-workflow: steps C1-C4, approval/rejection flow |
-| 9 | `WF-D-publishing.html` | `workflows/content-publishing/*` | D-workflow: steps D1-D4, one-shot publish, Telegram notification |
-| 10 | `WF-E-analytics.html` | `workflows/analytics-review/*` | E-workflow: steps E1-E5, metric collection, strategy optimization |
-| 11 | `knowledge-K1-K2.html` | `chatgpt/knowledge/K1-*.md`, `K2-*.md` | Pipeline workflows + API reference (detailed prose) |
-| 12 | `knowledge-K3-K4.html` | `chatgpt/knowledge/K3-*.md`, `K4-*.md` | Formatting rules + Frameworks catalog |
-| 13 | `knowledge-K5-K6.html` | `chatgpt/knowledge/K5-*.md`, `K6-*.md` | Scoring config + Content pillars |
-| 14 | `frameworks.html` | `frameworks/*.csv` (8 CSVs) | All framework data: formats, hooks, narrative, CTA, tone, positioning, methods, formatting rules |
-
-**Total: 14 files** (within ChatGPT's 20-file limit, leaving 6 slots for future expansion)
+**Total: 16 files** (within ChatGPT's 20-file limit, leaving 4 slots for future expansion)
 
 ## How to Update/Rebuild
 
@@ -65,8 +62,12 @@ system-prompt.md          — System prompt (markdown, not HTML)
 WF-{CODE}-{name}.html    — Workflow bundles (A-E + F)
 agents.html               — All agent definitions
 actions-schema.html        — OpenAPI schema + endpoint docs
-knowledge-{K#}-{K#}.html  — Knowledge file pairs
-frameworks.html            — Framework CSV data
+frameworks.html            — Framework CSV + XML data
+config.html                — Variable registry + config schemas + posting schedule
+validation.html            — QA reports and validation checklists
+reference.html             — Reference YAML data across all workflows
+orchestrator.html          — Pipeline docs + ADRs
+module-meta.html           — Module config, context, manifests
 README.md                  — This documentation
 ```
 

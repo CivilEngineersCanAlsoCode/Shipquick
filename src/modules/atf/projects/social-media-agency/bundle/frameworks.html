@@ -1,0 +1,3099 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Frameworks Catalog | Flex SMA Bundle</title>
+  <meta name="bundle-version" content="1.0.0">
+  <meta name="source-module" content="flex-sma">
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 960px; margin: 0 auto; padding: 2rem; color: #1a1a1a; }
+    section { margin: 2rem 0; border-left: 4px solid #059669; padding-left: 1.5rem; }
+    article { margin: 1.5rem 0; padding: 1rem; background: #f8fafc; border-radius: 8px; }
+    h1 { color: #1e40af; } h2 { color: #059669; } h3 { color: #3b82f6; }
+    code { background: #f1f5f9; padding: 0.2em 0.4em; border-radius: 4px; font-size: 0.9em; }
+    pre { background: #1e293b; color: #e2e8f0; padding: 1rem; border-radius: 8px; overflow-x: auto; }
+    table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+    th, td { border: 1px solid #e2e8f0; padding: 0.5rem 0.75rem; text-align: left; }
+    th { background: #f1f5f9; }
+    details { margin: 0.5rem 0; }
+    summary { cursor: pointer; font-weight: 600; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Frameworks Catalog</h1>
+  <p>Comprehensive reference of all Flex SMA content frameworks: 35 content formats, 34 hook frameworks, 31 narrative frameworks, 32 CTA frameworks, 32 tone frameworks, 16 formatting rules, 31 positioning templates, 61 content methods, and 1 content elicitation workflow. This bundle consolidates 9 source files into a single self-contained document.</p>
+</header>
+
+<section data-bundle-type="frameworks" data-source-files="index.csv,content-formats.csv,content-methods.csv,cta-frameworks.csv,formatting-rules.csv,hook-frameworks.csv,narrative-frameworks.csv,positioning-templates.csv,tone-frameworks.csv,content-elicitation-workflow.xml">
+
+<article data-type="framework" data-source="index.csv">
+  <h2>Frameworks Index</h2>
+  <h3>Source: <code>index.csv</code></h3>
+<table>
+<thead><tr>
+<th>id</th>
+<th>name</th>
+<th>description</th>
+<th>file_path</th>
+<th>item_count</th>
+<th>used_by_workflows</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>FW01</td>
+<td>Content Formats</td>
+<td>35 content format types (story-insight, listicle, hot-take, etc.) with engagement levels</td>
+<td>content-formats.csv</td>
+<td>35</td>
+<td>B-ContentDrafting</td>
+</tr>
+<tr>
+<td>FW02</td>
+<td>Hook Frameworks</td>
+<td>35 hook patterns for LinkedIn post openings with examples and best-for tags</td>
+<td>hook-frameworks.csv</td>
+<td>34</td>
+<td>B-ContentDrafting</td>
+</tr>
+<tr>
+<td>FW03</td>
+<td>Narrative Frameworks</td>
+<td>32 narrative structures for storytelling and content flow</td>
+<td>narrative-frameworks.csv</td>
+<td>31</td>
+<td>B-ContentDrafting</td>
+</tr>
+<tr>
+<td>FW04</td>
+<td>CTA Frameworks</td>
+<td>32 call-to-action patterns for post closings with engagement types</td>
+<td>cta-frameworks.csv</td>
+<td>32</td>
+<td>B-ContentDrafting</td>
+</tr>
+<tr>
+<td>FW05</td>
+<td>Tone Frameworks</td>
+<td>32 tone/voice options for content personality and style</td>
+<td>tone-frameworks.csv</td>
+<td>32</td>
+<td>B-ContentDrafting</td>
+</tr>
+<tr>
+<td>FW06</td>
+<td>Formatting Rules</td>
+<td>16 LinkedIn-specific formatting rules (staircase, emoji limits, etc.)</td>
+<td>formatting-rules.csv</td>
+<td>16</td>
+<td>B-ContentDrafting,F-ContentFormatting</td>
+</tr>
+<tr>
+<td>FW07</td>
+<td>Positioning Templates</td>
+<td>32 positioning + follow line templates per pillar and tone</td>
+<td>positioning-templates.csv</td>
+<td>31</td>
+<td>B-ContentDrafting</td>
+</tr>
+<tr>
+<td>FW08</td>
+<td>Content Methods</td>
+<td>61 content methods across 10 categories with output patterns</td>
+<td>content-methods.csv</td>
+<td>61</td>
+<td>B-ContentDrafting</td>
+</tr>
+<tr>
+<td>FW09</td>
+<td>Content Elicitation Workflow</td>
+<td>XML workflow for structured content elicitation with AI-guided questions</td>
+<td>content-elicitation-workflow.xml</td>
+<td>1</td>
+<td>B-ContentDrafting</td>
+</tr>
+<tr>
+<td>FW10</td>
+<td>Variable Registry</td>
+<td>49 configurable variables across all workflows with storage locations</td>
+<td>variable-registry.csv</td>
+<td>49</td>
+<td>All</td>
+</tr>
+<tr>
+<td>FW11</td>
+<td>Config Doc Schemas</td>
+<td>MongoDB sma_config collection schemas for 7 config documents</td>
+<td>config-doc-schemas.md</td>
+<td>7</td>
+<td>All</td>
+</tr>
+<tr>
+<td>FW12</td>
+<td>Posting Schedule</td>
+<td>Default Mon/Wed/Fri 6-7 PM IST schedule with A/B test variants and holiday overrides</td>
+<td>posting-schedule.yaml</td>
+<td>1</td>
+<td>D-ContentPublishing,E-AnalyticsReview</td>
+</tr>
+</tbody></table>
+</article>
+
+<article data-type="framework" data-source="content-formats.csv">
+  <h2>Content Formats</h2>
+  <h3>Source: <code>content-formats.csv</code></h3>
+<table>
+<thead><tr>
+<th>id</th>
+<th>name</th>
+<th>emoji</th>
+<th>description</th>
+<th>example</th>
+<th>best_for</th>
+<th>engagement_level</th>
+<th>linkedin_specific</th>
+<th>source</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>CF01</td>
+<td>Story-to-Insight</td>
+<td>📖</td>
+<td>Personal story that ends with a transferable insight or lesson</td>
+<td>Told a story about getting rejected from 12 companies before Amex, ending with &#x27;rejection is just redirection&#x27;</td>
+<td>career personal</td>
+<td>high</td>
+<td>true</td>
+<td>LinkedIn best practices</td>
+</tr>
+<tr>
+<td>CF02</td>
+<td>Data-to-Opinion</td>
+<td>📊</td>
+<td>Lead with a surprising stat then share your hot take on it</td>
+<td>&#x27;73% of PMs have never spoken to a customer.&#x27; Then opinion on why discovery is broken.</td>
+<td>pm hottake</td>
+<td>high</td>
+<td>true</td>
+<td>Thought leadership frameworks</td>
+</tr>
+<tr>
+<td>CF03</td>
+<td>Listicle</td>
+<td>📋</td>
+<td>Numbered list of tips/tools/lessons with brief explanations</td>
+<td>&#x27;7 tools that saved me 10 hours a week as a PM&#x27; with one-liner per tool</td>
+<td>howto ai_automation</td>
+<td>medium</td>
+<td>true</td>
+<td>Content marketing fundamentals</td>
+</tr>
+<tr>
+<td>CF04</td>
+<td>Before-After</td>
+<td>🔄</td>
+<td>Show transformation — what changed and how</td>
+<td>Before: 60-hour weeks drowning in Jira. After: 30-hour weeks shipping 2x. Here&#x27;s what changed.</td>
+<td>career pm</td>
+<td>high</td>
+<td>true</td>
+<td>Copywriting fundamentals</td>
+</tr>
+<tr>
+<td>CF05</td>
+<td>Hot-Take</td>
+<td>🔥</td>
+<td>Bold contrarian opinion that challenges conventional wisdom</td>
+<td>&#x27;Product roadmaps are a lie we tell stakeholders to feel in control.&#x27;</td>
+<td>hottake pm</td>
+<td>high</td>
+<td>true</td>
+<td>LinkedIn viral post analysis</td>
+</tr>
+<tr>
+<td>CF06</td>
+<td>How-To-Guide</td>
+<td>🛠️</td>
+<td>Step-by-step actionable tutorial on a specific skill</td>
+<td>How I run a stakeholder alignment meeting in 15 minutes flat. Step 1...</td>
+<td>howto pm</td>
+<td>medium</td>
+<td>true</td>
+<td>Educational content strategy</td>
+</tr>
+<tr>
+<td>CF07</td>
+<td>Myth-Busting</td>
+<td>💥</td>
+<td>Take a common belief and systematically dismantle it</td>
+<td>&#x27;You need an MBA to break into product management.&#x27; No you don&#x27;t. Here&#x27;s why.</td>
+<td>career pm hottake</td>
+<td>high</td>
+<td>true</td>
+<td>Contrarian content strategy</td>
+</tr>
+<tr>
+<td>CF08</td>
+<td>Day-in-Life</td>
+<td>🌅</td>
+<td>Walk through a typical day with behind-the-scenes details</td>
+<td>5:30 AM alarm. 6 AM gym. 7:30 AM standup prep. Here&#x27;s what a PM&#x27;s day actually looks like at Amex.</td>
+<td>personal career</td>
+<td>medium</td>
+<td>true</td>
+<td>LinkedIn authenticity trends</td>
+</tr>
+<tr>
+<td>CF09</td>
+<td>Lessons-Learned</td>
+<td>🎓</td>
+<td>Distilled lessons from a specific experience or time period</td>
+<td>3 years at Amex taught me more about people than about products. Here are 5 lessons.</td>
+<td>career personal</td>
+<td>high</td>
+<td>true</td>
+<td>Reflective content frameworks</td>
+</tr>
+<tr>
+<td>CF10</td>
+<td>Framework-Share</td>
+<td>🧩</td>
+<td>Share a mental model or decision framework you use</td>
+<td>My 2x2 matrix for deciding what to build next. Effort vs Impact is lazy. Try this instead.</td>
+<td>pm howto</td>
+<td>high</td>
+<td>true</td>
+<td>Thought leadership frameworks</td>
+</tr>
+<tr>
+<td>CF11</td>
+<td>Comparison</td>
+<td>⚖️</td>
+<td>Compare two approaches/tools/mindsets side by side</td>
+<td>Product Manager vs Project Manager. Same meeting. Completely different questions.</td>
+<td>pm career</td>
+<td>medium</td>
+<td>true</td>
+<td>Educational content strategy</td>
+</tr>
+<tr>
+<td>CF12</td>
+<td>Unpopular-Opinion</td>
+<td>🚫</td>
+<td>State an opinion most people disagree with and defend it</td>
+<td>Unpopular opinion: standups are just status meetings wearing agile costumes.</td>
+<td>hottake pm</td>
+<td>high</td>
+<td>true</td>
+<td>LinkedIn viral post analysis</td>
+</tr>
+<tr>
+<td>CF13</td>
+<td>Failure-Story</td>
+<td>😅</td>
+<td>Share a professional failure and what you learned from it</td>
+<td>I once shipped a feature nobody asked for. Took 3 sprints. Got zero adoption. Here&#x27;s what went wrong.</td>
+<td>personal pm</td>
+<td>high</td>
+<td>true</td>
+<td>Vulnerability-based content</td>
+</tr>
+<tr>
+<td>CF14</td>
+<td>Behind-the-Scenes</td>
+<td>🎬</td>
+<td>Reveal what actually happens behind a process or decision</td>
+<td>What actually happens in an Amex product review. Spoiler: it&#x27;s not what the Agile textbook says.</td>
+<td>pm personal</td>
+<td>medium</td>
+<td>true</td>
+<td>Transparency content strategy</td>
+</tr>
+<tr>
+<td>CF15</td>
+<td>Challenge-Post</td>
+<td>💪</td>
+<td>Challenge your audience to do something for a set period</td>
+<td>Challenge: talk to 3 customers this week. No survey. No form. Just a conversation.</td>
+<td>pm howto</td>
+<td>medium</td>
+<td>true</td>
+<td>Community engagement tactics</td>
+</tr>
+<tr>
+<td>CF16</td>
+<td>Case-Study</td>
+<td>🔍</td>
+<td>Break down a real product/business decision with analysis</td>
+<td>How Zomato&#x27;s 10-minute delivery bet changed the entire food-tech game in India.</td>
+<td>startup pm</td>
+<td>medium</td>
+<td>true</td>
+<td>Business analysis content</td>
+</tr>
+<tr>
+<td>CF17</td>
+<td>Book-Summary</td>
+<td>📚</td>
+<td>Key takeaways from a book applied to your domain</td>
+<td>Read &#x27;Inspired&#x27; by Marty Cagan. 3 things that changed how I write PRDs.</td>
+<td>pm howto</td>
+<td>medium</td>
+<td>false</td>
+<td>Content repurposing strategy</td>
+</tr>
+<tr>
+<td>CF18</td>
+<td>Tool-Review</td>
+<td>⚙️</td>
+<td>Honest review of a tool you actually use with pros and cons</td>
+<td>I replaced Notion with Obsidian for PM documentation. Here&#x27;s my honest take after 6 months.</td>
+<td>ai_automation howto</td>
+<td>medium</td>
+<td>false</td>
+<td>Product review content</td>
+</tr>
+<tr>
+<td>CF19</td>
+<td>Career-Advice</td>
+<td>🧭</td>
+<td>Direct advice on navigating career decisions</td>
+<td>You don&#x27;t need to &#x27;find your passion.&#x27; You need to find what you&#x27;re willing to be bored doing on a Tuesday.</td>
+<td>career personal</td>
+<td>high</td>
+<td>true</td>
+<td>Career coaching frameworks</td>
+</tr>
+<tr>
+<td>CF20</td>
+<td>Interview-Tips</td>
+<td>🎯</td>
+<td>Tactical advice for cracking interviews in your domain</td>
+<td>The PM interview question that trips up 90% of candidates. And how to nail it.</td>
+<td>career pm</td>
+<td>medium</td>
+<td>true</td>
+<td>Educational content strategy</td>
+</tr>
+<tr>
+<td>CF21</td>
+<td>Observation-Post</td>
+<td>👀</td>
+<td>Share something you noticed and unpack why it matters</td>
+<td>I noticed the best PMs in my org never say &#x27;I think.&#x27; They say &#x27;the data suggests.&#x27; Small shift. Big difference.</td>
+<td>pm career</td>
+<td>medium</td>
+<td>true</td>
+<td>Observational writing</td>
+</tr>
+<tr>
+<td>CF22</td>
+<td>Thread-Style</td>
+<td>🧵</td>
+<td>Multi-part post that builds on itself like a Twitter thread</td>
+<td>1/ The startup advice nobody gives you. 2/ Your first hire matters more than your first feature. 3/...</td>
+<td>startup career</td>
+<td>medium</td>
+<td>true</td>
+<td>Twitter-to-LinkedIn adaptation</td>
+</tr>
+<tr>
+<td>CF23</td>
+<td>Analogy-Post</td>
+<td>🪞</td>
+<td>Explain a complex concept through a relatable analogy</td>
+<td>Product management is like being a GPS. You don&#x27;t drive. You recalculate.</td>
+<td>pm hottake</td>
+<td>high</td>
+<td>true</td>
+<td>Copywriting fundamentals</td>
+</tr>
+<tr>
+<td>CF24</td>
+<td>Confession-Post</td>
+<td>🤫</td>
+<td>Admit something vulnerable that others relate to</td>
+<td>Confession: I still get nervous before every stakeholder presentation. 3 years in.</td>
+<td>personal career</td>
+<td>high</td>
+<td>true</td>
+<td>Vulnerability-based content</td>
+</tr>
+<tr>
+<td>CF25</td>
+<td>Prediction-Post</td>
+<td>🔮</td>
+<td>Make a bold prediction about your industry&#x27;s future</td>
+<td>By 2027 half of all PM tasks will be automated by AI. Here&#x27;s what that means for your career.</td>
+<td>ai_automation pm</td>
+<td>medium</td>
+<td>true</td>
+<td>Thought leadership frameworks</td>
+</tr>
+<tr>
+<td>CF26</td>
+<td>Rant-Post</td>
+<td>😤</td>
+<td>Controlled rant about something broken in your industry</td>
+<td>Can we please stop asking PMs to &#x27;just quickly build a dashboard&#x27;? That&#x27;s not how any of this works.</td>
+<td>hottake pm</td>
+<td>high</td>
+<td>true</td>
+<td>Emotional content strategy</td>
+</tr>
+<tr>
+<td>CF27</td>
+<td>Gratitude-Post</td>
+<td>🙏</td>
+<td>Thank someone or something that shaped your journey</td>
+<td>My manager at Amex told me something in week 1 that I still think about every day.</td>
+<td>personal career</td>
+<td>medium</td>
+<td>true</td>
+<td>Relationship-based content</td>
+</tr>
+<tr>
+<td>CF28</td>
+<td>Milestone-Post</td>
+<td>🏆</td>
+<td>Celebrate a professional milestone with reflection</td>
+<td>1000 days at Amex today. Here&#x27;s what I wish I knew on day 1.</td>
+<td>career personal</td>
+<td>medium</td>
+<td>true</td>
+<td>LinkedIn milestone content</td>
+</tr>
+<tr>
+<td>CF29</td>
+<td>Question-Post</td>
+<td>❓</td>
+<td>Pose a genuine question to spark discussion</td>
+<td>If you could only measure ONE metric for your product what would it be? And why?</td>
+<td>pm startup</td>
+<td>medium</td>
+<td>true</td>
+<td>Community engagement tactics</td>
+</tr>
+<tr>
+<td>CF30</td>
+<td>Contrarian-How-To</td>
+<td>🔀</td>
+<td>Teach something by doing the opposite of conventional advice</td>
+<td>How to fail your next product launch in 5 easy steps. (Do the opposite.)</td>
+<td>pm howto hottake</td>
+<td>high</td>
+<td>true</td>
+<td>Contrarian content strategy</td>
+</tr>
+<tr>
+<td>CF31</td>
+<td>Letter-Format</td>
+<td>✉️</td>
+<td>Write a letter to your past/future self or someone else</td>
+<td>Dear 22-year-old me sitting in IIT Delhi. You&#x27;re about to make the scariest decision of your life.</td>
+<td>personal career</td>
+<td>high</td>
+<td>true</td>
+<td>Epistolary content format</td>
+</tr>
+<tr>
+<td>CF32</td>
+<td>Mini-Poll</td>
+<td>📈</td>
+<td>Present 2-3 options and ask audience to vote in comments</td>
+<td>Which skill matters more for a PM in 2026? A) SQL B) Storytelling C) AI prompting. Drop your answer below.</td>
+<td>pm career</td>
+<td>medium</td>
+<td>true</td>
+<td>LinkedIn engagement tactics</td>
+</tr>
+<tr>
+<td>CF33</td>
+<td>One-Liner-Expansion</td>
+<td>💬</td>
+<td>Start with a punchy one-liner then expand on it in the body</td>
+<td>&#x27;Strategy is just saying no with a spreadsheet.&#x27; Let me explain.</td>
+<td>pm hottake</td>
+<td>high</td>
+<td>true</td>
+<td>Copywriting fundamentals</td>
+</tr>
+<tr>
+<td>CF34</td>
+<td>Curated-List</td>
+<td>🗂️</td>
+<td>Curated collection of resources/people/tools on a theme</td>
+<td>5 newsletters every Indian PM should subscribe to. None of them are obvious.</td>
+<td>pm howto</td>
+<td>medium</td>
+<td>false</td>
+<td>Content curation strategy</td>
+</tr>
+<tr>
+<td>CF35</td>
+<td>Reaction-Post</td>
+<td>📰</td>
+<td>React to a trending news/event with your professional lens</td>
+<td>Byju&#x27;s just laid off another 1000 people. Here&#x27;s what edtech founders aren&#x27;t talking about.</td>
+<td>startup hottake</td>
+<td>high</td>
+<td>true</td>
+<td>Newsjacking content strategy</td>
+</tr>
+</tbody></table>
+</article>
+
+<article data-type="framework" data-source="content-methods.csv">
+  <h2>Content Methods</h2>
+  <h3>Source: <code>content-methods.csv</code></h3>
+<table>
+<thead><tr>
+<th>num</th>
+<th>category</th>
+<th>method_name</th>
+<th>description</th>
+<th>output_pattern</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>ideation</td>
+<td>Audience Pain Mining</td>
+<td>Scan audience comments/DMs/forums for recurring frustrations. Map each pain to content pillar. Extract 3 angles per pain. Works for any channel.</td>
+<td>pain points → pillar mapping → 3 content angles</td>
+</tr>
+<tr>
+<td>2</td>
+<td>ideation</td>
+<td>Trend Hijacking</td>
+<td>Find trending topic in your industry. Connect it to your expertise/experience. Ride the wave before it crashes.</td>
+<td>trending topic → your angle → timely content</td>
+</tr>
+<tr>
+<td>3</td>
+<td>ideation</td>
+<td>Experience Reverse Engineering</td>
+<td>Start from YOUR experience. Ask: what did I learn? Who else needs this? What format fits best?</td>
+<td>experience → lesson → audience → format</td>
+</tr>
+<tr>
+<td>4</td>
+<td>ideation</td>
+<td>Contrarian Flip</td>
+<td>Take popular advice in your niche. Question it. Find where it breaks. Write the counter-argument.</td>
+<td>popular belief → holes → your take</td>
+</tr>
+<tr>
+<td>5</td>
+<td>ideation</td>
+<td>Question Mining</td>
+<td>Collect questions people ask you repeatedly (DMs, meetings, mentoring). Each question = 1 post.</td>
+<td>repeated questions → answer posts</td>
+</tr>
+<tr>
+<td>6</td>
+<td>ideation</td>
+<td>Content Collision</td>
+<td>Combine 2 unrelated pillars (e.g., PM + music, startup + cricket). Unexpected combos create viral potential.</td>
+<td>pillar A + pillar B → unexpected angle</td>
+</tr>
+<tr>
+<td>7</td>
+<td>research</td>
+<td>Competitor Shadow Study</td>
+<td>Pick 3-5 top creators in your niche. Analyze their top 10 posts. What patterns emerge? Replicate the pattern not the content.</td>
+<td>competitors → top posts → patterns → your version</td>
+</tr>
+<tr>
+<td>8</td>
+<td>research</td>
+<td>Comment Section Gold Mining</td>
+<td>Read comments on viral posts in your niche. People reveal real opinions objections stories in comments. Each gold comment = content seed.</td>
+<td>viral post → comments → insights → content seeds</td>
+</tr>
+<tr>
+<td>9</td>
+<td>research</td>
+<td>Data Point Hunting</td>
+<td>Find 1 surprising stat about your topic. Build entire content around that single data point. Stats stop the scroll.</td>
+<td>topic → surprising stat → context → take</td>
+</tr>
+<tr>
+<td>10</td>
+<td>research</td>
+<td>Audience Language Mirroring</td>
+<td>Study exact words your audience uses to describe their problems. Use THEIR words not industry jargon. Resonance &gt; sophistication.</td>
+<td>audience words → mirror in content → instant relatability</td>
+</tr>
+<tr>
+<td>11</td>
+<td>research</td>
+<td>Trend Radar Sweep</td>
+<td>Weekly scan: Google Trends Twitter trending LinkedIn news Reddit threads newsletter opens. Map what is hot to your pillars.</td>
+<td>platforms → trending topics → pillar fit → content queue</td>
+</tr>
+<tr>
+<td>12</td>
+<td>research</td>
+<td>Gap Analysis</td>
+<td>Find what top creators in your niche are NOT talking about. The gap = your opportunity. Underserved topics = lower competition higher loyalty.</td>
+<td>niche scan → missing topics → your blue ocean</td>
+</tr>
+<tr>
+<td>13</td>
+<td>hook</td>
+<td>Hook Stress Test</td>
+<td>Write same hook in 5 different styles (question bold data story confession). Pick the one with maximum curiosity gap for target channel.</td>
+<td>topic → 5 hooks → evaluate → winner</td>
+</tr>
+<tr>
+<td>14</td>
+<td>hook</td>
+<td>Two-Line Cliffhanger</td>
+<td>Craft exactly 2 lines that force the reader to click see more. Line 1 = setup. Line 2 = incomplete payoff. The gap does the work.</td>
+<td>setup → incomplete payoff → curiosity gap</td>
+</tr>
+<tr>
+<td>15</td>
+<td>hook</td>
+<td>Pattern Interrupt</td>
+<td>Break the expected feed pattern. If everyone writes long go ultra-short. If everyone is positive go raw honest. Scroll stops at surprise.</td>
+<td>feed norm → opposite → attention</td>
+</tr>
+<tr>
+<td>16</td>
+<td>hook</td>
+<td>Specificity Injection</td>
+<td>Replace vague hooks with hyper-specific details. Not &#x27;I failed&#x27; but &#x27;I lost Rs 4.7 lakhs in 47 days&#x27;. Specifics = credibility = clicks.</td>
+<td>vague → specific numbers/names/dates → trust</td>
+</tr>
+<tr>
+<td>17</td>
+<td>hook</td>
+<td>Identity Hook</td>
+<td>Start by calling out exactly who should read this. &#x27;If you are a PM who...&#x27; Self-identification makes people feel personally addressed.</td>
+<td>target identity → their specific pain → pull</td>
+</tr>
+<tr>
+<td>18</td>
+<td>hook</td>
+<td>Open Loop</td>
+<td>Start with the END of the story. &#x27;That one decision made me Rs 20L.&#x27; Reader needs to know HOW. Do not close the loop until the end.</td>
+<td>result first → mystery → reveal at end</td>
+</tr>
+<tr>
+<td>19</td>
+<td>narrative</td>
+<td>Experience Bridge</td>
+<td>Connect personal experience to universal insight. MY story → YOUR takeaway. The bridge between &#x27;this happened to me&#x27; and &#x27;this matters to you&#x27;.</td>
+<td>personal → bridge → universal takeaway</td>
+</tr>
+<tr>
+<td>20</td>
+<td>narrative</td>
+<td>Tension Arc</td>
+<td>Every good post needs tension. Setup the stakes early. What could go wrong? What was at risk? No tension = no engagement.</td>
+<td>stakes → rising tension → resolution → lesson</td>
+</tr>
+<tr>
+<td>21</td>
+<td>narrative</td>
+<td>Show Don&#x27;t Tell</td>
+<td>Replace &#x27;I was scared&#x27; with &#x27;My hands were shaking on the keyboard at 2 AM&#x27;. Sensory details &gt; abstract emotions. Works for any format.</td>
+<td>abstract emotion → concrete scene → reader feels it</td>
+</tr>
+<tr>
+<td>22</td>
+<td>narrative</td>
+<td>One Post One Point</td>
+<td>Resist the urge to cover 5 things. One clear point deeply explored. Reader should be able to summarize your post in 1 sentence.</td>
+<td>multiple ideas → pick ONE → go deep → clarity</td>
+</tr>
+<tr>
+<td>23</td>
+<td>narrative</td>
+<td>Bookend Technique</td>
+<td>Start and end with the same image/phrase/scene but with changed meaning. Creates satisfying closure.</td>
+<td>opening image → journey → same image new meaning</td>
+</tr>
+<tr>
+<td>24</td>
+<td>narrative</td>
+<td>Villain-Victim-Hero Flip</td>
+<td>Start as the villain or victim of your own story. Then flip to hero through self-awareness. Relatable &gt; aspirational.</td>
+<td>villain/victim → realization → growth → hero</td>
+</tr>
+<tr>
+<td>25</td>
+<td>repurposing</td>
+<td>Content Waterfall</td>
+<td>One idea flows down: long-form blog → LinkedIn post → carousel slides → reel script → tweet thread → email newsletter. Single input 6 outputs.</td>
+<td>idea → expand → compress → visualize → micro → email</td>
+</tr>
+<tr>
+<td>26</td>
+<td>repurposing</td>
+<td>Format Swap</td>
+<td>Take an existing post that performed well. Rewrite in completely different format. Story that worked? Make it a listicle.</td>
+<td>top post → new format → fresh reach</td>
+</tr>
+<tr>
+<td>27</td>
+<td>repurposing</td>
+<td>Platform Native Translation</td>
+<td>Same message native to each platform&#x27;s culture. LinkedIn = professional insight. Instagram = visual + casual. Substack = deep dive. Not copy-paste — translate.</td>
+<td>core message → platform culture → native version</td>
+</tr>
+<tr>
+<td>28</td>
+<td>repurposing</td>
+<td>Evergreen Recycler</td>
+<td>Posts older than 90 days with high engagement = recyclable. Update with new data/experience. Repost. Your new audience hasn&#x27;t seen it.</td>
+<td>old top post → update → new context → repost</td>
+</tr>
+<tr>
+<td>29</td>
+<td>repurposing</td>
+<td>Thread-to-Monologue</td>
+<td>Take a multi-point post/thread. Pick the ONE point that got most comments. Expand just that into full standalone content.</td>
+<td>multi-point → top comment point → expand → standalone</td>
+</tr>
+<tr>
+<td>30</td>
+<td>repurposing</td>
+<td>Audience Question Flip</td>
+<td>Someone asks you a great question in comments/DMs. Your reply = next post. The question becomes the hook. Built-in social proof.</td>
+<td>DM/comment question → hook → detailed answer post</td>
+</tr>
+<tr>
+<td>31</td>
+<td>engagement</td>
+<td>Controversy Calibration</td>
+<td>Find the sweet spot between &#x27;everyone agrees&#x27; (boring) and &#x27;everyone is offended&#x27; (toxic). Mildly controversial = most comments.</td>
+<td>safe take → find edge → calibrate → debate magnet</td>
+</tr>
+<tr>
+<td>32</td>
+<td>engagement</td>
+<td>Reply Bait Architecture</td>
+<td>Design the post so people HAVE to respond. Leave a gap. Ask &#x27;what would you do?&#x27; Make them complete YOUR sentence.</td>
+<td>statement → intentional gap → reader fills it</td>
+</tr>
+<tr>
+<td>33</td>
+<td>engagement</td>
+<td>Tribal Signal</td>
+<td>Write for a specific tribe. &#x27;Only PMs will understand this.&#x27; Exclusivity drives shares within the tribe. People tag their people.</td>
+<td>tribe identity → insider reference → tag behavior</td>
+</tr>
+<tr>
+<td>34</td>
+<td>engagement</td>
+<td>First Comment Strategy</td>
+<td>Your first comment on your own post = engagement hack. Add context ask a follow-up share a bonus tip. Kickstarts the comment thread.</td>
+<td>post live → self-comment → conversation starter</td>
+</tr>
+<tr>
+<td>35</td>
+<td>engagement</td>
+<td>Save-Worthy Formatting</td>
+<td>Make content people bookmark/save. Frameworks checklists templates cheat sheets. Saves signal &#x27;high value&#x27; to algorithms across all platforms.</td>
+<td>actionable content → structured format → save trigger</td>
+</tr>
+<tr>
+<td>36</td>
+<td>engagement</td>
+<td>Emotional Peak Placement</td>
+<td>Place your most emotional line at 60-70% through the post. Reader is invested by then. That is where the Hindi line the emoji the gut punch lands hardest.</td>
+<td>buildup → peak at 60-70% → release → CTA</td>
+</tr>
+<tr>
+<td>37</td>
+<td>positioning</td>
+<td>Intersection Identity</td>
+<td>You are not just &#x27;a PM&#x27;. You are &#x27;IIT Civil Eng → Amex PM → startup investor&#x27;. The intersection of your identities IS your brand. Nobody else has your exact combination.</td>
+<td>identity 1 + identity 2 + identity 3 → unique position</td>
+</tr>
+<tr>
+<td>38</td>
+<td>positioning</td>
+<td>Anti-Guru Positioning</td>
+<td>Do not be the expert who has all answers. Be the practitioner who shares what they are learning. &#x27;I am figuring this out too&#x27; &gt; &#x27;Let me teach you&#x27;.</td>
+<td>expert pedestal → come down → peer level → trust</td>
+</tr>
+<tr>
+<td>39</td>
+<td>positioning</td>
+<td>Signature Framework</td>
+<td>Create ONE framework people associate with YOU. Name it. Use it repeatedly. Owned IP = brand moat.</td>
+<td>your process → name it → repeat → people cite you</td>
+</tr>
+<tr>
+<td>40</td>
+<td>positioning</td>
+<td>Origin Story Anchoring</td>
+<td>Every few weeks re-anchor to your origin story. New followers do not know you. Context makes every other post hit harder.</td>
+<td>origin story → periodically retell → new audience context</td>
+</tr>
+<tr>
+<td>41</td>
+<td>positioning</td>
+<td>Consistent Inconsistency</td>
+<td>Have a consistent voice but vary content types. Always sound like YOU but surprise with format. Predictable voice unpredictable content.</td>
+<td>consistent tone → varied format → familiarity + surprise</td>
+</tr>
+<tr>
+<td>42</td>
+<td>positioning</td>
+<td>Build In Public</td>
+<td>Share the messy middle not just polished results. Real-time &gt; highlight reel.</td>
+<td>real-time update → raw truth → audience invests in journey</td>
+</tr>
+<tr>
+<td>43</td>
+<td>distribution</td>
+<td>Golden Hour Posting</td>
+<td>Each platform has peak engagement windows. Test 3 time slots for 2 weeks. Let data decide YOUR golden hour.</td>
+<td>platform defaults → test 3 slots → measure → your golden hour</td>
+</tr>
+<tr>
+<td>44</td>
+<td>distribution</td>
+<td>Engagement Window Sprint</td>
+<td>First 60 minutes after posting = critical. Stay online. Reply to EVERY comment within minutes. Algorithm sees early engagement burst → pushes to more feeds.</td>
+<td>post → 60 min active → reply all → algorithm boost</td>
+</tr>
+<tr>
+<td>45</td>
+<td>distribution</td>
+<td>Cross-Pollination Seeding</td>
+<td>Post on primary platform. Then seed it elsewhere. Screenshot LinkedIn post → Instagram story. Drive traffic both ways.</td>
+<td>primary post → screenshot/quote → seed on others → cross traffic</td>
+</tr>
+<tr>
+<td>46</td>
+<td>distribution</td>
+<td>DM Before Publish</td>
+<td>Before posting DM 5-10 people who would genuinely care about the topic. Personal touch → guaranteed early engagement.</td>
+<td>draft ready → 5-10 DMs → genuine interest → early comments</td>
+</tr>
+<tr>
+<td>47</td>
+<td>distribution</td>
+<td>Platform Ladder</td>
+<td>Start content where friction is lowest. Tweet the idea. If traction → LinkedIn post. If that works → Substack deep dive. Let audience validate before you invest more effort.</td>
+<td>micro test → validate → expand → invest more</td>
+</tr>
+<tr>
+<td>48</td>
+<td>distribution</td>
+<td>Batched Creation Separated Publishing</td>
+<td>Create 5 posts in one creative session. Schedule across the week. Creative energy is bursty. Distribution should be consistent.</td>
+<td>batch create → queue → drip publish → consistency</td>
+</tr>
+<tr>
+<td>49</td>
+<td>analytics</td>
+<td>Post Autopsy</td>
+<td>Every post that underperforms — WHY? Weak hook? Wrong time? Too long? No CTA? Diagnose ONE cause. Fix it in next post. Never repeat the same death.</td>
+<td>underperforming post → diagnose → one fix → apply next</td>
+</tr>
+<tr>
+<td>50</td>
+<td>analytics</td>
+<td>Winner Pattern Extraction</td>
+<td>Every month line up your top 5 posts. What do they share? Same hook style? Same pillar? Same length? The pattern IS your playbook.</td>
+<td>top 5 → common traits → pattern → double down</td>
+</tr>
+<tr>
+<td>51</td>
+<td>analytics</td>
+<td>Engagement Decay Tracking</td>
+<td>Track when engagement peaks and drops off. If comments die after 4 hours your audience is morning-only. Behavior &gt; vanity metrics.</td>
+<td>time-series data → decay curve → audience behavior insight</td>
+</tr>
+<tr>
+<td>52</td>
+<td>analytics</td>
+<td>Framework Effectiveness Score</td>
+<td>Track which hook/narrative/CTA/tone combos produce highest engagement. After 30 posts you will know YOUR winning formula.</td>
+<td>hook × narrative × CTA × tone → engagement → ranked combos</td>
+</tr>
+<tr>
+<td>53</td>
+<td>analytics</td>
+<td>Audience Growth Forensics</td>
+<td>When you gain followers trace back — which post brought them? Which posts lose followers? The delta tells you what attracts vs repels.</td>
+<td>follower spikes → source post → attract patterns → repel patterns</td>
+</tr>
+<tr>
+<td>54</td>
+<td>analytics</td>
+<td>Diminishing Returns Detector</td>
+<td>If same format keeps working but engagement slowly drops — audience fatigue. Track engagement trend PER FORMAT over months.</td>
+<td>format → monthly engagement trend → plateau signal → rotate</td>
+</tr>
+<tr>
+<td>55</td>
+<td>creative</td>
+<td>Constraint Box</td>
+<td>Set artificial constraints. &#x27;Write this in exactly 5 lines.&#x27; &#x27;100 words only.&#x27; &#x27;No I/me.&#x27; Constraints force creativity. Freedom paralyzes.</td>
+<td>topic → add constraint → forced creativity → surprising output</td>
+</tr>
+<tr>
+<td>56</td>
+<td>creative</td>
+<td>Perspective Swap</td>
+<td>Write your post from someone else&#x27;s POV. Your manager. Your intern. Your user. Your competitor. Your mother reading your LinkedIn.</td>
+<td>your topic → someone else&#x27;s eyes → new angle</td>
+</tr>
+<tr>
+<td>57</td>
+<td>creative</td>
+<td>Time Machine</td>
+<td>Write a letter to past-you or future-you about this topic. Emotional distance creates clarity.</td>
+<td>topic → past/future self → letter format → emotional depth</td>
+</tr>
+<tr>
+<td>58</td>
+<td>creative</td>
+<td>Steal The Structure</td>
+<td>Find a great post from a DIFFERENT industry. Steal its structure replace with your content. Structure travels content doesn&#x27;t.</td>
+<td>other industry post → extract structure → apply your topic</td>
+</tr>
+<tr>
+<td>59</td>
+<td>creative</td>
+<td>First Draft Inversion</td>
+<td>Write the post. Then flip it. If you started with lesson start with story. The inverted version is often better because it surprises even you.</td>
+<td>first draft → invert structure/tone → compare → pick better</td>
+</tr>
+<tr>
+<td>60</td>
+<td>creative</td>
+<td>Shower Thought Capture</td>
+<td>Best ideas come when you are NOT creating. Gym shower walk chai break. Keep a capture system. Raw thoughts &gt; forced brainstorming.</td>
+<td>random moment → capture immediately → review weekly → refine into post</td>
+</tr>
+</tbody></table>
+</article>
+
+<article data-type="framework" data-source="cta-frameworks.csv">
+  <h2>CTA Frameworks</h2>
+  <h3>Source: <code>cta-frameworks.csv</code></h3>
+<table>
+<thead><tr>
+<th>id</th>
+<th>name</th>
+<th>emoji</th>
+<th>description</th>
+<th>example</th>
+<th>best_for</th>
+<th>engagement_level</th>
+<th>linkedin_specific</th>
+<th>source</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>CT01</td>
+<td>Open-Question</td>
+<td>❓</td>
+<td>Ask a genuine open-ended question that invites diverse answers</td>
+<td>What&#x27;s the one PM skill you wish you learned earlier? Drop it below.</td>
+<td>pm career</td>
+<td>high</td>
+<td>true</td>
+<td>LinkedIn engagement tactics</td>
+</tr>
+<tr>
+<td>CT02</td>
+<td>Poll-Vote</td>
+<td>📊</td>
+<td>Present 2-4 options and ask people to vote in comments</td>
+<td>Which matters more for a PM? A) Technical skills B) Communication C) Empathy. Vote below.</td>
+<td>pm career</td>
+<td>high</td>
+<td>true</td>
+<td>LinkedIn native engagement</td>
+</tr>
+<tr>
+<td>CT03</td>
+<td>Share-Your-Story</td>
+<td>📖</td>
+<td>Invite readers to share their own related experience</td>
+<td>Have you ever shipped something nobody used? Tell me your story in the comments.</td>
+<td>pm personal</td>
+<td>high</td>
+<td>true</td>
+<td>Community building</td>
+</tr>
+<tr>
+<td>CT04</td>
+<td>Tag-Someone</td>
+<td>👥</td>
+<td>Ask readers to tag someone who needs to see this</td>
+<td>Tag a PM who needs to hear this today.</td>
+<td>pm career</td>
+<td>medium</td>
+<td>true</td>
+<td>LinkedIn viral mechanics</td>
+</tr>
+<tr>
+<td>CT05</td>
+<td>Agreement-Check</td>
+<td>✅</td>
+<td>Ask if people agree or disagree to spark debate</td>
+<td>Agree or disagree: every PM should code for at least 6 months. Tell me why.</td>
+<td>pm hottake</td>
+<td>high</td>
+<td>true</td>
+<td>Debate-driven engagement</td>
+</tr>
+<tr>
+<td>CT06</td>
+<td>Reflection-Prompt</td>
+<td>🪞</td>
+<td>Ask readers to reflect on their own situation</td>
+<td>When was the last time you talked to an actual customer? Think about it.</td>
+<td>pm career</td>
+<td>medium</td>
+<td>true</td>
+<td>Introspective content</td>
+</tr>
+<tr>
+<td>CT07</td>
+<td>Challenge-CTA</td>
+<td>💪</td>
+<td>Challenge the audience to take a specific action</td>
+<td>Challenge: this week ask one &#x27;why&#x27; question in every meeting. See what changes.</td>
+<td>pm howto</td>
+<td>medium</td>
+<td>true</td>
+<td>Action-based engagement</td>
+</tr>
+<tr>
+<td>CT08</td>
+<td>Resource-Offer</td>
+<td>🎁</td>
+<td>Offer a free resource in exchange for engagement</td>
+<td>I made a template for this. Comment &#x27;TEMPLATE&#x27; and I&#x27;ll send it to you.</td>
+<td>howto pm</td>
+<td>high</td>
+<td>true</td>
+<td>Lead generation tactics</td>
+</tr>
+<tr>
+<td>CT09</td>
+<td>Follow-For-More</td>
+<td>🔔</td>
+<td>Direct invitation to follow for more content on this topic</td>
+<td>If you found this useful I write about PM frameworks every week. Hit follow.</td>
+<td>pm career</td>
+<td>low</td>
+<td>true</td>
+<td>Audience growth tactics</td>
+</tr>
+<tr>
+<td>CT10</td>
+<td>Agree-Disagree</td>
+<td>⚖️</td>
+<td>Simple binary choice to lower the barrier to commenting</td>
+<td>Agree or disagree? Drop a 👍 or 👎 in the comments.</td>
+<td>hottake pm</td>
+<td>high</td>
+<td>true</td>
+<td>Low-friction engagement</td>
+</tr>
+<tr>
+<td>CT11</td>
+<td>Save-This</td>
+<td>🔖</td>
+<td>Tell readers to save/bookmark the post for future reference</td>
+<td>Save this for your next stakeholder meeting. You&#x27;ll thank yourself later.</td>
+<td>pm howto</td>
+<td>medium</td>
+<td>true</td>
+<td>LinkedIn save algorithm</td>
+</tr>
+<tr>
+<td>CT12</td>
+<td>Comment-Below</td>
+<td>💬</td>
+<td>Direct ask for comments with a specific prompt</td>
+<td>What would you add to this list? I know I missed some good ones.</td>
+<td>howto pm</td>
+<td>high</td>
+<td>true</td>
+<td>Direct engagement ask</td>
+</tr>
+<tr>
+<td>CT13</td>
+<td>DM-Me</td>
+<td>📩</td>
+<td>Invite private messages for deeper conversation</td>
+<td>If you&#x27;re going through something similar DM me. Happy to chat.</td>
+<td>career personal</td>
+<td>medium</td>
+<td>true</td>
+<td>Relationship building</td>
+</tr>
+<tr>
+<td>CT14</td>
+<td>Try-This</td>
+<td>🧪</td>
+<td>Ask readers to try your advice and report back</td>
+<td>Try this in your next 1-on-1 and let me know what happens.</td>
+<td>pm howto</td>
+<td>medium</td>
+<td>true</td>
+<td>Action-based engagement</td>
+</tr>
+<tr>
+<td>CT15</td>
+<td>What-Would-You-Do</td>
+<td>🤔</td>
+<td>Present a scenario and ask readers for their approach</td>
+<td>Your CEO wants to launch in 2 weeks. The feature is 60% done. What do you do?</td>
+<td>pm startup</td>
+<td>high</td>
+<td>true</td>
+<td>Scenario-based engagement</td>
+</tr>
+<tr>
+<td>CT16</td>
+<td>Fill-in-Blank</td>
+<td>✏️</td>
+<td>Give an incomplete sentence for readers to complete</td>
+<td>The hardest part of being a PM is ________. Fill in the blank.</td>
+<td>pm career</td>
+<td>high</td>
+<td>true</td>
+<td>Low-barrier engagement</td>
+</tr>
+<tr>
+<td>CT17</td>
+<td>Hot-Take-Invite</td>
+<td>🔥</td>
+<td>Invite readers to share their own hot takes</td>
+<td>What&#x27;s your most unpopular PM opinion? I&#x27;ll go first in the comments.</td>
+<td>pm hottake</td>
+<td>high</td>
+<td>true</td>
+<td>Debate-driven engagement</td>
+</tr>
+<tr>
+<td>CT18</td>
+<td>Repost-Request</td>
+<td>🔁</td>
+<td>Ask readers to repost if they found value</td>
+<td>If this helped you it&#x27;ll probably help someone in your network too. Hit repost.</td>
+<td>howto career</td>
+<td>medium</td>
+<td>true</td>
+<td>LinkedIn viral mechanics</td>
+</tr>
+<tr>
+<td>CT19</td>
+<td>One-Word-Answer</td>
+<td>🎯</td>
+<td>Ask for a one-word response to maximize comment volume</td>
+<td>Describe your PM career in one word. Mine: chaos.</td>
+<td>pm career</td>
+<td>high</td>
+<td>true</td>
+<td>Low-friction engagement</td>
+</tr>
+<tr>
+<td>CT20</td>
+<td>Advice-Request</td>
+<td>🙋</td>
+<td>Ask for advice showing you&#x27;re still learning</td>
+<td>I&#x27;m working on getting better at this. What&#x27;s worked for you?</td>
+<td>pm career</td>
+<td>high</td>
+<td>true</td>
+<td>Humble engagement</td>
+</tr>
+<tr>
+<td>CT21</td>
+<td>Prediction-Ask</td>
+<td>🔮</td>
+<td>Ask readers to predict a future trend or outcome</td>
+<td>Where do you think PM roles will be in 3 years? I shared mine. Now your turn.</td>
+<td>pm ai_automation</td>
+<td>medium</td>
+<td>true</td>
+<td>Future-facing engagement</td>
+</tr>
+<tr>
+<td>CT22</td>
+<td>Rate-This</td>
+<td>⭐</td>
+<td>Ask readers to rate something on a scale</td>
+<td>On a scale of 1-10 how important is SQL for a PM? I say 6.</td>
+<td>pm career</td>
+<td>medium</td>
+<td>true</td>
+<td>Quantitative engagement</td>
+</tr>
+<tr>
+<td>CT23</td>
+<td>This-or-That</td>
+<td>🔀</td>
+<td>Present two options and ask which one readers prefer</td>
+<td>Product sense or analytical skills — which one gets you hired faster?</td>
+<td>pm career</td>
+<td>high</td>
+<td>true</td>
+<td>Binary choice engagement</td>
+</tr>
+<tr>
+<td>CT24</td>
+<td>Story-Continuation</td>
+<td>📝</td>
+<td>Ask readers what happened next or what they think should happen</td>
+<td>What would you have done differently? Tell me in the comments.</td>
+<td>pm personal</td>
+<td>medium</td>
+<td>true</td>
+<td>Narrative engagement</td>
+</tr>
+<tr>
+<td>CT25</td>
+<td>Accountability</td>
+<td>📌</td>
+<td>Publicly commit to something and invite others to join</td>
+<td>I&#x27;m committing to writing one LinkedIn post every day for 30 days. Who&#x27;s joining me?</td>
+<td>personal howto</td>
+<td>medium</td>
+<td>true</td>
+<td>Public commitment</td>
+</tr>
+<tr>
+<td>CT26</td>
+<td>Controversial-Pick</td>
+<td>🌶️</td>
+<td>Share your pick and ask readers for theirs</td>
+<td>Best PM book ever written? I&#x27;ll fight anyone who doesn&#x27;t say Inspired. What&#x27;s yours?</td>
+<td>pm career</td>
+<td>high</td>
+<td>true</td>
+<td>Debate-driven engagement</td>
+</tr>
+<tr>
+<td>CT27</td>
+<td>Experience-Level</td>
+<td>📈</td>
+<td>Ask readers to respond based on their experience level</td>
+<td>Junior PMs — what&#x27;s confusing you right now? Senior PMs — what do you wish juniors knew?</td>
+<td>pm career</td>
+<td>high</td>
+<td>true</td>
+<td>Segmented engagement</td>
+</tr>
+<tr>
+<td>CT28</td>
+<td>Myth-Check</td>
+<td>🔍</td>
+<td>Present a common belief and ask if readers agree it&#x27;s a myth</td>
+<td>Is &#x27;the customer is always right&#x27; actually true? What&#x27;s your experience?</td>
+<td>pm startup</td>
+<td>medium</td>
+<td>true</td>
+<td>Debate-driven engagement</td>
+</tr>
+<tr>
+<td>CT29</td>
+<td>Gratitude-Prompt</td>
+<td>🙏</td>
+<td>Ask readers to share gratitude about a professional moment</td>
+<td>Who&#x27;s someone at work who made your career better? Give them a shoutout below.</td>
+<td>career personal</td>
+<td>medium</td>
+<td>true</td>
+<td>Positive engagement</td>
+</tr>
+<tr>
+<td>CT30</td>
+<td>Quick-Tip-Exchange</td>
+<td>💡</td>
+<td>Share one tip and ask for one in return</td>
+<td>Here&#x27;s my best meeting hack. Now give me yours. Best one gets a shoutout next week.</td>
+<td>pm howto</td>
+<td>high</td>
+<td>true</td>
+<td>Reciprocal engagement</td>
+</tr>
+<tr>
+<td>CT31</td>
+<td>Finish-the-List</td>
+<td>📋</td>
+<td>Share an incomplete list and ask readers to add to it</td>
+<td>I listed 5. I know there are more. What did I miss?</td>
+<td>howto pm</td>
+<td>high</td>
+<td>true</td>
+<td>Collaborative content</td>
+</tr>
+<tr>
+<td>CT32</td>
+<td>Emoji-Response</td>
+<td>🎭</td>
+<td>Ask readers to respond with just an emoji</td>
+<td>Drop a 🔥 if you&#x27;ve lived through this. Drop a 😅 if you&#x27;re living it right now.</td>
+<td>personal pm</td>
+<td>medium</td>
+<td>true</td>
+<td>Ultra-low-friction engagement</td>
+</tr>
+</tbody></table>
+</article>
+
+<article data-type="framework" data-source="formatting-rules.csv">
+  <h2>Formatting Rules</h2>
+  <h3>Source: <code>formatting-rules.csv</code></h3>
+<table>
+<thead><tr>
+<th>id</th>
+<th>rule_name</th>
+<th>category</th>
+<th>description</th>
+<th>example_correct</th>
+<th>example_wrong</th>
+<th>priority</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>FR01</td>
+<td>staircase-formatting</td>
+<td>structure</td>
+<td>Lines progressively shorter or longer within each block creating a visual staircase effect</td>
+<td>Line one is the longest in this block.\nThen it gets shorter.\nLike this.</td>
+<td>All lines are the same length in every block which creates a wall of text that is hard to scan and feels monotonous.</td>
+<td>P2</td>
+</tr>
+<tr>
+<td>FR02</td>
+<td>max-three-line-blocks</td>
+<td>structure</td>
+<td>No more than 3 consecutive lines without a blank line separating blocks</td>
+<td>First line of thought.\nSecond line.\nThird line.\n\nNew block starts here.</td>
+<td>Line one.\nLine two.\nLine three.\nLine four.\nLine five.\nLine six without any break.</td>
+<td>P1</td>
+</tr>
+<tr>
+<td>FR03</td>
+<td>no-bold-italic-underline</td>
+<td>typography</td>
+<td>Do not use bold italic or underline formatting. Use UPPERCASE sparingly for emphasis on headers only.</td>
+<td>THE REAL LESSON\n\nHere&#x27;s what I learned from that experience.</td>
+<td>**The Real Lesson**\n\n*Here&#x27;s* what I __learned__ from that experience.</td>
+<td>P1</td>
+</tr>
+<tr>
+<td>FR04</td>
+<td>replace-dashes-with-punctuation</td>
+<td>typography</td>
+<td>Replace em dashes and en dashes with full stops and commas instead</td>
+<td>I was tired. Really tired. But I kept going.</td>
+<td>I was tired — really tired — but I kept going.</td>
+<td>P1</td>
+</tr>
+<tr>
+<td>FR05</td>
+<td>bullets-format</td>
+<td>typography</td>
+<td>Bullets should use space-hyphen-space format not underscores or other symbols</td>
+<td> - First point\n - Second point\n - Third point</td>
+<td>_First point\n_Second point\n• Third point</td>
+<td>P1</td>
+</tr>
+<tr>
+<td>FR06</td>
+<td>numbered-lists-format</td>
+<td>typography</td>
+<td>Numbered lists should use simple digit-period-space format</td>
+<td>1. First item\n2. Second item\n3. Third item</td>
+<td>1) First item\n2) Second item\n3) Third item</td>
+<td>P2</td>
+</tr>
+<tr>
+<td>FR07</td>
+<td>flows-format</td>
+<td>typography</td>
+<td>Sequential flows should use arrow format with spaces</td>
+<td>A —&gt; B —&gt; C —&gt; D</td>
+<td>A-&gt;B-&gt;C-&gt;D or A → B → C → D</td>
+<td>P2</td>
+</tr>
+<tr>
+<td>FR08</td>
+<td>max-three-emojis</td>
+<td>emoji</td>
+<td>Maximum 3 emojis per post placed only at points of maximum emotional tension or buildup</td>
+<td>Long post with no emojis until... 🔥 the key insight drops.</td>
+<td>🚀 Hey everyone! 👋 Today I want to share 💡 my thoughts on 🎯 product management 📊 and why 🔥 it matters 🙏</td>
+<td>P1
+FR09,max-three-hindi-sentences,language,Maximum 3 Romanised Hindi sentences per post used only at emotional peaks&quot;</td>
+<td>And that&#x27;s when it hit me. Yaar kisine nahi bataya tha ye. But I figured it out.</td>
+<td>Toh basically mujhe lagta hai ki PM ka kaam bahut mushkil hai. Har din naye challenges aate hain. Kabhi kabhi lagta hai ki sab theek ho jayega.</td>
+<td>P1</td>
+</tr>
+<tr>
+<td>FR10</td>
+<td>fk-grade-7-readability</td>
+<td>readability</td>
+<td>Write at FK Grade 7 readability level. Ad copy style with layman language and no jargon.</td>
+<td>I talked to 50 users. Most said the same thing. The feature was confusing.</td>
+<td>I conducted 50 user interviews to synthesize qualitative feedback indicating suboptimal UX affordances.</td>
+<td>P1</td>
+</tr>
+<tr>
+<td>FR11</td>
+<td>character-limit</td>
+<td>structure</td>
+<td>Posts should be 800-1600 ASCII characters in length</td>
+<td>A well-structured post between 800 and 1600 characters that covers one idea clearly.</td>
+<td>A 200-character post that says nothing or a 3000-character essay that loses the reader.</td>
+<td>P1</td>
+</tr>
+<tr>
+<td>FR12</td>
+<td>footer-line-1-positioning</td>
+<td>footer</td>
+<td>After CTA the first footer line should be a positioning statement — who you are and the value you provide</td>
+<td>PM by day. Builder by night. Writing about what I learn.</td>
+<td>Follow me for more content!</td>
+<td>P1</td>
+</tr>
+<tr>
+<td>FR13</td>
+<td>footer-line-2-follow</td>
+<td>footer</td>
+<td>After the positioning line add a follow invitation line</td>
+<td>Follow for weekly PM insights and career stories.</td>
+<td>Please like share and subscribe to my newsletter and also check out my website.</td>
+<td>P2</td>
+</tr>
+<tr>
+<td>FR14</td>
+<td>hashtags-at-end-only</td>
+<td>footer</td>
+<td>3-6 generic hashtags placed only at the very end of the post. Never in the body text.</td>
+<td>[full post]\n\n#ProductManagement #Career #Startup</td>
+<td>I love #ProductManagement because it lets me work on #Startup ideas in my #Career</td>
+<td>P1</td>
+</tr>
+<tr>
+<td>FR15</td>
+<td>one-idea-per-post</td>
+<td>structure</td>
+<td>Each post should focus on exactly one core idea or takeaway</td>
+<td>One post about one lesson from one experience with one clear takeaway.</td>
+<td>A post that covers 5 different topics jumping from career advice to tool reviews to personal stories.</td>
+<td>P2</td>
+</tr>
+<tr>
+<td>FR16</td>
+<td>whitespace-breathing-room</td>
+<td>readability</td>
+<td>Use generous whitespace between blocks to create visual breathing room on mobile</td>
+<td>Short line.\n\nAnother thought.\n\nKey point here.</td>
+<td>Short line. Another thought. Key point here. All cramped together in a single block.</td>
+<td>P2</td>
+</tr>
+</tbody></table>
+</article>
+
+<article data-type="framework" data-source="hook-frameworks.csv">
+  <h2>Hook Frameworks</h2>
+  <h3>Source: <code>hook-frameworks.csv</code></h3>
+<table>
+<thead><tr>
+<th>id</th>
+<th>name</th>
+<th>emoji</th>
+<th>description</th>
+<th>example</th>
+<th>best_for</th>
+<th>engagement_level</th>
+<th>linkedin_specific</th>
+<th>source</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>HK01</td>
+<td>Question-Hook</td>
+<td>❓</td>
+<td>Open with a question that creates curiosity gap</td>
+<td>Do you know why 80% of product launches fail in the first 90 days?</td>
+<td>pm startup</td>
+<td>high</td>
+<td>true</td>
+<td>Copywriting fundamentals</td>
+</tr>
+<tr>
+<td>HK02</td>
+<td>Bold-Statement</td>
+<td>💣</td>
+<td>Lead with a provocative declarative statement</td>
+<td>Product roadmaps are dead. And most PMs don&#x27;t even know it yet.</td>
+<td>pm hottake</td>
+<td>high</td>
+<td>true</td>
+<td>LinkedIn viral post analysis</td>
+</tr>
+<tr>
+<td>HK03</td>
+<td>Counter-Intuitive</td>
+<td>🔄</td>
+<td>State something that goes against common belief</td>
+<td>The worst thing that happened to my career was getting promoted.</td>
+<td>career personal</td>
+<td>high</td>
+<td>true</td>
+<td>Contrarian content strategy</td>
+</tr>
+<tr>
+<td>HK04</td>
+<td>Data-Shock</td>
+<td>📊</td>
+<td>Open with a surprising statistic that stops the scroll</td>
+<td>I analysed 500 LinkedIn posts. Only 3% had more than 10 comments. Here&#x27;s what they all had in common.</td>
+<td>howto pm</td>
+<td>high</td>
+<td>true</td>
+<td>Data-driven copywriting</td>
+</tr>
+<tr>
+<td>HK05</td>
+<td>Direct-Address</td>
+<td>👉</td>
+<td>Speak directly to a specific audience segment</td>
+<td>If you&#x27;re a PM who hasn&#x27;t talked to a customer this month — this post is for you.</td>
+<td>pm career</td>
+<td>medium</td>
+<td>true</td>
+<td>Direct response copywriting</td>
+</tr>
+<tr>
+<td>HK06</td>
+<td>Cliffhanger</td>
+<td>⏳</td>
+<td>Start with the middle of the story to create suspense</td>
+<td>I was sitting in the Amex conference room. My manager just said 3 words that changed everything.</td>
+<td>personal career</td>
+<td>high</td>
+<td>true</td>
+<td>Storytelling frameworks</td>
+</tr>
+<tr>
+<td>HK07</td>
+<td>Confession</td>
+<td>🤫</td>
+<td>Start with a vulnerable admission</td>
+<td>I&#x27;ll be honest. I had no idea what I was doing for my first 6 months as a PM.</td>
+<td>personal pm</td>
+<td>high</td>
+<td>true</td>
+<td>Vulnerability-based content</td>
+</tr>
+<tr>
+<td>HK08</td>
+<td>Controversy</td>
+<td>🔥</td>
+<td>Open with something deliberately polarising</td>
+<td>Unpopular opinion: your MBA was a waste of 20 lakhs.</td>
+<td>hottake career</td>
+<td>high</td>
+<td>true</td>
+<td>LinkedIn viral post analysis</td>
+</tr>
+<tr>
+<td>HK09</td>
+<td>Time-Stamp</td>
+<td>⏰</td>
+<td>Anchor the hook in a specific moment in time</td>
+<td>3 years ago today I turned down a PWC offer. Everyone thought I was crazy.</td>
+<td>career personal</td>
+<td>high</td>
+<td>true</td>
+<td>Temporal anchoring</td>
+</tr>
+<tr>
+<td>HK10</td>
+<td>Before-After</td>
+<td>🔀</td>
+<td>Show a dramatic contrast in two lines</td>
+<td>2022: mass-applying to 200 jobs on Naukri. 2026: hiring PMs for my own team.</td>
+<td>career personal</td>
+<td>high</td>
+<td>true</td>
+<td>Transformation copywriting</td>
+</tr>
+<tr>
+<td>HK11</td>
+<td>One-Word-Opener</td>
+<td>💥</td>
+<td>Start with a single impactful word then build on it</td>
+<td>Rejected. That was the email subject line from my dream company.</td>
+<td>career personal</td>
+<td>high</td>
+<td>true</td>
+<td>Minimalist copywriting</td>
+</tr>
+<tr>
+<td>HK12</td>
+<td>Quote-Flip</td>
+<td>🪞</td>
+<td>Take a famous quote and twist it</td>
+<td>&#x27;Move fast and break things&#x27; — said every PM who&#x27;s never had to fix things at 2 AM.</td>
+<td>pm hottake</td>
+<td>medium</td>
+<td>true</td>
+<td>Quote subversion technique</td>
+</tr>
+<tr>
+<td>HK13</td>
+<td>Myth-Buster</td>
+<td>🚫</td>
+<td>Directly call out a myth in the opening line</td>
+<td>No your resume doesn&#x27;t need to be one page. That advice is from 2005.</td>
+<td>career hottake</td>
+<td>high</td>
+<td>true</td>
+<td>Contrarian content strategy</td>
+</tr>
+<tr>
+<td>HK14</td>
+<td>Challenge</td>
+<td>💪</td>
+<td>Dare the reader to do something or think differently</td>
+<td>I challenge you to delete your product roadmap for one week. See what happens.</td>
+<td>pm howto</td>
+<td>medium</td>
+<td>true</td>
+<td>Community engagement tactics</td>
+</tr>
+<tr>
+<td>HK15</td>
+<td>Analogy</td>
+<td>🪢</td>
+<td>Open with a surprising comparison</td>
+<td>Being a PM is like being a GPS. Everyone follows you but nobody asks how you feel.</td>
+<td>pm personal</td>
+<td>medium</td>
+<td>true</td>
+<td>Analogical reasoning</td>
+</tr>
+<tr>
+<td>HK16</td>
+<td>Number-Lead</td>
+<td>🔢</td>
+<td>Start with a specific number that creates curiosity</td>
+<td>I&#x27;ve had 47 one-on-ones with my skip level this year. Here&#x27;s what I learned.</td>
+<td>career pm</td>
+<td>medium</td>
+<td>true</td>
+<td>Specificity in copywriting</td>
+</tr>
+<tr>
+<td>HK17</td>
+<td>Personal-Reveal</td>
+<td>😮</td>
+<td>Share something most people don&#x27;t know about you</td>
+<td>Most people don&#x27;t know I almost dropped out of IIT Delhi.</td>
+<td>personal career</td>
+<td>high</td>
+<td>true</td>
+<td>Vulnerability-based content</td>
+</tr>
+<tr>
+<td>HK18</td>
+<td>Pattern-Interrupt</td>
+<td>🛑</td>
+<td>Break expected feed patterns with unusual formatting</td>
+<td>Stop scrolling. This might save your next product launch.</td>
+<td>pm howto</td>
+<td>medium</td>
+<td>true</td>
+<td>Attention pattern disruption</td>
+</tr>
+<tr>
+<td>HK19</td>
+<td>Future-Cast</td>
+<td>🔮</td>
+<td>Paint a picture of the future to create urgency</td>
+<td>In 2 years half the PM roles you see on LinkedIn won&#x27;t exist.</td>
+<td>ai_automation pm</td>
+<td>high</td>
+<td>true</td>
+<td>Future-pacing technique</td>
+</tr>
+<tr>
+<td>HK20</td>
+<td>Story-Start</td>
+<td>📖</td>
+<td>Drop the reader into the middle of a story</td>
+<td>It was 11 PM. The launch was in 6 hours. And I just found a critical bug.</td>
+<td>pm personal</td>
+<td>high</td>
+<td>true</td>
+<td>In medias res technique</td>
+</tr>
+<tr>
+<td>HK21</td>
+<td>List-Preview</td>
+<td>📋</td>
+<td>Promise a specific list that delivers value</td>
+<td>7 harsh truths about working in product that nobody puts in the job description.</td>
+<td>pm career</td>
+<td>medium</td>
+<td>true</td>
+<td>Listicle frameworks</td>
+</tr>
+<tr>
+<td>HK22</td>
+<td>Common-Enemy</td>
+<td>⚔️</td>
+<td>Unite the audience against a shared frustration</td>
+<td>Can we all agree that &#x27;alignment meetings&#x27; are just meetings about having more meetings?</td>
+<td>pm hottake</td>
+<td>high</td>
+<td>true</td>
+<td>Tribal content strategy</td>
+</tr>
+<tr>
+<td>HK23</td>
+<td>Unexpected-Lesson</td>
+<td>🎯</td>
+<td>Reveal a lesson from an unexpected source</td>
+<td>The best product lesson I ever learned came from an auto rickshaw driver in Delhi.</td>
+<td>pm personal</td>
+<td>high</td>
+<td>true</td>
+<td>Surprise-source storytelling</td>
+</tr>
+<tr>
+<td>HK24</td>
+<td>Social-Proof</td>
+<td>🏅</td>
+<td>Lead with a credibility marker or achievement</td>
+<td>After shipping 23 features at Amex I finally understand what actually matters.</td>
+<td>pm career</td>
+<td>medium</td>
+<td>true</td>
+<td>Authority-based copywriting</td>
+</tr>
+<tr>
+<td>HK25</td>
+<td>Observation</td>
+<td>👀</td>
+<td>Share a keen observation about your industry</td>
+<td>I&#x27;ve noticed the best PMs never use the word &#x27;just&#x27; in their PRDs.</td>
+<td>pm career</td>
+<td>medium</td>
+<td>true</td>
+<td>Observational writing</td>
+</tr>
+<tr>
+<td>HK26</td>
+<td>Hot-Take-Question</td>
+<td>🌶️</td>
+<td>Combine a hot take with a question</td>
+<td>Why does every startup founder think they&#x27;re a PM? Genuine question.</td>
+<td>startup hottake</td>
+<td>high</td>
+<td>true</td>
+<td>Provocative questioning</td>
+</tr>
+<tr>
+<td>HK27</td>
+<td>Vulnerability-Stat</td>
+<td>😓</td>
+<td>Combine personal vulnerability with a stat</td>
+<td>I&#x27;ve been rejected 37 times in my career. Yes I count. Here&#x27;s why.</td>
+<td>career personal</td>
+<td>high</td>
+<td>true</td>
+<td>Vulnerability-based content</td>
+</tr>
+<tr>
+<td>HK28</td>
+<td>If-Then</td>
+<td>🔗</td>
+<td>Set up a conditional that resonates with the audience</td>
+<td>If you&#x27;ve ever sat in a sprint planning meeting thinking &#x27;none of this matters&#x27; — read this.</td>
+<td>pm career</td>
+<td>medium</td>
+<td>true</td>
+<td>Conditional copywriting</td>
+</tr>
+<tr>
+<td>HK29</td>
+<td>Micro-Story</td>
+<td>📸</td>
+<td>Ultra-short story in 2 lines that hooks immediately</td>
+<td>My CEO asked me one question. I didn&#x27;t have the answer. That meeting changed my career.</td>
+<td>career pm</td>
+<td>high</td>
+<td>true</td>
+<td>Flash fiction technique</td>
+</tr>
+<tr>
+<td>HK30</td>
+<td>Absurdity</td>
+<td>😂</td>
+<td>Open with something absurd that makes people double-take</td>
+<td>I spent 3 hours making a Jira board look pretty. This is what rock bottom looks like for a PM.</td>
+<td>pm personal</td>
+<td>high</td>
+<td>true</td>
+<td>Humor-based copywriting</td>
+</tr>
+<tr>
+<td>HK31</td>
+<td>Permission-Slip</td>
+<td>✅</td>
+<td>Give the reader permission to feel or do something</td>
+<td>It&#x27;s okay to not have a 5-year plan. I&#x27;m a PM and I barely have a 5-sprint plan.</td>
+<td>career personal</td>
+<td>medium</td>
+<td>true</td>
+<td>Empathetic copywriting</td>
+</tr>
+<tr>
+<td>HK32</td>
+<td>Comparison-Setup</td>
+<td>⚖️</td>
+<td>Set up a comparison that the reader wants resolved</td>
+<td>I&#x27;ve worked at a Fortune 500 and advised a 5-person startup. The difference isn&#x27;t what you think.</td>
+<td>career startup</td>
+<td>high</td>
+<td>true</td>
+<td>Comparison frameworks</td>
+</tr>
+<tr>
+<td>HK33</td>
+<td>Breaking-News</td>
+<td>📢</td>
+<td>Frame your insight as urgent or timely information</td>
+<td>The PM hiring market just shifted. If you&#x27;re interviewing right now you need to know this.</td>
+<td>career pm</td>
+<td>medium</td>
+<td>true</td>
+<td>Urgency-based copywriting</td>
+</tr>
+<tr>
+<td>HK34</td>
+<td>Contrarian-Number</td>
+<td>📉</td>
+<td>Pair a number with an unexpected interpretation</td>
+<td>I make less money now than I would have at PWC. And I&#x27;ve never been happier.</td>
+<td>career personal startup</td>
+<td>high</td>
+<td>true</td>
+<td>Contrarian content strategy</td>
+</tr>
+<tr>
+<td>HK35</td>
+<td>Identity-Claim</td>
+<td>🪪</td>
+<td>Open by claiming or redefining an identity</td>
+<td>I&#x27;m not a product manager. I&#x27;m a professional translator between engineers and executives.</td>
+<td>pm career</td>
+<td>medium</td>
+<td>true</td>
+<td>Identity-based copywriting</td>
+</tr>
+</tbody></table>
+</article>
+
+<article data-type="framework" data-source="narrative-frameworks.csv">
+  <h2>Narrative Frameworks</h2>
+  <h3>Source: <code>narrative-frameworks.csv</code></h3>
+<table>
+<thead><tr>
+<th>id</th>
+<th>name</th>
+<th>emoji</th>
+<th>description</th>
+<th>example</th>
+<th>best_for</th>
+<th>engagement_level</th>
+<th>linkedin_specific</th>
+<th>source</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>NF01</td>
+<td>AIDA</td>
+<td>🎯</td>
+<td>Attention → Interest → Desire → Action. Classic funnel structure.</td>
+<td>Hook: shocking stat (Attention). Expand with context (Interest). Show benefit of solving it (Desire). Ask reader to try it (Action).</td>
+<td>howto pm</td>
+<td>high</td>
+<td>false</td>
+<td>Advertising copywriting</td>
+</tr>
+<tr>
+<td>NF02</td>
+<td>PAS</td>
+<td>🔧</td>
+<td>Problem → Agitate → Solve. Name the pain then offer relief.</td>
+<td>Name a PM struggle (Problem). Show how it gets worse if ignored (Agitate). Share your framework to fix it (Solve).</td>
+<td>pm howto</td>
+<td>high</td>
+<td>false</td>
+<td>Direct response copywriting</td>
+</tr>
+<tr>
+<td>NF03</td>
+<td>Before-After-Bridge</td>
+<td>🌉</td>
+<td>Show the before state and after state then bridge the gap.</td>
+<td>Before: chaos in stakeholder meetings. After: aligned in 15 mins. Bridge: here&#x27;s the 3-step process I use.</td>
+<td>howto pm</td>
+<td>high</td>
+<td>true</td>
+<td>Copywriting fundamentals</td>
+</tr>
+<tr>
+<td>NF04</td>
+<td>Star-Story-Solution</td>
+<td>⭐</td>
+<td>Introduce a character face a challenge and share the solution.</td>
+<td>Star: me as a new PM. Story: first feature launch flopped. Solution: the user research habit I built.</td>
+<td>personal pm</td>
+<td>high</td>
+<td>true</td>
+<td>Storytelling frameworks</td>
+</tr>
+<tr>
+<td>NF05</td>
+<td>Hero-Journey-Mini</td>
+<td>🦸</td>
+<td>Condensed hero&#x27;s journey — ordinary world crisis transformation return.</td>
+<td>Normal PM life → crisis moment in a launch → lesson learned → new normal with growth.</td>
+<td>personal career</td>
+<td>high</td>
+<td>true</td>
+<td>Joseph Campbell adaptation</td>
+</tr>
+<tr>
+<td>NF06</td>
+<td>SCR</td>
+<td>📐</td>
+<td>Situation → Complication → Resolution. Consulting-style structure.</td>
+<td>Situation: company growing fast. Complication: PM team can&#x27;t keep up. Resolution: the hiring framework we built.</td>
+<td>pm startup</td>
+<td>medium</td>
+<td>false</td>
+<td>McKinsey communication</td>
+</tr>
+<tr>
+<td>NF07</td>
+<td>Three-Act</td>
+<td>🎭</td>
+<td>Setup → Confrontation → Resolution. Classic story arc.</td>
+<td>Act 1: got the job at Amex. Act 2: imposter syndrome hit hard. Act 3: what helped me push through.</td>
+<td>personal career</td>
+<td>high</td>
+<td>true</td>
+<td>Screenwriting fundamentals</td>
+</tr>
+<tr>
+<td>NF08</td>
+<td>Inverted-Pyramid</td>
+<td>🔻</td>
+<td>Lead with the conclusion then provide supporting details.</td>
+<td>Key insight first: &#x27;customer calls beat surveys every time.&#x27; Then share 3 reasons why with examples.</td>
+<td>pm howto</td>
+<td>medium</td>
+<td>false</td>
+<td>Journalism writing</td>
+</tr>
+<tr>
+<td>NF09</td>
+<td>Chronological</td>
+<td>⏱️</td>
+<td>Events told in the order they happened. Simple and clear.</td>
+<td>Month 1 at Amex: confused. Month 6: finding my feet. Month 12: leading my first initiative. Month 36: here&#x27;s what I know now.</td>
+<td>career personal</td>
+<td>medium</td>
+<td>true</td>
+<td>Sequential storytelling</td>
+</tr>
+<tr>
+<td>NF10</td>
+<td>Compare-Contrast</td>
+<td>⚖️</td>
+<td>Put two things side by side and draw conclusions.</td>
+<td>Good PM vs great PM. Same meeting same problem. Completely different approaches. Here&#x27;s what separates them.</td>
+<td>pm career</td>
+<td>medium</td>
+<td>true</td>
+<td>Analytical writing</td>
+</tr>
+<tr>
+<td>NF11</td>
+<td>Cause-Effect</td>
+<td>🔗</td>
+<td>Show how one thing led to another in a chain.</td>
+<td>Skipped user research → built wrong feature → wasted 2 sprints → learned the hard way that discovery isn&#x27;t optional.</td>
+<td>pm personal</td>
+<td>medium</td>
+<td>true</td>
+<td>Causal reasoning</td>
+</tr>
+<tr>
+<td>NF12</td>
+<td>Question-Answer</td>
+<td>❓</td>
+<td>Pose a question then systematically answer it.</td>
+<td>How do you say no to your CEO? Here are 4 ways I&#x27;ve done it without getting fired.</td>
+<td>pm career</td>
+<td>medium</td>
+<td>true</td>
+<td>Socratic method</td>
+</tr>
+<tr>
+<td>NF13</td>
+<td>Tutorial-Steps</td>
+<td>📝</td>
+<td>Numbered step-by-step instructions.</td>
+<td>Step 1: Book 3 customer calls. Step 2: Ask open-ended questions. Step 3: Map answers to your roadmap. Step 4: Present findings.</td>
+<td>howto pm</td>
+<td>medium</td>
+<td>true</td>
+<td>Instructional design</td>
+</tr>
+<tr>
+<td>NF14</td>
+<td>Listicle-Narrative</td>
+<td>📋</td>
+<td>Numbered list where each item has a mini-story or insight.</td>
+<td>5 things IIT Delhi taught me that have nothing to do with engineering. Each point is a short story from college.</td>
+<td>personal career</td>
+<td>medium</td>
+<td>true</td>
+<td>Hybrid content format</td>
+</tr>
+<tr>
+<td>NF15</td>
+<td>Problem-Insight-Action</td>
+<td>💡</td>
+<td>State a problem share a non-obvious insight then give one action.</td>
+<td>Problem: PMs waste hours in alignment meetings. Insight: most misalignment is about vocabulary not strategy. Action: start every meeting by defining 3 key terms.</td>
+<td>pm howto</td>
+<td>high</td>
+<td>true</td>
+<td>Insight-driven content</td>
+</tr>
+<tr>
+<td>NF16</td>
+<td>Tension-Release</td>
+<td>🎢</td>
+<td>Build tension through the post then release it with the payoff.</td>
+<td>Build up the stress of a product launch going wrong. Escalate with each paragraph. Release with the unexpected save and lesson.</td>
+<td>personal pm</td>
+<td>high</td>
+<td>true</td>
+<td>Dramatic writing</td>
+</tr>
+<tr>
+<td>NF17</td>
+<td>Bookend</td>
+<td>📚</td>
+<td>Start and end with the same image/phrase creating a satisfying loop.</td>
+<td>Open: &#x27;Nobody told me being a PM would be lonely.&#x27; Close: &#x27;So I&#x27;m telling you. Being a PM can be lonely. And that&#x27;s okay.&#x27;</td>
+<td>personal pm</td>
+<td>high</td>
+<td>true</td>
+<td>Literary framing</td>
+</tr>
+<tr>
+<td>NF18</td>
+<td>Pyramid-Stack</td>
+<td>🏗️</td>
+<td>Start with the smallest detail and build to the big picture.</td>
+<td>One Slack message → one misunderstanding → one missed deadline → one failed launch. Small things compound.</td>
+<td>pm career</td>
+<td>medium</td>
+<td>true</td>
+<td>Inductive reasoning</td>
+</tr>
+<tr>
+<td>NF19</td>
+<td>Myth-Reality</td>
+<td>🎭</td>
+<td>State the myth then reveal the reality with evidence.</td>
+<td>Myth: PMs need to be technical. Reality: PMs need to ask the right questions. Here&#x27;s proof from my last 5 projects.</td>
+<td>pm career</td>
+<td>high</td>
+<td>true</td>
+<td>Debunking frameworks</td>
+</tr>
+<tr>
+<td>NF20</td>
+<td>Letter-Format</td>
+<td>✉️</td>
+<td>Write as a letter to someone — past self future self or a persona.</td>
+<td>Dear 22-year-old me — you&#x27;re about to choose between PWC and a startup. Here&#x27;s what I wish you knew.</td>
+<td>personal career</td>
+<td>high</td>
+<td>true</td>
+<td>Epistolary format</td>
+</tr>
+<tr>
+<td>NF21</td>
+<td>Sandwich</td>
+<td>🥪</td>
+<td>Positive → Negative/Hard truth → Positive. Easy to digest structure.</td>
+<td>The best part of being a PM (autonomy). The worst part (blame without authority). Why I&#x27;d still choose it every time.</td>
+<td>pm career</td>
+<td>medium</td>
+<td>true</td>
+<td>Feedback frameworks</td>
+</tr>
+<tr>
+<td>NF22</td>
+<td>Rule-of-Three</td>
+<td>3️⃣</td>
+<td>Three points/stories/lessons. Simple and memorable.</td>
+<td>3 rules I follow in every stakeholder meeting: 1) Listen first. 2) Repeat back. 3) Commit to one action.</td>
+<td>pm howto</td>
+<td>medium</td>
+<td>false</td>
+<td>Rhetoric fundamentals</td>
+</tr>
+<tr>
+<td>NF23</td>
+<td>Dialogue-Driven</td>
+<td>💬</td>
+<td>Tell the story through actual conversations and quotes.</td>
+<td>My manager: &#x27;Why did you build this?&#x27; Me: &#x27;The stakeholder asked for it.&#x27; Manager: &#x27;Since when do stakeholders write PRDs?&#x27;</td>
+<td>pm personal</td>
+<td>high</td>
+<td>true</td>
+<td>Screenwriting technique</td>
+</tr>
+<tr>
+<td>NF24</td>
+<td>Parallel-Structure</td>
+<td>🪞</td>
+<td>Two stories running side by side that connect at the end.</td>
+<td>Story A: a PM who always says yes. Story B: a PM who always asks why. Where they both end up 2 years later.</td>
+<td>pm career</td>
+<td>high</td>
+<td>true</td>
+<td>Literary technique</td>
+</tr>
+<tr>
+<td>NF25</td>
+<td>Gap-Analysis</td>
+<td>📏</td>
+<td>Show where you are vs where you should be and how to close the gap.</td>
+<td>Where most PMs are: reactive firefighters. Where they should be: proactive strategists. The 3 habits that close the gap.</td>
+<td>pm howto</td>
+<td>medium</td>
+<td>true</td>
+<td>Consulting frameworks</td>
+</tr>
+<tr>
+<td>NF26</td>
+<td>Confession-to-Lesson</td>
+<td>🤫</td>
+<td>Start vulnerable with a mistake then extract the lesson.</td>
+<td>I once shipped a feature without any data backing. It flopped. Here&#x27;s the data checklist I use now before every launch.</td>
+<td>pm personal</td>
+<td>high</td>
+<td>true</td>
+<td>Vulnerability-based content</td>
+</tr>
+<tr>
+<td>NF27</td>
+<td>Reverse-Chronology</td>
+<td>⏪</td>
+<td>Start from the outcome and work backwards to the origin.</td>
+<td>Today I lead product at Amex. Rewind 3 years: I couldn&#x27;t even write a user story. Here&#x27;s every step in between.</td>
+<td>career personal</td>
+<td>medium</td>
+<td>true</td>
+<td>Reverse storytelling</td>
+</tr>
+<tr>
+<td>NF28</td>
+<td>Rapid-Fire</td>
+<td>⚡</td>
+<td>Quick succession of short punchy statements building momentum.</td>
+<td>Ship fast. Talk to users. Kill your darlings. Say no more. Write better PRDs. Read more. Sleep enough. Repeat.</td>
+<td>pm howto</td>
+<td>medium</td>
+<td>true</td>
+<td>Poetic structure</td>
+</tr>
+<tr>
+<td>NF29</td>
+<td>Unexpected-Turn</td>
+<td>🔀</td>
+<td>Build the story in one direction then pivot to a surprise ending.</td>
+<td>Everyone expected the feature to fail. The data looked terrible. The team was nervous. And then... it became our #1 growth driver.</td>
+<td>pm personal</td>
+<td>high</td>
+<td>true</td>
+<td>Twist narrative technique</td>
+</tr>
+<tr>
+<td>NF30</td>
+<td>Framework-Breakdown</td>
+<td>🧩</td>
+<td>Present a framework visually then explain each component.</td>
+<td>My 3C framework for PM decisions: Context (what&#x27;s happening) → Constraints (what limits us) → Choice (what we do). Here&#x27;s how each works.</td>
+<td>pm howto</td>
+<td>high</td>
+<td>true</td>
+<td>Framework-based teaching</td>
+</tr>
+<tr>
+<td>NF31</td>
+<td>Escalation</td>
+<td>📈</td>
+<td>Each paragraph raises the stakes higher than the last.</td>
+<td>First it was a small bug. Then a customer complaint. Then 10 complaints. Then the CEO&#x27;s email. Here&#x27;s how we handled it.</td>
+<td>pm personal</td>
+<td>high</td>
+<td>true</td>
+<td>Rising action technique</td>
+</tr>
+<tr>
+<td>NF32</td>
+<td>Socratic</td>
+<td>🏛️</td>
+<td>Guide the reader through questions that lead to your conclusion.</td>
+<td>What if I told you standups don&#x27;t improve velocity? What if the data proves it? What would you change? Here&#x27;s what I changed.</td>
+<td>pm hottake</td>
+<td>medium</td>
+<td>true</td>
+<td>Socratic method</td>
+</tr>
+</tbody></table>
+</article>
+
+<article data-type="framework" data-source="positioning-templates.csv">
+  <h2>Positioning Templates</h2>
+  <h3>Source: <code>positioning-templates.csv</code></h3>
+<table>
+<thead><tr>
+<th>id</th>
+<th>positioning_line</th>
+<th>follow_line</th>
+<th>pillar</th>
+<th>tone</th>
+<th>example_context</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>PT01</td>
+<td>PM by day. Builder by night. Writing about what I learn.</td>
+<td>Follow for weekly PM insights and career stories.</td>
+<td>all</td>
+<td>casual</td>
+<td>General purpose positioning for any post type</td>
+</tr>
+<tr>
+<td>PT02</td>
+<td>Building in public. Breaking in private.</td>
+<td>Hit follow if this hit different.</td>
+<td>startup</td>
+<td>witty</td>
+<td>After a vulnerable startup/building post</td>
+</tr>
+<tr>
+<td>PT03</td>
+<td>Amex PM. IIT Delhi. Writing so you don&#x27;t make my mistakes.</td>
+<td>Follow for no-BS career advice.</td>
+<td>career</td>
+<td>professional</td>
+<td>Career advice posts sharing hard-won lessons</td>
+</tr>
+<tr>
+<td>PT04</td>
+<td>Turning corporate chaos into LinkedIn content since 2024.</td>
+<td>Follow for the chaos. Stay for the clarity.</td>
+<td>all</td>
+<td>witty</td>
+<td>Light-hearted posts about corporate life</td>
+</tr>
+<tr>
+<td>PT05</td>
+<td>Product manager who actually talks to customers.</td>
+<td>Follow for PM frameworks that work in real life.</td>
+<td>pm</td>
+<td>casual</td>
+<td>Product management how-to posts</td>
+</tr>
+<tr>
+<td>PT06</td>
+<td>I left the safe path. Now I write about the scenic route.</td>
+<td>Follow along. It gets interesting.</td>
+<td>career personal</td>
+<td>casual</td>
+<td>Posts about unconventional career choices</td>
+</tr>
+<tr>
+<td>PT07</td>
+<td>Writing the PM playbook I wish existed when I started.</td>
+<td>Follow for the next chapter.</td>
+<td>pm howto</td>
+<td>professional</td>
+<td>Educational PM content</td>
+</tr>
+<tr>
+<td>PT08</td>
+<td>IIT grad who chose products over PowerPoints.</td>
+<td>Follow for honest takes on tech and careers.</td>
+<td>career</td>
+<td>witty</td>
+<td>Posts about career pivots in tech</td>
+</tr>
+<tr>
+<td>PT09</td>
+<td>Anti-money laundering by profession. Anti-boring-content by passion.</td>
+<td>Follow if you&#x27;re tired of boring LinkedIn.</td>
+<td>all</td>
+<td>witty</td>
+<td>Fun or light-hearted posts</td>
+</tr>
+<tr>
+<td>PT10</td>
+<td>Investor. PM. Occasional overthinker. Consistent oversharer.</td>
+<td>Hit follow before I overthink this caption.</td>
+<td>all</td>
+<td>witty</td>
+<td>Personal or reflective posts</td>
+</tr>
+<tr>
+<td>PT11</td>
+<td>Helping PMs ship better by sharing what I ship.</td>
+<td>Follow for real product stories. Not textbook ones.</td>
+<td>pm</td>
+<td>casual</td>
+<td>Posts about shipping and building products</td>
+</tr>
+<tr>
+<td>PT12</td>
+<td>One post at a time. One lesson at a time.</td>
+<td>Follow for daily lessons from the trenches.</td>
+<td>all</td>
+<td>inspirational</td>
+<td>Milestone or reflective posts</td>
+</tr>
+<tr>
+<td>PT13</td>
+<td>Your friendly neighbourhood PM who writes too much on LinkedIn.</td>
+<td>Follow. I promise it&#x27;s worth the notifications.</td>
+<td>all</td>
+<td>witty</td>
+<td>Casual posts with broad appeal</td>
+</tr>
+<tr>
+<td>PT14</td>
+<td>From IIT hostel to Amex HQ. Documenting the ride.</td>
+<td>Follow for the journey.</td>
+<td>career personal</td>
+<td>casual</td>
+<td>Personal journey posts about career growth</td>
+</tr>
+<tr>
+<td>PT15</td>
+<td>I break down complex PM problems into simple LinkedIn posts.</td>
+<td>Follow for clarity in a world of corporate jargon.</td>
+<td>pm howto</td>
+<td>professional</td>
+<td>Technical PM content simplified for all</td>
+</tr>
+<tr>
+<td>PT16</td>
+<td>Saying the quiet part out loud since 2024.</td>
+<td>Follow for takes your manager won&#x27;t say.</td>
+<td>hottake</td>
+<td>witty</td>
+<td>Hot take or controversial opinion posts</td>
+</tr>
+<tr>
+<td>PT17</td>
+<td>PM at a Fortune 500. Advisor at a startup. Writer on LinkedIn.</td>
+<td>Follow for both sides of the story.</td>
+<td>pm startup</td>
+<td>professional</td>
+<td>Posts comparing corporate vs startup life</td>
+</tr>
+<tr>
+<td>PT18</td>
+<td>I write about product management like it&#x27;s a spectator sport.</td>
+<td>Follow for the commentary.</td>
+<td>pm</td>
+<td>witty</td>
+<td>Observational posts about PM culture</td>
+</tr>
+<tr>
+<td>PT19</td>
+<td>Making PM less boring. One post at a time.</td>
+<td>Follow if you agree PMs deserve better content.</td>
+<td>pm</td>
+<td>casual</td>
+<td>Posts aimed at the PM community</td>
+</tr>
+<tr>
+<td>PT20</td>
+<td>Career advice from someone still figuring it out.</td>
+<td>Follow for honest takes. No guru energy.</td>
+<td>career</td>
+<td>casual</td>
+<td>Relatable career advice posts</td>
+</tr>
+<tr>
+<td>PT21</td>
+<td>Betting on myself. Sharing the receipts.</td>
+<td>Hit follow to see if the bet pays off.</td>
+<td>startup personal</td>
+<td>casual</td>
+<td>Posts about risk-taking and personal bets</td>
+</tr>
+<tr>
+<td>PT22</td>
+<td>IIT + Amex + startup investor = confused but learning.</td>
+<td>Follow for the learning. Skip the confusion.</td>
+<td>all</td>
+<td>witty</td>
+<td>Posts that blend multiple identity aspects</td>
+</tr>
+<tr>
+<td>PT23</td>
+<td>Writing what I&#x27;d want to read at 22.</td>
+<td>Follow if you&#x27;re building your career in India.</td>
+<td>career</td>
+<td>casual</td>
+<td>Posts for early-career Indian professionals</td>
+</tr>
+<tr>
+<td>PT24</td>
+<td>Automating the boring parts of PM. Writing about the rest.</td>
+<td>Follow for AI x PM content.</td>
+<td>ai_automation pm</td>
+<td>casual</td>
+<td>AI and automation focused posts</td>
+</tr>
+<tr>
+<td>PT25</td>
+<td>I talk to customers so you don&#x27;t have to. Just kidding. You should too.</td>
+<td>Follow for user research tips and PM stories.</td>
+<td>pm howto</td>
+<td>witty</td>
+<td>User research and discovery posts</td>
+</tr>
+<tr>
+<td>PT26</td>
+<td>Sharing startup lessons from the investor seat.</td>
+<td>Follow for what founders won&#x27;t tell you.</td>
+<td>startup</td>
+<td>professional</td>
+<td>Startup and investor perspective posts</td>
+</tr>
+<tr>
+<td>PT27</td>
+<td>Not a LinkedIn guru. Just a PM who likes writing.</td>
+<td>Follow. No course to sell. Promise.</td>
+<td>all</td>
+<td>casual</td>
+<td>Anti-guru positioning for authenticity</td>
+</tr>
+<tr>
+<td>PT28</td>
+<td>Building products at Amex. Building perspective on LinkedIn.</td>
+<td>Follow for the perspective.</td>
+<td>pm personal</td>
+<td>professional</td>
+<td>Thoughtful professional posts</td>
+</tr>
+<tr>
+<td>PT29</td>
+<td>The PM who writes about what actually happens in meetings.</td>
+<td>Follow for the unfiltered version.</td>
+<td>pm</td>
+<td>witty</td>
+<td>Behind-the-scenes corporate posts</td>
+</tr>
+<tr>
+<td>PT30</td>
+<td>Kuch toh log kahenge. Main toh likhta rahunga.</td>
+<td>Follow for desi PM content.</td>
+<td>all</td>
+<td>witty</td>
+<td>Hindi-flavoured posts for Indian audience</td>
+</tr>
+<tr>
+<td>PT31</td>
+<td>Learning in public so you can learn in private.</td>
+<td>Follow for lessons that cost me sleep.</td>
+<td>all</td>
+<td>casual</td>
+<td>Posts about mistakes and learning</td>
+</tr>
+<tr>
+<td>PT32</td>
+<td>Three years of PM. Three hundred mistakes. All documented here.</td>
+<td>Follow for the documentation.</td>
+<td>pm career</td>
+<td>casual</td>
+<td>Experience-based learning posts</td>
+</tr>
+</tbody></table>
+</article>
+
+<article data-type="framework" data-source="tone-frameworks.csv">
+  <h2>Tone Frameworks</h2>
+  <h3>Source: <code>tone-frameworks.csv</code></h3>
+<table>
+<thead><tr>
+<th>id</th>
+<th>name</th>
+<th>emoji</th>
+<th>description</th>
+<th>example</th>
+<th>best_for</th>
+<th>engagement_level</th>
+<th>linkedin_specific</th>
+<th>source</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>TN01</td>
+<td>Casual-Witty</td>
+<td>😏</td>
+<td>Relaxed conversational tone with clever wordplay and humor</td>
+<td>I turned down a PWC offer to bet on myself. My parents&#x27; reaction? Let&#x27;s just say the family WhatsApp group went silent for 3 days.</td>
+<td>personal career hottake</td>
+<td>high</td>
+<td>true</td>
+<td>LinkedIn creator best practices</td>
+</tr>
+<tr>
+<td>TN02</td>
+<td>Professional-Warm</td>
+<td>🤝</td>
+<td>Polished but approachable with genuine warmth</td>
+<td>I made the decision to decline PWC&#x27;s offer and invest in my own path. It was the hardest professional choice I&#x27;ve made and I&#x27;d do it again.</td>
+<td>career pm</td>
+<td>medium</td>
+<td>true</td>
+<td>Corporate communication</td>
+</tr>
+<tr>
+<td>TN03</td>
+<td>Storyteller</td>
+<td>📖</td>
+<td>Immersive narrative voice that pulls readers into the scene</td>
+<td>The PWC offer letter was sitting on my desk. 11 PM. My phone buzzing with congratulations. I picked up a pen. And wrote my resignation to a job I&#x27;d never start.</td>
+<td>personal career</td>
+<td>high</td>
+<td>true</td>
+<td>Narrative writing</td>
+</tr>
+<tr>
+<td>TN04</td>
+<td>Data-Nerd</td>
+<td>📊</td>
+<td>Leads with numbers and frames everything through data</td>
+<td>I ran the math on the PWC offer vs betting on myself. NPV analysis. Opportunity cost model. 5-year projection. The spreadsheet said stay. I said no.</td>
+<td>pm howto</td>
+<td>medium</td>
+<td>false</td>
+<td>Analytical communication</td>
+</tr>
+<tr>
+<td>TN05</td>
+<td>Mentor</td>
+<td>🧭</td>
+<td>Wise experienced voice offering guidance from lived experience</td>
+<td>I turned down PWC to bet on myself. If you&#x27;re facing a similar fork in the road here&#x27;s what I&#x27;d tell you — the safe path is never as safe as it looks.</td>
+<td>career personal</td>
+<td>medium</td>
+<td>true</td>
+<td>Coaching communication</td>
+</tr>
+<tr>
+<td>TN06</td>
+<td>Provocateur</td>
+<td>🔥</td>
+<td>Deliberately challenging and confrontational to spark debate</td>
+<td>I turned down a PWC offer to bet on myself. And honestly? If you wouldn&#x27;t do the same you&#x27;re not ready to talk about ambition.</td>
+<td>hottake career</td>
+<td>high</td>
+<td>true</td>
+<td>Contrarian thought leadership</td>
+</tr>
+<tr>
+<td>TN07</td>
+<td>Inspirational</td>
+<td>✨</td>
+<td>Uplifting and motivational with emotional resonance</td>
+<td>I turned down a PWC offer to bet on myself. Because some doors are meant to be walked past not walked through. Your path is yours to write.</td>
+<td>personal career</td>
+<td>medium</td>
+<td>true</td>
+<td>Motivational speaking</td>
+</tr>
+<tr>
+<td>TN08</td>
+<td>Raw-Honest</td>
+<td>💀</td>
+<td>Unfiltered and brutally transparent about the reality</td>
+<td>I turned down a PWC offer to bet on myself. Was I scared? Terrified. Did I cry in the parking lot? Yes. Do I regret it? Ask me again in 5 years.</td>
+<td>personal career</td>
+<td>high</td>
+<td>true</td>
+<td>Radical transparency</td>
+</tr>
+<tr>
+<td>TN09</td>
+<td>Humorous</td>
+<td>😂</td>
+<td>Uses comedy and self-deprecation to make a point</td>
+<td>I turned down a PWC offer to bet on myself. My bank account has been writing me passive-aggressive emails ever since.</td>
+<td>personal career</td>
+<td>high</td>
+<td>true</td>
+<td>Comedy writing</td>
+</tr>
+<tr>
+<td>TN10</td>
+<td>Analytical</td>
+<td>🔬</td>
+<td>Structured logical and evidence-based reasoning</td>
+<td>I turned down a PWC offer to bet on myself. The decision came down to 3 factors: learning velocity autonomy and long-term optionality. Here&#x27;s how I evaluated each.</td>
+<td>pm career</td>
+<td>medium</td>
+<td>false</td>
+<td>Structured reasoning</td>
+</tr>
+<tr>
+<td>TN11</td>
+<td>Conversational</td>
+<td>💬</td>
+<td>Like talking to a friend over chai — natural and easy</td>
+<td>So I turned down PWC right? And everyone&#x27;s like &#x27;are you mad?&#x27; Bhai I might be. But here&#x27;s the thing — some bets you just have to take.</td>
+<td>personal career</td>
+<td>high</td>
+<td>true</td>
+<td>Casual dialogue</td>
+</tr>
+<tr>
+<td>TN12</td>
+<td>Authoritative</td>
+<td>🎖️</td>
+<td>Confident expert voice that commands respect and trust</td>
+<td>I turned down a PWC offer to bet on myself. Three years later I can tell you with certainty: the biggest career risk is not taking one.</td>
+<td>career personal</td>
+<td>medium</td>
+<td>true</td>
+<td>Authority positioning</td>
+</tr>
+<tr>
+<td>TN13</td>
+<td>Empathetic</td>
+<td>💛</td>
+<td>Understanding and validating others&#x27; feelings and struggles</td>
+<td>I turned down a PWC offer to bet on myself. I know how scary that sounds. If you&#x27;re at that crossroads right now I see you. It&#x27;s okay to be afraid.</td>
+<td>career personal</td>
+<td>medium</td>
+<td>true</td>
+<td>Empathetic communication</td>
+</tr>
+<tr>
+<td>TN14</td>
+<td>Sarcastic-Light</td>
+<td>😒</td>
+<td>Gentle sarcasm that&#x27;s funny not mean</td>
+<td>I turned down a PWC offer to bet on myself. Because clearly I love financial anxiety and explaining my life choices at every family dinner.</td>
+<td>personal career</td>
+<td>high</td>
+<td>true</td>
+<td>Dry humor writing</td>
+</tr>
+<tr>
+<td>TN15</td>
+<td>Teacher</td>
+<td>📚</td>
+<td>Clear explanatory voice that breaks down concepts simply</td>
+<td>I turned down a PWC offer to bet on myself. Let me break down exactly how I made that decision so you can apply the same framework.</td>
+<td>howto career</td>
+<td>medium</td>
+<td>true</td>
+<td>Educational content</td>
+</tr>
+<tr>
+<td>TN16</td>
+<td>Coach</td>
+<td>🏋️</td>
+<td>Energetic action-oriented voice that pushes people to move</td>
+<td>I turned down a PWC offer to bet on myself. Your turn. What&#x27;s the one thing you know you should do but haven&#x27;t? Do it this week.</td>
+<td>career personal</td>
+<td>medium</td>
+<td>true</td>
+<td>Performance coaching</td>
+</tr>
+<tr>
+<td>TN17</td>
+<td>Friend</td>
+<td>☕</td>
+<td>Warm relatable voice like a trusted friend sharing honestly</td>
+<td>I turned down a PWC offer to bet on myself. Look I&#x27;m not saying everyone should do this. I&#x27;m saying it worked for me and here&#x27;s the real story — no filter.</td>
+<td>personal career</td>
+<td>high</td>
+<td>true</td>
+<td>Peer communication</td>
+</tr>
+<tr>
+<td>TN18</td>
+<td>Thought-Leader</td>
+<td>🧠</td>
+<td>Big-picture strategic voice that reframes how people think</td>
+<td>I turned down a PWC offer to bet on myself. But this isn&#x27;t about me. It&#x27;s about how we define &#x27;safe careers&#x27; in a world where no career is safe anymore.</td>
+<td>hottake career</td>
+<td>medium</td>
+<td>true</td>
+<td>Thought leadership</td>
+</tr>
+<tr>
+<td>TN19</td>
+<td>Underdog</td>
+<td>🥊</td>
+<td>Scrappy fighter energy — proving doubters wrong</td>
+<td>I turned down a PWC offer to bet on myself. Nobody believed in me. Most days I didn&#x27;t believe in me either. But I kept showing up. And that made all the difference.</td>
+<td>personal career</td>
+<td>high</td>
+<td>true</td>
+<td>Underdog storytelling</td>
+</tr>
+<tr>
+<td>TN20</td>
+<td>Philosophical</td>
+<td>🌌</td>
+<td>Reflective deep-thinking voice that explores bigger meanings</td>
+<td>I turned down a PWC offer to bet on myself. What does it mean to &#x27;bet on yourself&#x27; anyway? Is it courage or just another word for privilege?</td>
+<td>personal hottake</td>
+<td>medium</td>
+<td>false</td>
+<td>Philosophical inquiry</td>
+</tr>
+<tr>
+<td>TN21</td>
+<td>Energetic</td>
+<td>⚡</td>
+<td>High-energy enthusiastic voice that&#x27;s infectious</td>
+<td>I turned down a PWC offer to bet on myself and LET ME TELL YOU — best decision I ever made. Not even close. Here&#x27;s why.</td>
+<td>career personal</td>
+<td>medium</td>
+<td>true</td>
+<td>High-energy copywriting</td>
+</tr>
+<tr>
+<td>TN22</td>
+<td>Nostalgic</td>
+<td>🕰️</td>
+<td>Warm reflective voice looking back with fondness and wisdom</td>
+<td>I turned down a PWC offer to bet on myself. Sometimes I look back at that 22-year-old kid in his IIT hostel room making that call. I want to tell him it works out.</td>
+<td>personal career</td>
+<td>high</td>
+<td>true</td>
+<td>Nostalgic storytelling</td>
+</tr>
+<tr>
+<td>TN23</td>
+<td>Pragmatic</td>
+<td>🔨</td>
+<td>No-nonsense practical voice focused on what works</td>
+<td>I turned down a PWC offer to bet on myself. Here&#x27;s what actually happened — no motivational fluff just the real numbers and trade-offs.</td>
+<td>career howto</td>
+<td>medium</td>
+<td>true</td>
+<td>Practical communication</td>
+</tr>
+<tr>
+<td>TN24</td>
+<td>Vulnerable</td>
+<td>🫠</td>
+<td>Open about insecurities and struggles without seeking sympathy</td>
+<td>I turned down a PWC offer to bet on myself. But can I be honest? There are nights I still google &#x27;PWC associate salary&#x27; and wonder what if.</td>
+<td>personal career</td>
+<td>high</td>
+<td>true</td>
+<td>Vulnerability-based content</td>
+</tr>
+<tr>
+<td>TN25</td>
+<td>Witty-Intellectual</td>
+<td>🎩</td>
+<td>Smart humor that rewards readers who get the reference</td>
+<td>I turned down a PWC offer to bet on myself. Nassim Taleb would call it antifragile. My mother calls it pagalpan.</td>
+<td>personal hottake</td>
+<td>high</td>
+<td>true</td>
+<td>Intellectual humor</td>
+</tr>
+<tr>
+<td>TN26</td>
+<td>Builder</td>
+<td>🏗️</td>
+<td>Maker/creator energy focused on building and shipping</td>
+<td>I turned down a PWC offer to bet on myself. Spent the next year building breaking rebuilding. Here&#x27;s what I shipped and what I learned.</td>
+<td>startup personal</td>
+<td>medium</td>
+<td>true</td>
+<td>Builder culture</td>
+</tr>
+<tr>
+<td>TN27</td>
+<td>Minimalist</td>
+<td>🪶</td>
+<td>Says more with less — every word earns its place</td>
+<td>Turned down PWC. Bet on myself. Scared every day. Worth it.</td>
+<td>personal career</td>
+<td>medium</td>
+<td>true</td>
+<td>Minimalist writing</td>
+</tr>
+<tr>
+<td>TN28</td>
+<td>Desi-Relatable</td>
+<td>🇮🇳</td>
+<td>Culturally resonant for Indian professionals with desi references</td>
+<td>I turned down a PWC offer to bet on myself. Sharma ji ka beta would never. But then again Sharma ji ka beta is still waiting for his appraisal cycle.</td>
+<td>personal career</td>
+<td>high</td>
+<td>true</td>
+<td>Cultural content strategy</td>
+</tr>
+<tr>
+<td>TN29</td>
+<td>Self-Aware</td>
+<td>🤓</td>
+<td>Meta-conscious voice that acknowledges its own biases and limits</td>
+<td>I turned down a PWC offer to bet on myself. Now I know this sounds like survivorship bias — because it literally is. But hear me out.</td>
+<td>career hottake</td>
+<td>medium</td>
+<td>true</td>
+<td>Self-reflexive writing</td>
+</tr>
+<tr>
+<td>TN30</td>
+<td>Urgent</td>
+<td>🚨</td>
+<td>Creates a sense of immediacy and importance</td>
+<td>I turned down a PWC offer to bet on myself. And if you&#x27;re reading this while sitting in a job you hate — this is your sign. Today. Not tomorrow.</td>
+<td>career personal</td>
+<td>medium</td>
+<td>true</td>
+<td>Urgency-based copywriting</td>
+</tr>
+<tr>
+<td>TN31</td>
+<td>Dry-Humor</td>
+<td>🫤</td>
+<td>Deadpan delivery where the humor comes from understatement</td>
+<td>I turned down a PWC offer to bet on myself. Bold move for someone who once cried over a broken Excel formula.</td>
+<td>personal career</td>
+<td>high</td>
+<td>true</td>
+<td>British comedy style</td>
+</tr>
+<tr>
+<td>TN32</td>
+<td>Challenger</td>
+<td>🥋</td>
+<td>Respectfully pushes back on readers&#x27; assumptions</td>
+<td>I turned down a PWC offer to bet on myself. Before you say &#x27;must be nice to have options&#x27; — I had exactly two. Comfort or growth. Same two you have.</td>
+<td>hottake career</td>
+<td>high</td>
+<td>true</td>
+<td>Challenger brand voice</td>
+</tr>
+</tbody></table>
+</article>
+
+<article data-type="workflow-xml" data-source="content-elicitation-workflow.xml">
+  <h2>Content Elicitation Workflow</h2>
+  <h3>Source: <code>content-elicitation-workflow.xml</code></h3>
+  <pre><code>&lt;task id=&quot;sma/workflows/content-elicitation/workflow.xml&quot; name=&quot;Content Method Elicitation&quot;
+  description=&quot;Apply content creation methods to improve drafts, generate ideas, or refine strategy. Use during any BMAD content workflow (A-F).&quot;
+  methods=&quot;{project-root}/src/modules/atf/projects/social-media-agency/frameworks/content-methods.csv&quot;
+  vocabulary-hooks=&quot;{project-root}/src/modules/atf/projects/social-media-agency/frameworks/hook-frameworks.csv&quot;
+  vocabulary-formats=&quot;{project-root}/src/modules/atf/projects/social-media-agency/frameworks/content-formats.csv&quot;
+  vocabulary-narratives=&quot;{project-root}/src/modules/atf/projects/social-media-agency/frameworks/narrative-frameworks.csv&quot;
+  vocabulary-ctas=&quot;{project-root}/src/modules/atf/projects/social-media-agency/frameworks/cta-frameworks.csv&quot;
+  vocabulary-tones=&quot;{project-root}/src/modules/atf/projects/social-media-agency/frameworks/tone-frameworks.csv&quot;
+  vocabulary-positioning=&quot;{project-root}/src/modules/atf/projects/social-media-agency/frameworks/positioning-templates.csv&quot;
+  vocabulary-formatting=&quot;{project-root}/src/modules/atf/projects/social-media-agency/frameworks/formatting-rules.csv&quot;&gt;
+
+  &lt;llm critical=&quot;true&quot;&gt;
+    &lt;i&gt;MANDATORY: Execute ALL steps in the flow section IN EXACT ORDER&lt;/i&gt;
+    &lt;i&gt;DO NOT skip steps or change the sequence&lt;/i&gt;
+    &lt;i&gt;HALT immediately when halt-conditions are met&lt;/i&gt;
+    &lt;i&gt;Each action xml tag within step xml tag is a REQUIRED action&lt;/i&gt;
+    &lt;i&gt;Methods define HOW (process). Vocabulary CSVs define WHAT (options/ingredients).&lt;/i&gt;
+    &lt;i&gt;When a method references hooks, formats, tones, CTAs, etc. — pull options from the vocabulary CSVs&lt;/i&gt;
+    &lt;i&gt;YOU MUST ALWAYS SPEAK in the agent&#x27;s communication style and language&lt;/i&gt;
+  &lt;/llm&gt;
+
+  &lt;integration description=&quot;When called from BMAD content workflows&quot;&gt;
+    &lt;desc&gt;Can be invoked during any SMA BMAD workflow:&lt;/desc&gt;
+    &lt;i&gt;A-ContentIdeation: Use ideation, research, creative methods&lt;/i&gt;
+    &lt;i&gt;B-ContentDrafting: Use narrative, hook, engagement methods&lt;/i&gt;
+    &lt;i&gt;F-ContentFormatting: Use repurposing, engagement, creative methods&lt;/i&gt;
+    &lt;i&gt;C-ContentReview: Use analytics, engagement methods to evaluate&lt;/i&gt;
+    &lt;i&gt;D-ContentPublishing: Use distribution methods&lt;/i&gt;
+    &lt;i&gt;E-AnalyticsReview: Use analytics methods&lt;/i&gt;
+    &lt;i&gt;Standalone: User asks for brainstorming or strategy refinement&lt;/i&gt;
+  &lt;/integration&gt;
+
+  &lt;vocabulary-linking description=&quot;How methods connect to CSV vocabulary&quot;&gt;
+    &lt;i&gt;Methods are RECIPES. Vocabulary CSVs are INGREDIENTS.&lt;/i&gt;
+    &lt;i&gt;When executing a method that needs specific options:&lt;/i&gt;
+    &lt;i&gt;  - &quot;Hook Stress Test&quot; → load hook-frameworks.csv → pick 5 diverse hooks&lt;/i&gt;
+    &lt;i&gt;  - &quot;Content Waterfall&quot; → load content-formats.csv → pick format per channel&lt;/i&gt;
+    &lt;i&gt;  - &quot;Tone Mirroring&quot; → load tone-frameworks.csv → match audience voice&lt;/i&gt;
+    &lt;i&gt;  - &quot;Save-Worthy Formatting&quot; → load formatting-rules.csv → apply structure&lt;/i&gt;
+    &lt;i&gt;  - &quot;Experience Bridge&quot; → load narrative-frameworks.csv → pick structure&lt;/i&gt;
+    &lt;i&gt;  - &quot;Reply Bait Architecture&quot; → load cta-frameworks.csv → pick CTA type&lt;/i&gt;
+    &lt;i&gt;  - &quot;Intersection Identity&quot; → load positioning-templates.csv → craft position&lt;/i&gt;
+    &lt;i&gt;If a method does not map to a vocabulary CSV, execute purely from method description&lt;/i&gt;
+  &lt;/vocabulary-linking&gt;
+
+  &lt;flow&gt;
+    &lt;step n=&quot;1&quot; title=&quot;Context Analysis and Method Loading&quot;&gt;
+      &lt;action&gt;Load content-methods.csv and all vocabulary CSVs&lt;/action&gt;
+
+      &lt;context-analysis&gt;
+        &lt;i&gt;Analyze current situation:&lt;/i&gt;
+        &lt;i&gt;  - Which BMAD workflow is active? (A/B/F/C/D/E or standalone)&lt;/i&gt;
+        &lt;i&gt;  - What content exists so far? (topic only? draft? formatted? published?)&lt;/i&gt;
+        &lt;i&gt;  - What is the target channel? (LinkedIn, Substack, Instagram, Reel, etc.)&lt;/i&gt;
+        &lt;i&gt;  - What is the user&#x27;s current challenge? (stuck on ideas? hook weak? low engagement?)&lt;/i&gt;
+        &lt;i&gt;  - What methods were already applied this session?&lt;/i&gt;
+      &lt;/context-analysis&gt;
+
+      &lt;smart-selection&gt;
+        &lt;i&gt;1. Map user&#x27;s current challenge to method categories&lt;/i&gt;
+        &lt;i&gt;2. Parse method descriptions to find best matches&lt;/i&gt;
+        &lt;i&gt;3. Select 5 methods: prioritize by relevance to current situation&lt;/i&gt;
+        &lt;i&gt;4. Balance: 2-3 directly relevant + 1-2 creative/unexpected choices&lt;/i&gt;
+        &lt;i&gt;5. Never repeat methods already applied this session&lt;/i&gt;
+      &lt;/smart-selection&gt;
+    &lt;/step&gt;
+
+    &lt;step n=&quot;2&quot; title=&quot;Present Options and Handle Responses&quot;&gt;
+      &lt;format&gt;
+        **Content Method Lab** 🧪
+        Choose a method (1-5), [r] Reshuffle, [a] All Methods, or [x] Done:
+
+        1. [emoji] [Method Name] — [one-line description]
+        2. [emoji] [Method Name] — [one-line description]
+        3. [emoji] [Method Name] — [one-line description]
+        4. [emoji] [Method Name] — [one-line description]
+        5. [emoji] [Method Name] — [one-line description]
+        r. Reshuffle with 5 new methods
+        a. List all 60 methods by category
+        x. Done — proceed with current content
+      &lt;/format&gt;
+
+      &lt;category-emojis&gt;
+        &lt;i&gt;ideation: 💡&lt;/i&gt;
+        &lt;i&gt;research: 🔍&lt;/i&gt;
+        &lt;i&gt;hook: 🪝&lt;/i&gt;
+        &lt;i&gt;narrative: 📖&lt;/i&gt;
+        &lt;i&gt;repurposing: ♻️&lt;/i&gt;
+        &lt;i&gt;engagement: 🔥&lt;/i&gt;
+        &lt;i&gt;positioning: 🎯&lt;/i&gt;
+        &lt;i&gt;distribution: 📡&lt;/i&gt;
+        &lt;i&gt;analytics: 📊&lt;/i&gt;
+        &lt;i&gt;creative: 🎨&lt;/i&gt;
+      &lt;/category-emojis&gt;
+
+      &lt;response-handling&gt;
+        &lt;case n=&quot;1-5&quot;&gt;
+          &lt;i&gt;Execute the selected method:&lt;/i&gt;
+          &lt;i&gt;  1. Load method description and output_pattern from CSV&lt;/i&gt;
+          &lt;i&gt;  2. If method maps to vocabulary CSV — load relevant options&lt;/i&gt;
+          &lt;i&gt;  3. Apply method to current content/situation&lt;/i&gt;
+          &lt;i&gt;  4. Follow the output_pattern flow (→ arrows guide the process)&lt;/i&gt;
+          &lt;i&gt;  5. Show the result: what the method produced or improved&lt;/i&gt;
+          &lt;i&gt;  6. HALT: Ask user &quot;Apply this? (y/n/modify)&quot;&lt;/i&gt;
+          &lt;i&gt;  7. If yes → apply changes. If no → discard. If modify → adjust per feedback.&lt;/i&gt;
+          &lt;i&gt;  8. Re-present the 1-5,r,a,x prompt for additional methods&lt;/i&gt;
+        &lt;/case&gt;
+        &lt;case n=&quot;r&quot;&gt;
+          &lt;i&gt;Select 5 NEW methods (different from current and previously shown)&lt;/i&gt;
+          &lt;i&gt;Keep 1-2 relevant to current situation + 2-3 from different categories&lt;/i&gt;
+          &lt;i&gt;Present new list with same prompt format&lt;/i&gt;
+        &lt;/case&gt;
+        &lt;case n=&quot;a&quot;&gt;
+          &lt;i&gt;List all 60 methods grouped by category in compact format:&lt;/i&gt;
+          &lt;i&gt;  💡 IDEATION: 1. Audience Pain Mining | 2. Trend Hijacking | ...&lt;/i&gt;
+          &lt;i&gt;  🔍 RESEARCH: 7. Competitor Shadow Study | 8. Comment Gold Mining | ...&lt;/i&gt;
+          &lt;i&gt;Allow user to select any method by number&lt;/i&gt;
+          &lt;i&gt;After selection, execute as in case n=&quot;1-5&quot;&lt;/i&gt;
+        &lt;/case&gt;
+        &lt;case n=&quot;x&quot;&gt;
+          &lt;i&gt;Complete elicitation&lt;/i&gt;
+          &lt;i&gt;Summarize all methods applied and changes made this session&lt;/i&gt;
+          &lt;i&gt;Return enhanced content to calling BMAD workflow&lt;/i&gt;
+        &lt;/case&gt;
+        &lt;case n=&quot;direct-feedback&quot;&gt;
+          &lt;i&gt;User gives specific feedback instead of picking a number&lt;/i&gt;
+          &lt;i&gt;Apply feedback directly to content and re-present choices&lt;/i&gt;
+        &lt;/case&gt;
+        &lt;case n=&quot;multiple-numbers&quot;&gt;
+          &lt;i&gt;User picks multiple methods (e.g., &quot;3 and 5&quot;)&lt;/i&gt;
+          &lt;i&gt;Execute in sequence, each building on previous result&lt;/i&gt;
+          &lt;i&gt;Show combined result, then re-offer choices&lt;/i&gt;
+        &lt;/case&gt;
+        &lt;case n=&quot;category-name&quot;&gt;
+          &lt;i&gt;User types a category name (e.g., &quot;hook&quot; or &quot;engagement&quot;)&lt;/i&gt;
+          &lt;i&gt;Show all methods in that category&lt;/i&gt;
+          &lt;i&gt;Allow selection from filtered list&lt;/i&gt;
+        &lt;/case&gt;
+      &lt;/response-handling&gt;
+    &lt;/step&gt;
+
+    &lt;step n=&quot;3&quot; title=&quot;Method Execution Guidelines&quot;&gt;
+      &lt;i&gt;Method execution: Use description + output_pattern as process guide&lt;/i&gt;
+      &lt;i&gt;Vocabulary linking: When method needs options, pull from relevant CSV&lt;/i&gt;
+      &lt;i&gt;Channel awareness: Adapt method execution to target channel constraints&lt;/i&gt;
+      &lt;i&gt;  - LinkedIn: 800-1600 chars, no formatting, see-more hook&lt;/i&gt;
+      &lt;i&gt;  - Substack: long-form, headers, SEO&lt;/i&gt;
+      &lt;i&gt;  - Instagram: visual-first, caption secondary, hashtag heavy&lt;/i&gt;
+      &lt;i&gt;  - Reel: 30-60 sec script, hook in first 3 seconds&lt;/i&gt;
+      &lt;i&gt;  - Carousel: slide-by-slide, one point per slide&lt;/i&gt;
+      &lt;i&gt;Iterative enhancement: Each method builds on previous results&lt;/i&gt;
+      &lt;i&gt;Track all changes: Maintain history of what each method contributed&lt;/i&gt;
+      &lt;i&gt;Quality check: After applying method, verify it improved the content&lt;/i&gt;
+      &lt;i&gt;Continue until user selects &#x27;x&#x27; to proceed&lt;/i&gt;
+    &lt;/step&gt;
+  &lt;/flow&gt;
+&lt;/task&gt;
+</code></pre>
+</article>
+
+</section>
+
+<footer>
+  <hr>
+  <p><small>Generated from Flex SMA module source files. Bundle v1.0.0</small></p>
+</footer>
+
+</body>
+</html>

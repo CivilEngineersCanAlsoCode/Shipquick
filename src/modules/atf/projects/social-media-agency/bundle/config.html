@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Configuration Reference | Flex SMA Bundle</title>
+  <meta name="bundle-version" content="1.0.0">
+  <meta name="source-module" content="flex-sma">
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 960px; margin: 0 auto; padding: 2rem; color: #1a1a1a; }
+    section { margin: 2rem 0; border-left: 4px solid #7c3aed; padding-left: 1.5rem; }
+    article { margin: 1.5rem 0; padding: 1rem; background: #f8fafc; border-radius: 8px; }
+    h1 { color: #1e40af; } h2 { color: #7c3aed; } h3 { color: #3b82f6; }
+    code { background: #f1f5f9; padding: 0.2em 0.4em; border-radius: 4px; font-size: 0.9em; }
+    pre { background: #1e293b; color: #e2e8f0; padding: 1rem; border-radius: 8px; overflow-x: auto; }
+    pre code { background: none; padding: 0; }
+    table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+    th, td { border: 1px solid #e2e8f0; padding: 0.5rem 0.75rem; text-align: left; }
+    th { background: #f1f5f9; }
+    .warning { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 0.75rem; margin: 0.5rem 0; }
+    details { margin: 0.5rem 0; }
+    summary { cursor: pointer; font-weight: 600; }
+    .table-wrap { overflow-x: auto; }
+    footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid #e2e8f0; color: #64748b; font-size: 0.85em; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Configuration Reference</h1>
+  <p>Flex SMA configuration bundle — variable registry, config document schemas, and posting schedule.</p>
+</header>
+
+<section data-bundle-type="config" data-source-files="variable-registry.csv,config-doc-schemas.md,posting-schedule.yaml">
+
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <!-- PART 1: Variable Registry                              -->
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <article data-part="variable-registry">
+    <h2>Variable Registry</h2>
+    <p>All configurable variables across SMA workflows. Source: <code>variable-registry.csv</code></p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>variable_id</th>
+            <th>workflow</th>
+            <th>category</th>
+            <th>variable_name</th>
+            <th>description</th>
+            <th>current_value</th>
+            <th>data_type</th>
+            <th>min</th>
+            <th>max</th>
+            <th>unit</th>
+            <th>storage_location</th>
+            <th>config_doc_id</th>
+            <th>editable_by_user</th>
+            <th>priority</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>VAR_A01</td><td>A-ContentIdeation</td><td>scoring</td><td>scoring_weight_freshness</td><td>Fibonacci weight applied to freshness score when calculating total</td><td>8</td><td>integer</td><td>1</td><td>21</td><td>weight</td><td>mongodb_config</td><td>scoring_weights</td><td>true</td><td>P1</td></tr>
+          <tr><td>VAR_A02</td><td>A-ContentIdeation</td><td>scoring</td><td>scoring_weight_personal_experience</td><td>Fibonacci weight applied to personal experience score when calculating total</td><td>5</td><td>integer</td><td>1</td><td>21</td><td>weight</td><td>mongodb_config</td><td>scoring_weights</td><td>true</td><td>P1</td></tr>
+          <tr><td>VAR_A03</td><td>A-ContentIdeation</td><td>scoring</td><td>scoring_weight_research_quality</td><td>Fibonacci weight applied to research quality score when calculating total</td><td>3</td><td>integer</td><td>1</td><td>21</td><td>weight</td><td>mongodb_config</td><td>scoring_weights</td><td>true</td><td>P1</td></tr>
+          <tr><td>VAR_A04</td><td>A-ContentIdeation</td><td>threshold</td><td>individual_min_freshness</td><td>Minimum freshness score a brief must achieve to pass gate check</td><td>5</td><td>integer</td><td>1</td><td>10</td><td>score</td><td>mongodb_config</td><td>scoring_scales</td><td>true</td><td>P1</td></tr>
+          <tr><td>VAR_A05</td><td>A-ContentIdeation</td><td>threshold</td><td>individual_min_personal_experience</td><td>Minimum personal experience score a brief must achieve to pass gate check</td><td>3</td><td>integer</td><td>1</td><td>10</td><td>score</td><td>mongodb_config</td><td>scoring_scales</td><td>true</td><td>P1</td></tr>
+          <tr><td>VAR_A06</td><td>A-ContentIdeation</td><td>threshold</td><td>individual_min_research_quality</td><td>Minimum research quality score a brief must achieve to pass gate check</td><td>2</td><td>integer</td><td>1</td><td>10</td><td>score</td><td>mongodb_config</td><td>scoring_scales</td><td>true</td><td>P1</td></tr>
+          <tr><td>VAR_A07</td><td>A-ContentIdeation</td><td>threshold</td><td>total_minimum_percent</td><td>Minimum percentage of max possible score a brief must reach to qualify</td><td>50</td><td>integer</td><td>10</td><td>100</td><td>percent</td><td>mongodb_config</td><td>scoring_scales</td><td>true</td><td>P1</td></tr>
+          <tr><td>VAR_A08</td><td>A-ContentIdeation</td><td>scoring</td><td>max_score_per_factor</td><td>Maximum score any single scoring factor can receive</td><td>10</td><td>integer</td><td>5</td><td>20</td><td>score</td><td>mongodb_config</td><td>scoring_scales</td><td>true</td><td>P2</td></tr>
+          <tr><td>VAR_A09</td><td>A-ContentIdeation</td><td>limit</td><td>top_n_posts_to_select</td><td>Number of top-scoring briefs to present for user selection</td><td>3</td><td>integer</td><td>1</td><td>10</td><td>count</td><td>mongodb_config</td><td>scoring_scales</td><td>true</td><td>P2</td></tr>
+          <tr><td>VAR_A10</td><td>A-ContentIdeation</td><td>timing</td><td>lookback_days_freshness</td><td>Number of days to look back when checking for duplicate/recent posts</td><td>14</td><td>integer</td><td>7</td><td>90</td><td>days</td><td>mongodb_config</td><td>scoring_scales</td><td>true</td><td>P2</td></tr>
+          <tr><td>VAR_A11</td><td>A-ContentIdeation</td><td>limit</td><td>max_posts_planned_at_once</td><td>Maximum number of posts that can be planned in a single ideation session</td><td>3</td><td>integer</td><td>1</td><td>10</td><td>count</td><td>mongodb_config</td><td>posting_schedule</td><td>true</td><td>P2</td></tr>
+          <tr><td>VAR_A12</td><td>A-ContentIdeation</td><td>limit</td><td>posts_per_day</td><td>Default number of posts to schedule per day</td><td>1</td><td>integer</td><td>1</td><td>3</td><td>count</td><td>mongodb_config</td><td>posting_schedule</td><td>true</td><td>P1</td></tr>
+          <tr><td>VAR_A13</td><td>A-ContentIdeation</td><td>threshold</td><td>vector_search_similarity_threshold</td><td>Minimum cosine similarity for experience vector search matches</td><td>0.80</td><td>float</td><td>0.50</td><td>1.00</td><td>similarity</td><td>mongodb_config</td><td>scoring_scales</td><td>true</td><td>P2</td></tr>
+          <tr><td>VAR_A14</td><td>A-ContentIdeation</td><td>limit</td><td>vector_search_limit_per_query</td><td>Maximum number of experience matches to return per vector search query</td><td>3</td><td>integer</td><td>1</td><td>10</td><td>count</td><td>mongodb_config</td><td>scoring_scales</td><td>true</td><td>P3</td></tr>
+          <tr><td>VAR_B01</td><td>B-ContentDrafting</td><td>format</td><td>char_limit_min</td><td>Minimum character count for a drafted post</td><td>800</td><td>integer</td><td>200</td><td>2000</td><td>characters</td><td>mongodb_config</td><td>formatting_config</td><td>true</td><td>P1</td></tr>
+          <tr><td>VAR_B02</td><td>B-ContentDrafting</td><td>format</td><td>char_limit_max</td><td>Maximum character count for a drafted post</td><td>1600</td><td>integer</td><td>500</td><td>3000</td><td>characters</td><td>mongodb_config</td><td>formatting_config</td><td>true</td><td>P1</td></tr>
+          <tr><td>VAR_B03</td><td>B-ContentDrafting</td><td>format</td><td>max_emojis</td><td>Maximum number of emojis allowed in a single post</td><td>3</td><td>integer</td><td>0</td><td>10</td><td>count</td><td>mongodb_config</td><td>formatting_config</td><td>true</td><td>P2</td></tr>
+          <tr><td>VAR_B04</td><td>B-ContentDrafting</td><td>format</td><td>max_hindi_sentences</td><td>Maximum number of Hindi/Hinglish sentences allowed in a post</td><td>3</td><td>integer</td><td>0</td><td>10</td><td>count</td><td>mongodb_config</td><td>formatting_config</td><td>true</td><td>P2</td></tr>
+          <tr><td>VAR_B05</td><td>B-ContentDrafting</td><td>format</td><td>max_lines_per_block</td><td>Maximum consecutive lines before a visual break is required</td><td>3</td><td>integer</td><td>2</td><td>5</td><td>count</td><td>mongodb_config</td><td>formatting_config</td><td>true</td><td>P2</td></tr>
+          <tr><td>VAR_B06</td><td>B-ContentDrafting</td><td>limit</td><td>max_refinement_iterations</td><td>Maximum number of AI refinement loops before forcing output</td><td>5</td><td>integer</td><td>3</td><td>10</td><td>count</td><td>mongodb_config</td><td>formatting_config</td><td>true</td><td>P2</td></tr>
+          <tr><td>VAR_B07</td><td>B-ContentDrafting</td><td>threshold</td><td>iteration_warning_threshold</td><td>Iteration count at which a warning is shown to the user</td><td>3</td><td>integer</td><td>2</td><td>8</td><td>count</td><td>mongodb_config</td><td>formatting_config</td><td>true</td><td>P3</td></tr>
+          <tr><td>VAR_B08</td><td>B-ContentDrafting</td><td>threshold</td><td>flesch_kincaid_max_grade</td><td>Maximum Flesch-Kincaid grade level for readability compliance</td><td>7</td><td>integer</td><td>5</td><td>12</td><td>grade</td><td>mongodb_config</td><td>formatting_config</td><td>true</td><td>P1</td></tr>
+          <tr><td>VAR_B09</td><td>B-ContentDrafting</td><td>format</td><td>hashtag_count_min</td><td>Minimum number of hashtags to include in a post</td><td>3</td><td>integer</td><td>0</td><td>10</td><td>count</td><td>mongodb_config</td><td>formatting_config</td><td>true</td><td>P2</td></tr>
+          <tr><td>VAR_B10</td><td>B-ContentDrafting</td><td>format</td><td>hashtag_count_max</td><td>Maximum number of hashtags to include in a post</td><td>6</td><td>integer</td><td>3</td><td>15</td><td>count</td><td>mongodb_config</td><td>formatting_config</td><td>true</td><td>P2</td></tr>
+          <tr><td>VAR_B11</td><td>B-ContentDrafting</td><td>threshold</td><td>duplicate_threshold_high</td><td>Similarity score above which a draft is flagged as a near-duplicate</td><td>0.95</td><td>float</td><td>0.85</td><td>1.00</td><td>similarity</td><td>mongodb_config</td><td>engagement_config</td><td>true</td><td>P1</td></tr>
+          <tr><td>VAR_B12</td><td>B-ContentDrafting</td><td>threshold</td><td>duplicate_threshold_similar</td><td>Similarity score above which a draft is flagged as similar to existing content</td><td>0.80</td><td>float</td><td>0.60</td><td>0.95</td><td>similarity</td><td>mongodb_config</td><td>engagement_config</td><td>true</td><td>P2</td></tr>
+          <tr><td>VAR_B13</td><td>B-ContentDrafting</td><td>limit</td><td>top_performing_posts_count</td><td>Number of top-performing past posts to fetch for style reference</td><td>5</td><td>integer</td><td>3</td><td>20</td><td>count</td><td>mongodb_config</td><td>engagement_config</td><td>true</td><td>P2</td></tr>
+          <tr><td>VAR_B14</td><td>B-ContentDrafting</td><td>timing</td><td>top_performing_lookback_days</td><td>Number of days to look back when fetching top-performing posts</td><td>30</td><td>integer</td><td>7</td><td>180</td><td>days</td><td>mongodb_config</td><td>engagement_config</td><td>true</td><td>P2</td></tr>
+          <tr><td>VAR_B15</td><td>B-ContentDrafting</td><td>engagement</td><td>engagement_weight_likes</td><td>Weight multiplier for likes in engagement score calculation</td><td>1</td><td>integer</td><td>1</td><td>10</td><td>weight</td><td>mongodb_config</td><td>engagement_config</td><td>true</td><td>P2</td></tr>
+          <tr><td>VAR_B16</td><td>B-ContentDrafting</td><td>engagement</td><td>engagement_weight_comments</td><td>Weight multiplier for comments in engagement score calculation</td><td>3</td><td>integer</td><td>1</td><td>10</td><td>weight</td><td>mongodb_config</td><td>engagement_config</td><td>true</td><td>P2</td></tr>
+          <tr><td>VAR_B17</td><td>B-ContentDrafting</td><td>engagement</td><td>engagement_weight_shares</td><td>Weight multiplier for shares in engagement score calculation</td><td>2</td><td>integer</td><td>1</td><td>10</td><td>weight</td><td>mongodb_config</td><td>engagement_config</td><td>true</td><td>P2</td></tr>
+          <tr><td>VAR_C01</td><td>C-ContentReview</td><td>scoring</td><td>quality_checks_enabled</td><td>Whether automated quality checks run during content review</td><td>true</td><td>boolean</td><td></td><td></td><td>flag</td><td>mongodb_config</td><td>review_config</td><td>true</td><td>P1</td></tr>
+          <tr><td>VAR_C02</td><td>C-ContentReview</td><td>scoring</td><td>auto_fix_enabled</td><td>Whether the system automatically applies suggested fixes without user confirmation</td><td>false</td><td>boolean</td><td></td><td></td><td>flag</td><td>mongodb_config</td><td>review_config</td><td>true</td><td>P2</td></tr>
+          <tr><td>VAR_D01</td><td>D-ContentPublishing</td><td>timing</td><td>random_delay_min</td><td>Minimum random delay before publishing a scheduled post</td><td>0</td><td>integer</td><td>0</td><td>30</td><td>minutes</td><td>mongodb_config</td><td>posting_schedule</td><td>true</td><td>P2</td></tr>
+          <tr><td>VAR_D02</td><td>D-ContentPublishing</td><td>timing</td><td>random_delay_max</td><td>Maximum random delay before publishing a scheduled post</td><td>60</td><td>integer</td><td>10</td><td>120</td><td>minutes</td><td>mongodb_config</td><td>posting_schedule</td><td>true</td><td>P2</td></tr>
+          <tr><td>VAR_D03</td><td>D-ContentPublishing</td><td>limit</td><td>max_posts_per_day</td><td>Maximum number of posts that can be published in a single day</td><td>1</td><td>integer</td><td>1</td><td>3</td><td>count</td><td>mongodb_config</td><td>posting_schedule</td><td>true</td><td>P1</td></tr>
+          <tr><td>VAR_D04</td><td>D-ContentPublishing</td><td>timing</td><td>default_publish_time</td><td>Default time of day to publish posts (24h format)</td><td>09:00</td><td>string</td><td></td><td></td><td>HH:MM</td><td>mongodb_config</td><td>posting_schedule</td><td>true</td><td>P1</td></tr>
+          <tr><td>VAR_D05</td><td>D-ContentPublishing</td><td>timing</td><td>timezone</td><td>Timezone used for all scheduling and publishing operations</td><td>Asia/Kolkata</td><td>string</td><td></td><td></td><td>tz_name</td><td>mongodb_config</td><td>posting_schedule</td><td>true</td><td>P1</td></tr>
+          <tr><td>VAR_D06</td><td>D-ContentPublishing</td><td>display</td><td>linkedin_visibility</td><td>Default visibility setting for LinkedIn posts</td><td>PUBLIC</td><td>string</td><td></td><td></td><td>enum</td><td>mongodb_config</td><td>posting_schedule</td><td>true</td><td>P2</td></tr>
+          <tr><td>VAR_E01</td><td>E-AnalyticsReview</td><td>timing</td><td>no_data_reminder_hours</td><td>Hours after publishing with no analytics before sending a reminder</td><td>48</td><td>integer</td><td>24</td><td>168</td><td>hours</td><td>mongodb_config</td><td>analytics_config</td><td>true</td><td>P2</td></tr>
+          <tr><td>VAR_E02</td><td>E-AnalyticsReview</td><td>timing</td><td>report_period_days</td><td>Number of days covered in each analytics report</td><td>7</td><td>integer</td><td>1</td><td>30</td><td>days</td><td>mongodb_config</td><td>analytics_config</td><td>true</td><td>P2</td></tr>
+          <tr><td>VAR_E03</td><td>E-AnalyticsReview</td><td>limit</td><td>top_posts_in_report</td><td>Number of top-performing posts to highlight in analytics reports</td><td>5</td><td>integer</td><td>3</td><td>20</td><td>count</td><td>mongodb_config</td><td>analytics_config</td><td>true</td><td>P3</td></tr>
+          <tr><td>VAR_E04</td><td>E-AnalyticsReview</td><td>engagement</td><td>engagement_benchmark_likes</td><td>Minimum likes count considered a successful post</td><td>50</td><td>integer</td><td>10</td><td>500</td><td>count</td><td>mongodb_config</td><td>analytics_config</td><td>true</td><td>P2</td></tr>
+          <tr><td>VAR_E05</td><td>E-AnalyticsReview</td><td>engagement</td><td>engagement_benchmark_comments</td><td>Minimum comments count considered a successful post</td><td>10</td><td>integer</td><td>5</td><td>100</td><td>count</td><td>mongodb_config</td><td>analytics_config</td><td>true</td><td>P2</td></tr>
+          <tr><td>VAR_F01</td><td>F-ContentFormatting</td><td>format</td><td>default_target_format</td><td>Default output format template for content generation</td><td>linkedin_post</td><td>string</td><td></td><td></td><td>format_name</td><td>mongodb_config</td><td>formatting_config</td><td>true</td><td>P2</td></tr>
+          <tr><td>VAR_F02</td><td>F-ContentFormatting</td><td>format</td><td>staircase_direction</td><td>Default staircase formatting direction for visual flow</td><td>descending</td><td>string</td><td></td><td></td><td>enum</td><td>mongodb_config</td><td>formatting_config</td><td>true</td><td>P3</td></tr>
+          <tr><td>VAR_F03</td><td>F-ContentFormatting</td><td>display</td><td>positioning_line_enabled</td><td>Whether to include a positioning/credential line at the end of posts</td><td>true</td><td>boolean</td><td></td><td></td><td>flag</td><td>mongodb_config</td><td>formatting_config</td><td>true</td><td>P2</td></tr>
+          <tr><td>VAR_F04</td><td>F-ContentFormatting</td><td>display</td><td>follow_line_enabled</td><td>Whether to include a follow CTA line at the end of posts</td><td>true</td><td>boolean</td><td></td><td></td><td>flag</td><td>mongodb_config</td><td>formatting_config</td><td>true</td><td>P2</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </article>
+
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <!-- PART 2: Config Document Schemas                        -->
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <article data-part="config-schemas">
+    <h2>Config Document Schemas</h2>
+    <p>MongoDB collection: <code>sma_config</code> — each document is identified by <code>_id</code> matching the <code>config_doc_id</code> values in the variable registry. Source: <code>config-doc-schemas.md</code></p>
+
+    <!-- Schema 1: scoring_weights -->
+    <h3>1. scoring_weights</h3>
+    <p>Stores the Fibonacci weights applied to each scoring factor during content ideation.</p>
+    <pre><code>{
+  "_id": "scoring_weights",
+  "weights": {
+    "freshness": 8,
+    "personal_experience": 5,
+    "research_quality": 3
+  },
+  "updated_at": "2026-03-14T00:00:00Z",
+  "updated_by": "system"
+}</code></pre>
+    <p><strong>Variables:</strong> VAR_A01, VAR_A02, VAR_A03</p>
+    <div class="warning"><strong>Validation:</strong> Each weight must be a Fibonacci number (1, 2, 3, 5, 8, 13, 21). All three weights must be different.</div>
+
+    <!-- Schema 2: scoring_scales -->
+    <h3>2. scoring_scales</h3>
+    <p>Stores thresholds, limits, and scale parameters for the scoring system.</p>
+    <pre><code>{
+  "_id": "scoring_scales",
+  "individual_minimum": {
+    "freshness": 5,
+    "personal_experience": 3,
+    "research_quality": 2
+  },
+  "total_minimum_percent": 50,
+  "max_score_per_factor": 10,
+  "top_n": 3,
+  "lookback_days": 14,
+  "vector_search": {
+    "similarity_threshold": 0.80,
+    "limit_per_query": 3
+  },
+  "updated_at": "2026-03-14T00:00:00Z",
+  "updated_by": "system"
+}</code></pre>
+    <p><strong>Variables:</strong> VAR_A04, VAR_A05, VAR_A06, VAR_A07, VAR_A08, VAR_A09, VAR_A10, VAR_A13, VAR_A14</p>
+    <details>
+      <summary>Validation Rules</summary>
+      <ul>
+        <li><code>individual_minimum.*</code>: integer 0&ndash;10</li>
+        <li><code>total_minimum_percent</code>: integer 20&ndash;80 (validated range), registry allows 10&ndash;100</li>
+        <li><code>max_score_per_factor</code>: integer 5&ndash;20</li>
+        <li><code>top_n</code>: integer 1&ndash;10</li>
+        <li><code>lookback_days</code>: integer 7&ndash;90</li>
+        <li><code>vector_search.similarity_threshold</code>: float 0.50&ndash;1.00</li>
+        <li><code>vector_search.limit_per_query</code>: integer 1&ndash;10</li>
+      </ul>
+    </details>
+
+    <!-- Schema 3: posting_schedule -->
+    <h3>3. posting_schedule</h3>
+    <p>Stores publishing timing, limits, and platform-specific settings.</p>
+    <pre><code>{
+  "_id": "posting_schedule",
+  "max_posts_planned_at_once": 3,
+  "posts_per_day": 1,
+  "max_posts_per_day": 1,
+  "default_publish_time": "09:00",
+  "timezone": "Asia/Kolkata",
+  "random_delay": {
+    "min_minutes": 0,
+    "max_minutes": 60
+  },
+  "platform_defaults": {
+    "linkedin": {
+      "publish_time": "09:00",
+      "visibility": "PUBLIC"
+    }
+  },
+  "day_preferences": {
+    "mon": "story_insight",
+    "tue": "story_insight",
+    "wed": "story_insight",
+    "thu": "howto_framework",
+    "fri": "light_hottake"
+  },
+  "updated_at": "2026-03-14T00:00:00Z",
+  "updated_by": "system"
+}</code></pre>
+    <p><strong>Variables:</strong> VAR_A11, VAR_A12, VAR_D01, VAR_D02, VAR_D03, VAR_D04, VAR_D05, VAR_D06</p>
+    <details>
+      <summary>Validation Rules</summary>
+      <ul>
+        <li><code>default_publish_time</code>: string in HH:MM 24h format</li>
+        <li><code>timezone</code>: valid IANA timezone string</li>
+        <li><code>platform_defaults.linkedin.visibility</code>: enum <code>PUBLIC</code> | <code>CONNECTIONS</code></li>
+        <li><code>random_delay.min_minutes</code> must be &le; <code>random_delay.max_minutes</code></li>
+      </ul>
+    </details>
+
+    <!-- Schema 4: formatting_config -->
+    <h3>4. formatting_config</h3>
+    <p>Stores post formatting constraints, readability rules, and display toggles.</p>
+    <pre><code>{
+  "_id": "formatting_config",
+  "character_limits": {
+    "min": 800,
+    "max": 1600
+  },
+  "max_emojis": 3,
+  "max_hindi_sentences": 3,
+  "max_lines_per_block": 3,
+  "refinement": {
+    "max_iterations": 5,
+    "warning_threshold": 3
+  },
+  "readability": {
+    "flesch_kincaid_max_grade": 7
+  },
+  "hashtags": {
+    "min": 3,
+    "max": 6
+  },
+  "default_target_format": "linkedin_post",
+  "staircase_direction": "descending",
+  "positioning_line_enabled": true,
+  "follow_line_enabled": true,
+  "updated_at": "2026-03-14T00:00:00Z",
+  "updated_by": "system"
+}</code></pre>
+    <p><strong>Variables:</strong> VAR_B01&ndash;VAR_B10, VAR_F01&ndash;VAR_F04</p>
+    <details>
+      <summary>Validation Rules</summary>
+      <ul>
+        <li><code>character_limits.min</code> must be &lt; <code>character_limits.max</code></li>
+        <li><code>hashtags.min</code> must be &le; <code>hashtags.max</code></li>
+        <li><code>staircase_direction</code>: enum <code>ascending</code> | <code>descending</code> | <code>mixed</code></li>
+        <li><code>flesch_kincaid_max_grade</code>: integer 5&ndash;12</li>
+      </ul>
+    </details>
+
+    <!-- Schema 5: engagement_config -->
+    <h3>5. engagement_config</h3>
+    <p>Stores engagement scoring weights, duplicate detection thresholds, and top-post lookup settings.</p>
+    <pre><code>{
+  "_id": "engagement_config",
+  "duplicate_detection": {
+    "threshold_high": 0.95,
+    "threshold_similar": 0.80
+  },
+  "top_performing": {
+    "posts_count": 5,
+    "lookback_days": 30
+  },
+  "engagement_weights": {
+    "likes": 1,
+    "comments": 3,
+    "shares": 2
+  },
+  "updated_at": "2026-03-14T00:00:00Z",
+  "updated_by": "system"
+}</code></pre>
+    <p><strong>Variables:</strong> VAR_B11&ndash;VAR_B17</p>
+    <details>
+      <summary>Validation Rules</summary>
+      <ul>
+        <li><code>duplicate_detection.threshold_similar</code> must be &lt; <code>duplicate_detection.threshold_high</code></li>
+        <li><code>engagement_weights.*</code>: integer 1&ndash;10</li>
+        <li><code>top_performing.posts_count</code>: integer 3&ndash;20</li>
+        <li><code>top_performing.lookback_days</code>: integer 7&ndash;180</li>
+      </ul>
+    </details>
+
+    <!-- Schema 6: review_config -->
+    <h3>6. review_config</h3>
+    <p>Stores content review automation settings.</p>
+    <pre><code>{
+  "_id": "review_config",
+  "quality_checks_enabled": true,
+  "auto_fix_enabled": false,
+  "updated_at": "2026-03-14T00:00:00Z",
+  "updated_by": "system"
+}</code></pre>
+    <p><strong>Variables:</strong> VAR_C01, VAR_C02</p>
+    <div class="warning"><strong>Validation:</strong> Both fields are boolean. <code>auto_fix_enabled</code> should only be <code>true</code> if <code>quality_checks_enabled</code> is also <code>true</code>.</div>
+
+    <!-- Schema 7: analytics_config -->
+    <h3>7. analytics_config</h3>
+    <p>Stores analytics reporting parameters and engagement benchmarks.</p>
+    <pre><code>{
+  "_id": "analytics_config",
+  "no_data_reminder_hours": 48,
+  "report_period_days": 7,
+  "top_posts_in_report": 5,
+  "engagement_benchmarks": {
+    "likes": 50,
+    "comments": 10
+  },
+  "updated_at": "2026-03-14T00:00:00Z",
+  "updated_by": "system"
+}</code></pre>
+    <p><strong>Variables:</strong> VAR_E01&ndash;VAR_E05</p>
+    <details>
+      <summary>Validation Rules</summary>
+      <ul>
+        <li><code>no_data_reminder_hours</code>: integer 24&ndash;168</li>
+        <li><code>report_period_days</code>: integer 1&ndash;30</li>
+        <li><code>top_posts_in_report</code>: integer 3&ndash;20</li>
+        <li><code>engagement_benchmarks.likes</code>: integer 10&ndash;500</li>
+        <li><code>engagement_benchmarks.comments</code>: integer 5&ndash;100</li>
+      </ul>
+    </details>
+
+    <!-- Usage Notes -->
+    <h3>Usage Notes</h3>
+    <ul>
+      <li><strong>Fallback defaults:</strong> If a config document fails to load from MongoDB, the system uses hardcoded defaults matching the <code>current_value</code> column in the variable registry.</li>
+      <li><strong>Update flow:</strong> Users can update config via the A.5 step (interactive customization) or directly through the ChatGPT Actions API.</li>
+      <li><strong>Audit fields:</strong> Every document includes <code>updated_at</code> and <code>updated_by</code> for change tracking.</li>
+      <li><strong>Collection:</strong> All documents live in the <code>sma_config</code> collection in the project's MongoDB database.</li>
+    </ul>
+  </article>
+
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <!-- PART 3: Posting Schedule YAML                          -->
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <article data-part="posting-schedule">
+    <h2>Posting Schedule</h2>
+    <p>Full posting schedule configuration. Source: <code>posting-schedule.yaml</code></p>
+    <pre><code># Posting Schedule Configuration
+# Stored in MongoDB: sma_config._id = "posting_schedule"
+# Configurable via: sma_config.posting_schedule
+
+schedule:
+  frequency: 3  # posts per week
+  timezone: "Asia/Kolkata"  # IST
+
+  default:
+    days: ["Monday", "Wednesday", "Friday"]
+    time_window:
+      start: "18:00"  # 6 PM IST
+      end: "19:00"    # 7 PM IST
+    random_delay_minutes: 15  # jitter within window to appear natural
+
+  # A/B test variants — activate ONE at a time via active_variant
+  active_variant: "default"
+
+  variants:
+    morning_test:
+      description: "Test morning posting for US West Coast evening overlap"
+      days: ["Monday", "Wednesday", "Friday"]
+      time_window:
+        start: "08:00"
+        end: "09:00"
+
+    tue_thu_sat:
+      description: "Test alternate days — less competition on Tue/Thu/Sat"
+      days: ["Tuesday", "Thursday", "Saturday"]
+      time_window:
+        start: "18:00"
+        end: "19:00"
+
+    lunch_hour:
+      description: "Test lunch-break scroll time in India"
+      days: ["Monday", "Wednesday", "Friday"]
+      time_window:
+        start: "12:00"
+        end: "13:00"
+
+    four_per_week:
+      description: "Test higher frequency — Mon/Tue/Thu/Fri"
+      days: ["Monday", "Tuesday", "Thursday", "Friday"]
+      time_window:
+        start: "18:00"
+        end: "19:00"
+
+# Holiday and event overrides
+# These take precedence over the active schedule
+overrides:
+  skip_dates:
+    - date: "2026-01-26"
+      reason: "Republic Day — low LinkedIn activity"
+    - date: "2026-08-15"
+      reason: "Independence Day — low LinkedIn activity"
+    - date: "2026-10-20"
+      reason: "Diwali — skip or schedule day before"
+    - date: "2026-12-25"
+      reason: "Christmas — international audience offline"
+    - date: "2026-12-31"
+      reason: "New Year's Eve"
+
+  bonus_dates:
+    - date: "2026-01-06"
+      reason: "First Monday of year — high LinkedIn activity (resolutions)"
+      pillar_suggestion: "career"
+    - date: "2026-03-08"
+      reason: "International Women's Day — relevant for diversity/inclusion takes"
+      pillar_suggestion: "hottake"
+
+  event_overrides:
+    - event: "product_launch"
+      action: "add_extra_post"
+      days_before: 1
+      days_after: 2
+      pillar: "startup"
+    - event: "funding_announcement"
+      action: "add_extra_post"
+      days_after: 1
+      pillar: "startup"
+    - event: "major_ai_release"
+      action: "swap_next_post"
+      pillar: "ai_automation"
+      tone: "curious-builder"
+
+# Buffer and constraints
+constraints:
+  max_posts_per_day: 1
+  min_gap_hours: 20  # minimum hours between posts
+  max_posts_per_week: 5  # hard cap even with event overrides
+  consecutive_pillar_block: true  # never post same pillar twice in a row
+  max_reschedules_per_post: 2
+
+# Publishing behavior (used by D-Publishing workflow)
+publishing:
+  delay_jitter_seconds: [0, 3600]  # random 0-60 min delay for natural feel
+  duplicate_guard: true  # check if post already published before sending
+  retry_on_failure: false  # one-shot only, no retry
+  notification_channel: "telegram"  # notify SMA control group</code></pre>
+  </article>
+
+</section>
+
+<footer>
+  <p>Flex SMA Bundle &mdash; Configuration Reference &mdash; v1.0.0</p>
+  <p>Sources: <code>variable-registry.csv</code>, <code>config-doc-schemas.md</code>, <code>posting-schedule.yaml</code></p>
+</footer>
+
+</body>
+</html>

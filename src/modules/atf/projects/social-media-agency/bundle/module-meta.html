@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Module Metadata | Flex SMA Bundle</title>
+  <meta name="bundle-version" content="1.0.0">
+  <meta name="source-module" content="flex-sma">
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 960px; margin: 0 auto; padding: 2rem; color: #1a1a1a; }
+    section { margin: 2rem 0; border-left: 4px solid #6366f1; padding-left: 1.5rem; }
+    article { margin: 1.5rem 0; padding: 1rem; background: #f8fafc; border-radius: 8px; }
+    h1 { color: #1e40af; } h2 { color: #6366f1; } h3 { color: #3b82f6; }
+    code { background: #f1f5f9; padding: 0.2em 0.4em; border-radius: 4px; font-size: 0.9em; }
+    pre { background: #1e293b; color: #e2e8f0; padding: 1rem; border-radius: 8px; overflow-x: auto; }
+    pre code { background: none; padding: 0; }
+    table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+    th, td { border: 1px solid #e2e8f0; padding: 0.5rem 0.75rem; text-align: left; }
+    th { background: #f1f5f9; }
+    details { margin: 0.5rem 0; }
+    summary { cursor: pointer; font-weight: 600; }
+    header { margin-bottom: 2rem; }
+    footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid #e2e8f0; color: #64748b; font-size: 0.85em; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Module Metadata</h1>
+  <p>Self-contained bundle of the Flex SMA module metadata: configuration, project context, commands, workflow manifest, and agent manifest. Five source files combined into a single portable reference.</p>
+</header>
+
+<section data-bundle-type="module-meta" data-source-files="config.yaml,CONTEXT.md,module-help.csv,workflow-manifest.csv,agent-manifest.csv">
+
+  <!-- ── config.yaml ── -->
+  <article data-part="config">
+    <h2>config.yaml</h2>
+    <pre><code># Flex Module Configuration &mdash; Social Media Agency (SMA)
+
+module_id: flex
+enabled: true
+priority: 2
+
+features:
+  content_ideation: true
+  content_drafting: true
+  content_formatting: true
+  content_review: true
+  content_publishing: true
+  analytics_review: true
+  viral_insight_extraction: true
+
+data_layer:
+  primary_db: &quot;mongodb&quot;
+  vector_search: true
+  embedding_model: &quot;text-embedding-001&quot;
+  embedding_dims: 3072
+  similarity_threshold: 0.80
+
+external_integrations:
+  n8n_webhook_base: &quot;${N8N_WEBHOOK_BASE}&quot;
+  google_sheets: true
+  notion: true
+  linkedin_api: false
+  chatgpt_actions: true
+  chrome_extension: true
+
+constraints:
+  max_posts_planned: 3
+  max_posts_per_day: 1
+  platforms_v1:
+    - linkedin
+  character_limit_linkedin: 1600
+  fk_grade_target: 7
+  max_emojis: 3
+  max_hindi_sentences: 3
+  hashtags_range: [3, 6]
+
+governance:
+  task_tracker: &quot;beads&quot;
+  workflow_style: &quot;interactive&quot;
+  agent_has_db_access: false
+  all_data_via: &quot;n8n_webhooks&quot;</code></pre>
+  </article>
+
+  <!-- ── CONTEXT.md ── -->
+  <article data-part="context">
+    <h2>CONTEXT.md</h2>
+
+    <h3>Architecture</h3>
+
+    <h4>LinkRight Product</h4>
+    <ul>
+      <li>LinkRight = BMAD-inspired improved system with Vector DB + Beads</li>
+      <li>Two fundamental AI problems solved: limited context window (&rarr; MongoDB vectors) + no task tracking (&rarr; Beads)</li>
+      <li>Modules: Core, Sync, Flex, LifeOS, Squick, Builder</li>
+      <li>Flex = Social Media Agency (SMA) module</li>
+    </ul>
+
+    <h4>BMAD/LR v6 Standard &mdash; Workflow Anatomy</h4>
+    <p>Every workflow MUST have:</p>
+    <pre><code>workflows/{name}/
+&#9500;&#9472;&#9472; workflow.yaml              # machine-readable config (name, paths, inputs)
+&#9500;&#9472;&#9472; workflow.md                # human-readable execution guide with XML steps
+&#9500;&#9472;&#9472; instructions.md            # detailed prose guide for agent
+&#9500;&#9472;&#9472; checklist.md               # quality gates (pre/post/weekly checks)
+&#9500;&#9472;&#9472; templates/
+&#9474;   &#9492;&#9472;&#9472; {output}.template.md   # output format template
+&#9500;&#9472;&#9472; steps/
+&#9474;   &#9492;&#9472;&#9472; step-01b-resume-if-interrupted.md  # common recovery step
+&#9500;&#9472;&#9472; steps-c/                   # CREATE phase
+&#9474;   &#9500;&#9472;&#9472; step-01-load-session-context.md
+&#9474;   &#9500;&#9472;&#9472; step-01b-resume-if-interrupted.md
+&#9474;   &#9492;&#9472;&#9472; step-{CODE}{N}-{name}.md...
+&#9500;&#9472;&#9472; steps-v/                   # VALIDATE phase
+&#9474;   &#9492;&#9472;&#9472; step-01-validate.md
+&#9500;&#9472;&#9472; steps-e/                   # EDIT phase
+&#9474;   &#9500;&#9472;&#9472; step-01-assess.md
+&#9474;   &#9492;&#9472;&#9472; step-02-apply-edit.md
+&#9492;&#9472;&#9472; data/reference/            # reference data (YAML/CSV)</code></pre>
+
+    <h4>Module-Level Files</h4>
+    <pre><code>{module}/
+&#9500;&#9472;&#9472; config.yaml           # module config
+&#9500;&#9472;&#9472; module-help.csv       # commands
+&#9500;&#9472;&#9472; teams/default-party.csv
+&#9500;&#9472;&#9472; agents/{name}.md + .customize.yaml
+&#9500;&#9472;&#9472; workflows/
+&#9500;&#9472;&#9472; knowledge/
+&#9492;&#9472;&#9472; _memory/{agent}-sidecar/ (instructions.md + memories.md)</code></pre>
+
+    <h4>Global Config (_config/)</h4>
+    <ul>
+      <li>manifest.yaml &mdash; system identity</li>
+      <li>agent-manifest.csv &mdash; ALL agents</li>
+      <li>workflow-manifest.csv &mdash; ALL workflows</li>
+      <li>lr-help.csv &mdash; global commands</li>
+      <li>task-manifest.csv, tool-manifest.csv, files-manifest.csv</li>
+      <li>agents/ &mdash; all .customize.yaml</li>
+      <li>ides/ &mdash; IDE configs</li>
+    </ul>
+
+    <h3>SMA Pipeline</h3>
+    <pre><code>A (Ideation) &rarr; B (Drafting) &rarr; F (Formatting) &rarr; C (Review) &rarr; D (Publishing) &rarr; E (Analytics)
+                                                                              &darr;
+                                                                         loops back to A</code></pre>
+
+    <h4>Status Flow</h4>
+    <p><code>Scheduled_NoDraft &rarr; Drafting &rarr; Drafted &rarr; Formatting &rarr; Previewed &rarr; Ready_ToPublish &rarr; Published</code></p>
+
+    <h3>Webhooks (n8n)</h3>
+    <table>
+      <thead>
+        <tr><th>Webhook</th><th>Method</th><th>Used By</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>/sma-fetch-briefs</td><td>POST</td><td>A.1</td></tr>
+        <tr><td>/sma-fetch-past-posts</td><td>POST</td><td>A.2, A.7, B.2</td></tr>
+        <tr><td>/sma-search-experiences</td><td>POST</td><td>A.3, B.2</td></tr>
+        <tr><td>/sma-fetch-config</td><td>POST</td><td>A.4, A.7, E.1, E.5</td></tr>
+        <tr><td>/sma-save-config</td><td>POST</td><td>A.5, E.4, E.5</td></tr>
+        <tr><td>/sma-update-sheet-status</td><td>POST</td><td>A.6, A.8</td></tr>
+        <tr><td>/sma-save-experience</td><td>POST</td><td>A.6</td></tr>
+        <tr><td>/sma-save-post</td><td>POST</td><td>A.8</td></tr>
+        <tr><td>/sma-save-to-notion</td><td>POST</td><td>A.8</td></tr>
+        <tr><td>/sma-fetch-post</td><td>POST</td><td>B.1, C.1, D.1, E.1, F.1</td></tr>
+        <tr><td>/sma-update-post</td><td>POST</td><td>B.4, C.2, D.2, D.3, F.1, F.4</td></tr>
+        <tr><td>/sma-publish-linkedin</td><td>POST</td><td>D.2</td></tr>
+        <tr><td>/sma-notify-telegram</td><td>POST</td><td>D.4</td></tr>
+        <tr><td>/sma-analytics-collect</td><td>POST</td><td>E.1 (manual, JS DevTools snippet / ChatGPT Actions, multi-point: Day 1,3,7,14,30)</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Workflow Details</h3>
+
+    <details>
+      <summary>A &mdash; Content Ideation (8 steps, COMPLETE)</summary>
+      <ul>
+        <li>A.1: Fetch briefs from Google Sheet</li>
+        <li>A.2: Fetch past 14 days posts</li>
+        <li>A.3: Semantic search experiences per brief</li>
+        <li>A.4: Load scoring config (Fibonacci: F&times;8 + P&times;5 + R&times;3)</li>
+        <li>A.5: Optional config update</li>
+        <li>A.6: Score, filter, present top N, user selects</li>
+        <li>A.7: Check open slots, assign dates</li>
+        <li>A.8: Save to MongoDB + Notion + update Sheet</li>
+      </ul>
+    </details>
+
+    <details>
+      <summary>B &mdash; Content Drafting (4 steps, COMPLETE)</summary>
+      <ul>
+        <li>B.1: Pick earliest Scheduled_NoDraft post (auto or user choice)</li>
+        <li>B.2: Fetch context (brief, experiences, top posts), load 8 framework CSVs, AI curates top 3-5 per category, user picks 1 each from 6 categories, generate first draft</li>
+        <li>B.3: Iterative refinement loop &mdash; user feedback, AI revises (max 3 suggested, hard cap 5), quality checks</li>
+        <li>B.4: Finalize and save to MongoDB (status &rarr; Drafted), update Google Sheet, present next actions</li>
+      </ul>
+    </details>
+
+    <details>
+      <summary>C &mdash; Content Review (2+ steps)</summary>
+      <ul>
+        <li>C.1: Fetch post by ID (status: Previewed)</li>
+        <li>C.2: Display preview, user approves/rejects/edits &rarr; status Ready_ToPublish or back to F</li>
+      </ul>
+    </details>
+
+    <details>
+      <summary>D &mdash; Content Publishing (4 steps)</summary>
+      <ul>
+        <li>D.1: Fetch ready posts (Ready_ToPublish)</li>
+        <li>D.2: Publish to LinkedIn (one shot, no retry, random 0-60min delay, duplicate guard)</li>
+        <li>D.3: Update status &rarr; Published + linkedin_post_urn + published_at</li>
+        <li>D.4: Telegram notification to SMA control group</li>
+      </ul>
+    </details>
+
+    <details>
+      <summary>E &mdash; Analytics Review (5 steps, DETAILED)</summary>
+      <ul>
+        <li>E.1: Fetch published posts with metrics_history[] from MongoDB (collected via JS snippet / ChatGPT Actions at Day 1,3,7,14,30)</li>
+        <li>E.2: Store &amp; Aggregate &mdash; per-pillar, per-method, per-day, per-hook averages + benchmarks + engagement_velocity</li>
+        <li>E.3: Analyze Performance &mdash; post vs avg, rankings, trends, resurgence detection (Day 14 &gt; Day 7 by &gt;20%), interactive dashboard + discussion</li>
+        <li>E.4: Strategy Recommendations &mdash; pillar rebalancing, format insights, timing, combos, variety alerts &rarr; save</li>
+        <li>E.5: Feedback Loop &mdash; update scoring_weights, pillar_priority, preferred methods, flag underperformers &rarr; self-improving</li>
+      </ul>
+    </details>
+
+    <details>
+      <summary>F &mdash; Content Formatting (new, split from B)</summary>
+      <ul>
+        <li>F.1: Pick drafted post</li>
+        <li>F.2: Apply platform-specific formatting (staircase, 3-line blocks, UPPERCASE, etc.)</li>
+        <li>F.3: Generate preview in code block</li>
+        <li>F.4: User approves &rarr; status Previewed</li>
+      </ul>
+    </details>
+
+    <h3>Formatting Rules (LinkedIn v1)</h3>
+    <ul>
+      <li>800-1600 ASCII characters</li>
+      <li>No bold/italic/underline &mdash; UPPERCASE headers sparingly</li>
+      <li>Max 3-line blocks with staircase formatting</li>
+      <li>Max 3 emojis at tension points</li>
+      <li>Replace dashes with punctuation</li>
+      <li>Bullets: &quot; - &quot;; Flows: &quot;A &mdash;&gt; B &mdash;&gt; C&quot;</li>
+      <li>Max 3 Hindi sentences at emotional peaks</li>
+      <li>FK Grade 7 readability</li>
+      <li>Positioning + follow after CTA</li>
+      <li>3-6 hashtags at end</li>
+      <li>Show in code block preview</li>
+    </ul>
+
+    <h3>Scoring Formula</h3>
+    <p><code>Score = F&times;8 + P&times;5 + R&times;3</code> (Fibonacci weights)</p>
+    <ul>
+      <li>F=Freshness, P=Personal Experience, R=Research Quality</li>
+      <li>Minimums: F&ge;5, P&ge;3, R&ge;2</li>
+      <li>Total minimum: 50% of 160 = 80</li>
+    </ul>
+
+    <h3>Key Constraints</h3>
+    <ul>
+      <li>Agent has ZERO direct DB/API access &mdash; ALL via n8n webhooks</li>
+      <li>n8n workflows built manually by Satvik in UI</li>
+      <li>Max 3 posts planned, 1 post/day, LinkedIn only (v1)</li>
+      <li>Interactive/creative &rarr; BMAD workflow; Automated/scheduled &rarr; n8n</li>
+      <li>MongoDB = user data | Sheets = temp/external | Notion = view-only</li>
+      <li>English for vector-searchable content (Romanised Hindi = 15-25% lower accuracy)</li>
+      <li>0.80 default similarity threshold</li>
+      <li>No retry for LinkedIn publishing &mdash; one shot only</li>
+    </ul>
+
+    <h3>Beads Hierarchy (SAFe 6-level)</h3>
+    <p>Epic &rarr; Capability &rarr; Feature &rarr; Story &rarr; Task &rarr; Subtask/Bug</p>
+
+    <h4>Flex Epic (shipquick-cmg) Capabilities</h4>
+    <table>
+      <thead>
+        <tr><th>ID</th><th>Capability</th><th>Phase</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>cmg.1</td><td>Structural Compliance</td><td>1 (current)</td></tr>
+        <tr><td>07t</td><td>B-ContentDrafting</td><td>2</td></tr>
+        <tr><td>7ay</td><td>F-ContentFormatting</td><td>3</td></tr>
+        <tr><td>1hf</td><td>C-ContentReview</td><td>4</td></tr>
+        <tr><td>jvy</td><td>D-ContentPublishing</td><td>5</td></tr>
+        <tr><td>6i9</td><td>E-AnalyticsReview</td><td>6</td></tr>
+        <tr><td>l50</td><td>Variables Registry</td><td>7</td></tr>
+        <tr><td>eex</td><td>UX Design</td><td>8</td></tr>
+        <tr><td>brv</td><td>UI Integration</td><td>9</td></tr>
+      </tbody>
+    </table>
+
+    <h4>Other Product Line Epics (placeholders)</h4>
+    <table>
+      <thead>
+        <tr><th>Module</th><th>Epic ID</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Core</td><td>shipquick-5ej</td></tr>
+        <tr><td>Sync</td><td>shipquick-758</td></tr>
+        <tr><td>Flex</td><td>shipquick-cmg</td></tr>
+        <tr><td>LifeOS</td><td>shipquick-8tu</td></tr>
+        <tr><td>Squick</td><td>shipquick-ig6</td></tr>
+        <tr><td>Builder</td><td>shipquick-53z</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Framework Files (created by IronForge agent)</h3>
+    <ul>
+      <li>content-formats.csv (35 items)</li>
+      <li>hook-frameworks.csv (35)</li>
+      <li>narrative-frameworks.csv (32)</li>
+      <li>cta-frameworks.csv (32)</li>
+      <li>tone-frameworks.csv (32)</li>
+      <li>formatting-rules.csv (15)</li>
+      <li>positioning-templates.csv (32)</li>
+      <li>content-methods.csv (60 methods, 10 categories)</li>
+      <li>content-elicitation-workflow.xml</li>
+      <li>variable-registry.csv (48 variables)</li>
+      <li>config-doc-schemas.md (7 MongoDB schemas)</li>
+    </ul>
+
+    <h3>Database</h3>
+    <ul>
+      <li>MongoDB: <code>sma</code> database, collections: <code>linkedin_posts</code>, <code>life_experiences</code>, <code>sma_config</code></li>
+      <li>Connection: <code>mongodb://n8n:sma2026@172.17.0.3:27017/sma?authSource=admin&amp;directConnection=true</code></li>
+      <li>Vector index: <code>experience_vector_idx</code> (3072 dims, cosine)</li>
+      <li>Config doc IDs: scoring_weights, scoring_scales, posting_schedule, formatting_config, engagement_config, review_config, analytics_config</li>
+    </ul>
+
+    <h3>Paths</h3>
+    <ul>
+      <li>SMA root: <code>src/modules/atf/projects/social-media-agency/</code></li>
+      <li>Workflows: <code>{root}/workflows/</code></li>
+      <li>Frameworks: <code>{root}/frameworks/</code></li>
+      <li>Plans: <code>{root}/plans/</code></li>
+      <li>Learnings: <code>{root}/learnings/</code></li>
+      <li>LR reference: <code>/home/ubuntu/MasterWorkspace/linkright/context/linkright/_lr/</code></li>
+      <li>BMAD reference: <code>/home/ubuntu/MasterWorkspace/linkright/context/bmad-method/_bmad/</code></li>
+    </ul>
+  </article>
+
+  <!-- ── module-help.csv ── -->
+  <article data-part="module-help">
+    <h2>module-help.csv</h2>
+    <table>
+      <thead>
+        <tr><th>command</th><th>agent_id</th><th>description</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>/flex-help</code></td><td>flex-publicist</td><td>Show all Flex SMA module commands and available workflows.</td></tr>
+        <tr><td><code>/flex-ideate</code></td><td>flex-ideator</td><td>Start Content Ideation (A) &mdash; fetch briefs, score, schedule posts.</td></tr>
+        <tr><td><code>/flex-draft</code></td><td>flex-ideator</td><td>Start Content Drafting (B) &mdash; pick post, select methods, generate draft.</td></tr>
+        <tr><td><code>/flex-format</code></td><td>flex-crafter</td><td>Start Content Formatting (F) &mdash; apply platform-specific formatting to draft.</td></tr>
+        <tr><td><code>/flex-review</code></td><td>flex-crafter</td><td>Start Content Review (C) &mdash; preview and approve/reject formatted post.</td></tr>
+        <tr><td><code>/flex-publish</code></td><td>flex-publisher</td><td>Start Content Publishing (D) &mdash; publish approved post to LinkedIn.</td></tr>
+        <tr><td><code>/flex-analytics</code></td><td>flex-publisher</td><td>Start Analytics Review (E) &mdash; collect metrics, analyze performance, suggest improvements.</td></tr>
+        <tr><td><code>/flex-status</code></td><td>flex-publicist</td><td>Show current pipeline status &mdash; posts in each stage.</td></tr>
+      </tbody>
+    </table>
+  </article>
+
+  <!-- ── workflow-manifest.csv ── -->
+  <article data-part="workflow-manifest">
+    <h2>workflow-manifest.csv</h2>
+    <table>
+      <thead>
+        <tr><th>id</th><th>name</th><th>module</th><th>path</th><th>type</th><th>phase_coverage</th><th>step_count</th><th>description</th><th>status</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>wf-023</td><td>content-ideation</td><td>flex</td><td>workflows/content-ideation</td><td>yaml-workflow</td><td>cev</td><td>13</td>
+          <td>Fetch briefs from Google Sheet &mdash; enrich with experiences &mdash; score using Fibonacci weights &mdash; produce 3-day LinkedIn schedule</td><td>active</td>
+        </tr>
+        <tr>
+          <td>wf-024</td><td>content-drafting</td><td>flex</td><td>workflows/content-drafting</td><td>yaml-workflow</td><td>cev</td><td>9</td>
+          <td>Pick scheduled post &mdash; select frameworks from 7 CSVs &mdash; generate draft with user feedback &mdash; save to MongoDB</td><td>active</td>
+        </tr>
+        <tr>
+          <td>wf-025</td><td>content-formatting</td><td>flex</td><td>workflows/content-formatting</td><td>yaml-workflow</td><td>cev</td><td>9</td>
+          <td>Apply LinkedIn formatting rules &mdash; staircase layout &mdash; UPPERCASE headers &mdash; emoji placement &mdash; code-block preview</td><td>active</td>
+        </tr>
+        <tr>
+          <td>wf-026</td><td>content-review</td><td>flex</td><td>workflows/content-review</td><td>yaml-workflow</td><td>cev</td><td>7</td>
+          <td>Fetch previewed posts &mdash; user review approve/reject/edit &mdash; update status to Ready_ToPublish or rework</td><td>active</td>
+        </tr>
+        <tr>
+          <td>wf-027</td><td>content-publishing</td><td>flex</td><td>workflows/content-publishing</td><td>yaml-workflow</td><td>cev</td><td>9</td>
+          <td>Fetch ready posts &mdash; publish to LinkedIn with delay and duplicate guard &mdash; notify via Telegram</td><td>active</td>
+        </tr>
+        <tr>
+          <td>wf-028</td><td>analytics-review</td><td>flex</td><td>workflows/analytics-review</td><td>yaml-workflow</td><td>cev</td><td>7</td>
+          <td>Collect LinkedIn engagement metrics &mdash; score performance &mdash; discuss insights &mdash; adjust content strategy</td><td>active</td>
+        </tr>
+      </tbody>
+    </table>
+  </article>
+
+  <!-- ── agent-manifest.csv ── -->
+  <article data-part="agent-manifest">
+    <h2>agent-manifest.csv</h2>
+    <table>
+      <thead>
+        <tr><th>name</th><th>displayName</th><th>title</th><th>icon</th><th>role</th><th>module</th><th>path</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>flex-publicist</td><td>Echo</td><td>Social Brand Strategist &amp; SMA Orchestrator</td><td>&#x1F30A;</td>
+          <td>Social Brand Strategist &amp; SMA Orchestrator</td><td>flex</td><td>agents/flex-publicist.md</td>
+        </tr>
+        <tr>
+          <td>flex-ideator</td><td>Scout</td><td>Content Ideation &amp; Drafting Specialist</td><td>&#x1F50D;</td>
+          <td>Content Ideation &amp; Drafting Specialist</td><td>flex</td><td>agents/flex-ideator.md</td>
+        </tr>
+        <tr>
+          <td>flex-crafter</td><td>Pixel</td><td>Content Formatting &amp; Review Specialist</td><td>&#x1F3A8;</td>
+          <td>Content Formatting &amp; Review Specialist</td><td>flex</td><td>agents/flex-crafter.md</td>
+        </tr>
+        <tr>
+          <td>flex-publisher</td><td>Relay</td><td>Publishing &amp; Analytics Specialist</td><td>&#x1F4E1;</td>
+          <td>Publishing &amp; Analytics Specialist</td><td>flex</td><td>agents/flex-publisher.md</td>
+        </tr>
+        <tr>
+          <td>flex-ideation-qa</td><td>Lens</td><td>Ideation &amp; Drafting QA</td><td>&#x1F52C;</td>
+          <td>Ideation &amp; Drafting QA</td><td>flex</td><td>agents/flex-ideation-qa.md</td>
+        </tr>
+        <tr>
+          <td>flex-craft-qa</td><td>Grid</td><td>Formatting &amp; Review QA</td><td>&#x1F4D0;</td>
+          <td>Formatting &amp; Review QA</td><td>flex</td><td>agents/flex-craft-qa.md</td>
+        </tr>
+        <tr>
+          <td>flex-publish-qa</td><td>Sentinel</td><td>Publishing &amp; Analytics QA</td><td>&#x1F6E1;</td>
+          <td>Publishing &amp; Analytics QA</td><td>flex</td><td>agents/flex-publish-qa.md</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <details>
+      <summary>Agent Details (capabilities, identity, communication style, principles)</summary>
+      <table>
+        <thead>
+          <tr><th>name</th><th>capabilities</th><th>identity</th><th>communicationStyle</th><th>principles</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>flex-publicist</td>
+            <td>orchestration, brand strategy, ghostwriting</td>
+            <td>Orchestrates full SMA pipeline from ideation to analytics. Delegates to specialist agents (Scout, Pixel, Relay) and ensures every post flows through A&rarr;B&rarr;F&rarr;C&rarr;D&rarr;E pipeline with quality gates at each transition.</td>
+            <td>Engaging, rhythmic, and insightful. Speaks in hooks and build-in-public patterns. Command-center clarity when orchestrating.</td>
+            <td>Authenticity: mirror user voice accurately. Signal Amplification: turn minor wins into major authority. Narrative Coherence. Pipeline Integrity: every post must pass all stages.</td>
+          </tr>
+          <tr>
+            <td>flex-ideator</td>
+            <td>brief scoring, experience matching, draft generation, framework curation</td>
+            <td>Data-driven pattern hunter. Scores briefs using Fibonacci formula, curates frameworks from 7 vocabulary CSVs, matches life experiences via semantic search, and generates drafts capturing user authentic voice. Steps A and B domain.</td>
+            <td>Analytical yet creative. Presents data clearly, explains scoring rationale, guides framework selection with confidence.</td>
+            <td>Data-Driven: every recommendation backed by scoring logic. Experience First: real stories power authentic content. Framework Discipline: curate not overwhelm. Voice Fidelity: draft must sound like user.</td>
+          </tr>
+          <tr>
+            <td>flex-crafter</td>
+            <td>platform formatting, preview generation, quality review</td>
+            <td>Detail-obsessed format perfectionist. Enforces every LinkedIn formatting constraint (staircase structure, 3-line blocks, FK Grade 7, emoji limits, Hindi sentence placement). Steps F and C domain.</td>
+            <td>Precise, visual, and quality-focused. Shows before/after formatting, highlights rule violations, presents clean previews.</td>
+            <td>Pixel Perfect: every character emoji line break matters. Rules Are Law: LinkedIn formatting constraints non-negotiable. Preview First: nothing moves to review without clean preview. User Agency: user approves/rejects every formatting decision.</td>
+          </tr>
+          <tr>
+            <td>flex-publisher</td>
+            <td>LinkedIn publishing, duplicate guard, metric collection, strategy optimization</td>
+            <td>Timing-focused with zero-error mindset. One-shot publish, random delay, engagement scoring &mdash; handles final mile. Steps D and E domain. Guards against duplicates, enforces 1/day rule, collects metrics for continuous optimization.</td>
+            <td>Precise, status-driven, and results-oriented. Reports publish outcomes clearly, presents metrics with actionable insights.</td>
+            <td>Zero Tolerance: no duplicate publishes no retries no errors. Timing Matters: random delays prevent pattern detection. Data Closes The Loop: analytics feed back into ideation. Transparency: every publish action logged/reported.</td>
+          </tr>
+          <tr>
+            <td>flex-ideation-qa</td>
+            <td>scoring validation, brief quality check, draft completeness review</td>
+            <td>Finds gaps in scoring logic, catches missing experiences, validates Fibonacci weights. Ensures every brief score mathematically correct, every experience match genuine, every draft complete against selected frameworks. QA for Steps A and B.</td>
+            <td>Methodical, evidence-based, and thorough. Reports findings as pass/fail with specific evidence.</td>
+            <td>Mathematical Precision: scoring must be verifiably correct. No Fabrication: experiences from real semantic matches. Completeness: drafts honor all selected framework elements. Early Catch: find issues before propagation downstream.</td>
+          </tr>
+          <tr>
+            <td>flex-craft-qa</td>
+            <td>formatting rule enforcement, preview validation, review completeness</td>
+            <td>Formatting rule enforcer. Checks every LinkedIn constraint (character count, emoji placement, Hindi sentence limits, FK grade, staircase structure). No post passes review without sign-off. QA for Steps F and C.</td>
+            <td>Rule-driven, checklist-oriented, and precise. Reports violations with line-level specificity.</td>
+            <td>Every Rule Checked: no formatting constraint skipped. Visual Verification: preview must match platform rendering. Measurable: character counts emoji counts FK scores quantified. Block or Pass: binary outcome no close enough.</td>
+          </tr>
+          <tr>
+            <td>flex-publish-qa</td>
+            <td>publish guard validation, metric accuracy, duplicate detection</td>
+            <td>Guards against duplicate publishes, verifies 1/day rule, validates engagement formulas. No post goes live without pre-flight check, no metric goes unverified. QA for Steps D and E.</td>
+            <td>Vigilant, status-focused, and systematic. Reports pre-flight checks as go/no-go with clear rationale.</td>
+            <td>Duplicate Prevention: check before every publish. Rule Enforcement: 1/day absolute no exceptions. Metric Integrity: engagement scores reproducible. Audit Trail: every publish action verifiable.</td>
+          </tr>
+        </tbody>
+      </table>
+    </details>
+  </article>
+
+</section>
+
+<footer>
+  <p>Bundle version <strong>1.0.0</strong> | Module: <strong>flex-sma</strong> | Sources: config.yaml, CONTEXT.md, module-help.csv, workflow-manifest.csv, agent-manifest.csv</p>
+</footer>
+
+</body>
+</html>
