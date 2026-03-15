@@ -1,13 +1,13 @@
 id,name,description,file_path,item_count,used_by_workflows
-FW01,Content Formats,"35 content format types (story-insight, listicle, hot-take, etc.) with engagement levels",content-formats.csv,34,B-ContentDrafting
+FW01,Content Formats,"35 content format types (story-insight, listicle, hot-take, etc.) with engagement levels",content-formats.csv,35,B-ContentDrafting
 FW02,Hook Frameworks,"35 hook patterns for LinkedIn post openings with examples and best-for tags",hook-frameworks.csv,34,B-ContentDrafting
 FW03,Narrative Frameworks,"32 narrative structures for storytelling and content flow",narrative-frameworks.csv,31,B-ContentDrafting
-FW04,CTA Frameworks,"32 call-to-action patterns for post closings with engagement types",cta-frameworks.csv,31,B-ContentDrafting
-FW05,Tone Frameworks,"32 tone/voice options for content personality and style",tone-frameworks.csv,31,B-ContentDrafting
-FW06,Formatting Rules,"15 LinkedIn-specific formatting rules (staircase, emoji limits, etc.)",formatting-rules.csv,15,"B-ContentDrafting,F-ContentFormatting"
+FW04,CTA Frameworks,"32 call-to-action patterns for post closings with engagement types",cta-frameworks.csv,32,B-ContentDrafting
+FW05,Tone Frameworks,"32 tone/voice options for content personality and style",tone-frameworks.csv,32,B-ContentDrafting
+FW06,Formatting Rules,"16 LinkedIn-specific formatting rules (staircase, emoji limits, etc.)",formatting-rules.csv,16,"B-ContentDrafting,F-ContentFormatting"
 FW07,Positioning Templates,"32 positioning + follow line templates per pillar and tone",positioning-templates.csv,31,B-ContentDrafting
-FW08,Content Methods,"60 content methods across 10 categories with output patterns",content-methods.csv,60,B-ContentDrafting
+FW08,Content Methods,"61 content methods across 10 categories with output patterns",content-methods.csv,61,B-ContentDrafting
 FW09,Content Elicitation Workflow,"XML workflow for structured content elicitation with AI-guided questions",content-elicitation-workflow.xml,1,B-ContentDrafting
-FW10,Variable Registry,"48 configurable variables across all workflows with storage locations",variable-registry.csv,48,All
+FW10,Variable Registry,"49 configurable variables across all workflows with storage locations",variable-registry.csv,49,All
 FW11,Config Doc Schemas,"MongoDB sma_config collection schemas for 7 config documents",config-doc-schemas.md,7,All
 FW12,Posting Schedule,"Default Mon/Wed/Fri 6-7 PM IST schedule with A/B test variants and holiday overrides",posting-schedule.yaml,1,"D-ContentPublishing,E-AnalyticsReview"

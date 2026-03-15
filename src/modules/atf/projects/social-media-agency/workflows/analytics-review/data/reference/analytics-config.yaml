@@ -28,7 +28,10 @@ reporting:
 resurgence_detection:
   enabled: true
   description: "Flag posts that show renewed engagement after initial decay"
-  trigger: "Engagement spike > 2× average daily rate after 7+ days"
+  trigger: "Day 14 engagement > Day 7 engagement by >20%"
+  checkpoints: [1, 3, 7, 14, 30]
+  comparison: "day_14 vs day_7"
+  threshold_pct: 20
 
 strategy_feedback_loop:
   description: "Analytics insights feed back into ideation scoring"
