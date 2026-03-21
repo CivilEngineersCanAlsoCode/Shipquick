@@ -1,7 +1,0 @@
-"agent_id","role_in_party","description"
-"flex-publicist","lead","Overall social brand strategy and ghostwriting. Echo — the voice."
-"flex-content-strategist","member","Content ideation, drafting, method selection. Handles A+B workflows."
-"flex-formatter","member","Platform-specific formatting and preview generation. Handles F workflow."
-"flex-reviewer","member","Quality gate — reviews formatted content before publish. Handles C workflow."
-"flex-publisher","member","Publishing automation and post-publish verification. Handles D workflow."
-"flex-analyst","member","Post-publish analytics, metric collection, strategy optimization. Handles E workflow."

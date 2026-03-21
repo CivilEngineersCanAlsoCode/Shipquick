@@ -1,7 +1,0 @@
-id,name,module,path,type,phase_coverage,step_count,description,status
-wf-023,content-ideation,flex,workflows/content-ideation,yaml-workflow,cev,13,Fetch briefs from Google Sheet — enrich with experiences — score using Fibonacci weights — produce 3-day LinkedIn schedule,active
-wf-024,content-drafting,flex,workflows/content-drafting,yaml-workflow,cev,9,Pick scheduled post — select frameworks from 7 CSVs — generate draft with user feedback — save to MongoDB,active
-wf-025,content-formatting,flex,workflows/content-formatting,yaml-workflow,cev,9,Apply LinkedIn formatting rules — staircase layout — UPPERCASE headers — emoji placement — code-block preview,active
-wf-026,content-review,flex,workflows/content-review,yaml-workflow,cev,7,Fetch previewed posts — user review approve/reject/edit — update status to Ready_ToPublish or rework,active
-wf-027,content-publishing,flex,workflows/content-publishing,yaml-workflow,cev,9,Fetch ready posts — publish to LinkedIn with delay and duplicate guard — notify via Telegram,active
-wf-028,analytics-review,flex,workflows/analytics-review,yaml-workflow,cev,7,Collect LinkedIn engagement metrics — score performance — discuss insights — adjust content strategy,active
